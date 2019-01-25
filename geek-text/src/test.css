@@ -1,0 +1,21 @@
+.container {
+	text-align: center;
+}
+
+.container .btn {
+	border: 0;
+  	padding: 15px;
+  	margin: 10px;
+  	width: 20%;
+  	font-size: 15px;
+  	outline: none;
+  	border-radius: 3px;
+  	color: #FFF;
+  	font-weight: bold;
+}
+
+.container h1 {
+  margin: 0;
+  padding: 20px;
+  font-size: 36px;
+}
