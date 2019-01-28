@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import SearchArea from "./SearchArea";
-import request from 'superagent'
-import BookDetailList from "./BookDetailList";
 
 class BookDetails extends Component {
 
@@ -23,22 +21,15 @@ class BookDetails extends Component {
     }
 
     searchButtonClicked(){
-        request.get("https://www.googleapis.com/books/v1/volumes")
-            .query({ q: this.state.search, maxResults: 40})
-            .then((data) => {
-                this.setState({
-                    books: [...data.body.items]
-                })
-                console.log(data);
-                
-            })
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "./GeekTextServer.cs", true);
+        console.log(xhttp);
     }
 
     render() {
         return (
              <div>
                  <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
-                 <BookDetailList books={this.state.books}></BookDetailList>
              </div>
         );
     }
