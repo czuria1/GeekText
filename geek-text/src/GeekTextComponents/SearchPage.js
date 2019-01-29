@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import SearchArea from "./SearchArea";
+import ajaxme from "ajaxme";
 
 class BookDetails extends Component {
 
@@ -21,9 +22,24 @@ class BookDetails extends Component {
     }
 
     searchButtonClicked(){
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "./GeekTextServer.cs", true);
-        console.log(xhttp);
+        ajaxme.get({
+            url: 'GeekTextServer.cs',
+             success: function(XMLHttpRequest) {
+                console.log('success', XMLHttpRequest);
+            },
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+                console.log('loadstart', XMLHttpRequest);
+            },
+            progress: function(XMLHttpRequest) {
+                console.log('progress', XMLHttpRequest.percent);
+            }
+        });
     }
 
     render() {

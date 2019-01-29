@@ -1,23 +1,29 @@
-﻿using System;
+﻿using Internal;
+using System;
 using MySql.Data.MySqlClient;
 
-public class GeekTextServer
+public static class GeekTextServer
 {
-	public Connection()
+    [HttpGet]
+	static void start()
 	{
+        return "hello";
         string myConnectionString = "server=localhost;database=GeekText_DB;uid=jyepe;pwd=9373yepe;";
+        
 
-        MySqlConnection cnn = new MySqlConnection(connetionString);
+        MySqlConnection cnn = new MySqlConnection(myConnectionString);
 
         try
         {
             cnn.Open();
-            MessageBox.Show("Connection Open ! ");
+            Response.Write("hello");
+            Response.End();
             cnn.Close();
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Can not open connection ! ");
+            Response.Write("hello");
+            Response.End();
         }
     }
 }
