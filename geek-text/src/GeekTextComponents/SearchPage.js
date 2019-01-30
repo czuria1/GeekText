@@ -22,9 +22,10 @@ class BookDetails extends Component {
     }
 
     searchButtonClicked(){
-        ajaxme.get({
-            url: 'GeekTextServer.cs',
-             success: function(XMLHttpRequest) {
+        ajaxme.post({
+            url: 'http://127.0.0.1/server.php/post',
+            data: 'name=Guest',
+            success: function(XMLHttpRequest) {
                 console.log('success', XMLHttpRequest);
             },
             error: function(XMLHttpRequest) {
