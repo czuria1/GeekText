@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import SearchArea from "./SearchArea";
-import ajaxme from "ajaxme";
+//import ajaxme from "ajaxme";
 
 class BookDetails extends Component {
 
