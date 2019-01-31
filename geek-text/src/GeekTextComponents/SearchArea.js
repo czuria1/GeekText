@@ -4,7 +4,7 @@ const SearchArea = (props) =>
 {
     return(
         <div>
-            <button onClick={props.searchButtonClicked}>click me</button>
+            <button onClick={props.searchButtonClicked}>Search...</button>
             <input type="text" onChange={props.handleSearch}/>
             
         </div>
