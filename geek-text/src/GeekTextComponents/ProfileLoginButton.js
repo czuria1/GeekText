@@ -24,7 +24,9 @@ class ProfileLoginButton extends Component {
         return (
             <div>
                 {this.renderRedriect()}
-                <Button onClick={this.setRedirect}>Login</Button>
+                <Button 
+                    onClick={this.setRedirect}
+                    variant="outlined">Login</Button>
             </div>
         )
     }

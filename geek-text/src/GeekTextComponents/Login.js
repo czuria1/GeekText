@@ -1,6 +1,5 @@
 import React from 'react';
 import './login.css';
-// import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 
@@ -8,9 +7,6 @@ const Login = (props) =>
 {
     return(
         <div>
-            <div class="topnav">
-
-            </div>
             <div class="outer">
                 <div class="loginarea">
                     <TextField 
@@ -28,7 +24,10 @@ const Login = (props) =>
                         variant="outlined"></TextField>
                         <br></br>
                         <br></br>
-                        <Button>Login</Button>
+                        <Button
+                            variant="outlined">Login</Button>
+                        <Button
+                            variant="outlined">Register</Button>
                 </div>
             </div>
         </div>

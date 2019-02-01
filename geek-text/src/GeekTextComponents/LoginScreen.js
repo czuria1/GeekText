@@ -14,9 +14,6 @@ class LoginScreen extends Component {
 
     render() {
         return (
-            // <div className = "loginScreen">
-            //     {this.state.LoginScreen}
-            // </div>
             <Login></Login>
         );
     }
