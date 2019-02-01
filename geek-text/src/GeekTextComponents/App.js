@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
-import SearchPage from './SearchPage';
-import ShoppingCartIcon from "./ShoppingCartIcon";
+import SearchPage from './SearchPage'
+import Header from './Header'
+import { BrowserRouter as Router} from 'react-router-dom'
 
 class App extends Component {
     render() {
         return (
-             <div>
-                <SearchPage></SearchPage>
-                <ShoppingCartIcon></ShoppingCartIcon>
-             </div>
+            <Router>
+                <div>
+                    <Header></Header>
+                    <SearchPage></SearchPage>
+                </div>
+            </Router>
         );
     }
 }
