@@ -28,9 +28,9 @@ class BookDetails extends Component {
             data: 'method=getSearchInfo&searchParam=' + `${this.state.search}`,
             success: function(XMLHttpRequest) {
                 this.setState({
-                    books: [XMLHttpRequest.responseText.split("\n")]
+                    books: [JSON.parse(XMLHttpRequest.responseText) ]
                 })
-                //console.log(this.state.books);
+                console.log(this.state.books);
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);

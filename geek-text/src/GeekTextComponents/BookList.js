@@ -6,12 +6,14 @@ const BookList = (props) =>
     return(
         <div>
             {
+                
                 props.books.map((book, i) => 
                 {
                     return <BookCard
                                 key={i}
-                                title={book.title}></BookCard>
+                                title={book[7].title}></BookCard>
                 })
+                
             }
         </div>
     )

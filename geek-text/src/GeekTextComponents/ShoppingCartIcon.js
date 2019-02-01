@@ -13,7 +13,7 @@ class ShoppingCartIcon extends Component {
   }
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to= {ShoppingCartPage} />
+      return <ShoppingCartPage />
     }
   }
   render () {

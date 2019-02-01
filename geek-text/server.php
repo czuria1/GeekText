@@ -37,9 +37,11 @@
 
 		if ($result->num_rows > 0) 
 		{
+			$json = array();
 	    	// convert the data into json object
 	    	while($row = $result->fetch_assoc()) 
 	    	{
+				/*
 				$myObj->title = $row["TITLE"];
 				$myObj->genre = $row["GENRE"];
 				$myObj->publisher = $row["PUBLISHER"];
@@ -48,7 +50,19 @@
 
 				$myJSON = json_encode($myObj);
 				echo $myJSON . "\n";
+				*/
+
+				$bus = array(
+					"title" => $row["TITLE"],
+					"genre" => $row["GENRE"]
+				);
+
+				array_push($json, $bus);
+				
 			}
+
+			$jsonstring = json_encode($json);
+			echo $jsonstring;
 		}
 		else
 		{
