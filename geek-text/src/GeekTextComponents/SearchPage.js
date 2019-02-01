@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import SearchArea from "./SearchArea";
 import ajaxme from "ajaxme";
+import BookList from "./BookList";
 
 class BookDetails extends Component {
 
@@ -22,11 +23,15 @@ class BookDetails extends Component {
     }
 
     searchButtonClicked(){
-        ajaxme.get({
-            url: 'GeekTextServer.cs',
-             success: function(XMLHttpRequest) {
-                console.log('success', XMLHttpRequest);
-            },
+        ajaxme.post({
+            url: 'http://127.0.0.1/server.php/post',
+            data: 'method=getSearchInfo&searchParam=' + `${this.state.search}`,
+            success: function(XMLHttpRequest) {
+                this.setState({
+                    books: [JSON.parse(XMLHttpRequest.responseText) ]
+                })
+                console.log(this.state.books);
+            }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
             },
@@ -34,10 +39,8 @@ class BookDetails extends Component {
                 console.log('abort', XMLHttpRequest);
             },
             loadstart: function(XMLHttpRequest) {
-                console.log('loadstart', XMLHttpRequest);
             },
             progress: function(XMLHttpRequest) {
-                console.log('progress', XMLHttpRequest.percent);
             }
         });
     }
@@ -46,6 +49,7 @@ class BookDetails extends Component {
         return (
              <div>
                  <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
+                 <BookList books={this.state.books}></BookList>
              </div>
         );
     }
