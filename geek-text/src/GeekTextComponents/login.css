@@ -1,0 +1,19 @@
+.topnav {
+    background-color: blue;
+    overflow: hidden;
+    min-height: 50px;
+    height: auto;
+}
+
+.outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginarea {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
