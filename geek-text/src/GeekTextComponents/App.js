@@ -6,12 +6,16 @@ import { BrowserRouter as Router} from 'react-router-dom'
 class App extends Component {
     render() {
         return (
+
             <Router>
                 <div>
                     <Header></Header>
-                    <SearchPage></SearchPage>
+                    <div align ="center">
+                        <SearchPage></SearchPage>
+                    </div>
                 </div>
             </Router>
+            
         );
     }
 }

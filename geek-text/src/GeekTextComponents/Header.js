@@ -7,9 +7,14 @@ class Header extends Component {
     render () {
         return (
             <div className="topnav">
-                <ShoppingCartIcon></ShoppingCartIcon>
+                <div className="logo">
+                    <h1 align = "center">Geek Text</h1>
+                </div>
                 <div className="loginButton">
                     <ProfileLoginButton></ProfileLoginButton>
+                </div>
+                <div className="shoppingCartButton">
+                    <ShoppingCartIcon></ShoppingCartIcon>
                 </div>
             </div>
         )
