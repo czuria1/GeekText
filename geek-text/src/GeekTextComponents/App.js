@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
 import SearchPage from './SearchPage';
-import ShoppingCartIcon from "./ShoppingCartIcon";
+
 
 class App extends Component {
     render() {
         return (
-             <div>
+             <div class = "topnav">
+             <a class = "active" href = "Homepage">Home</a>
+             
+                   <h1 align = "center">Geek Text</h1>
+                 
+                 <div align ="center">
                 <SearchPage></SearchPage>
-                <ShoppingCartIcon></ShoppingCartIcon>
+                </div>
+               
              </div>
         );
     }

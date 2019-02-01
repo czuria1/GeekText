@@ -4,8 +4,8 @@ const SearchArea = (props) =>
 {
     return(
         <div>
-            <button onClick={props.searchButtonClicked}>click me</button>
-            <input type="text" onChange={props.handleSearch}/>
+            <button onClick={props.searchButtonClicked}>Search...</button>
+            <input type="text" placeholder = "Author, Title, Genre ... "onChange={props.handleSearch}/>
             
         </div>
     )
