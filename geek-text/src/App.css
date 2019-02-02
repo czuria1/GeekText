@@ -22,6 +22,31 @@
   color: #61dafb;
 }
 
+.topnav {
+  background-color: #61dafb;
+  overflow: hidden;
+}
+
+.topnav a {
+  float: center;
+  color: black;
+  padding: 18x 18x;
+  text-align: center;
+  font-size: 18px;
+}
+
+.topnav a:hover {
+  background-color: white;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: blue;
+  color: white;
+}
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
