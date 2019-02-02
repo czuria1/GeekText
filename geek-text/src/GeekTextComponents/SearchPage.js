@@ -28,9 +28,8 @@ class BookDetails extends Component {
             data: 'method=getSearchInfo&searchParam=' + `${this.state.search}`,
             success: function(XMLHttpRequest) {
                 this.setState({
-                    books: [JSON.parse(XMLHttpRequest.responseText) ]
+                    books: JSON.parse(XMLHttpRequest.responseText)
                 })
-                console.log(this.state.books);
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -45,11 +44,26 @@ class BookDetails extends Component {
         });
     }
 
+    //Returns the Booklist component if the books array is populated
+    retrieveList() {
+
+        if(this.state.books.length != 0)
+        {
+            return (
+                <BookList books={this.state.books}></BookList>
+            );
+        }
+        else
+        {
+            return;
+        }
+    }
+
     render() {
         return (
              <div>
                  <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
-                 <BookList books={this.state.books}></BookList>
+                 {this.retrieveList()}
              </div>
         );
     }

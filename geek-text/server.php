@@ -41,17 +41,6 @@
 	    	// convert the data into json object
 	    	while($row = $result->fetch_assoc()) 
 	    	{
-				/*
-				$myObj->title = $row["TITLE"];
-				$myObj->genre = $row["GENRE"];
-				$myObj->publisher = $row["PUBLISHER"];
-				$myObj->fname = $row["LAST_NAME"];
-				$myObj->lname = $row["FIRST_NAME"];
-
-				$myJSON = json_encode($myObj);
-				echo $myJSON . "\n";
-				*/
-
 				$bus = array(
 					"title" => $row["TITLE"],
 					"genre" => $row["GENRE"]
