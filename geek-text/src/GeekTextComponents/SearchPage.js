@@ -61,9 +61,9 @@ class BookDetails extends Component {
 
     render() {
         return (
-             <div>
-                 <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
+             <div id="book-info-container">
                  {this.retrieveList()}
+                 <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
              </div>
         );
     }

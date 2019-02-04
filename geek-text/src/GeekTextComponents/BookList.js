@@ -1,7 +1,6 @@
-import React from 'react';
-import BookCard from './BookCard';
 
-const test = (props) =>{
+const test = (props) =>
+{
     
     var arr = [];
 
@@ -12,23 +11,38 @@ const test = (props) =>{
     return arr;
 }
 
-const getBookInfo = () =>
+function tet (bookInfoArray) 
 {
-    console.log("here");
+   var list = document.createElement('ul');
+   list.style.listStyleType = "none"
+
+   for (let index = 0; index < bookInfoArray.length; index++) 
+   {
+        var title = document.createElement('li');
+        var genre = document.createElement('li');
+        var line = document.createElement('hr');
+
+        // Set its contents:
+        title.appendChild(document.createTextNode("Title: " + bookInfoArray[index].split('`')[0]));
+        genre.appendChild(document.createTextNode("Genre: " + bookInfoArray[index].split('`')[1]));
+
+        // Add it to the list:
+        list.appendChild(title);
+        list.appendChild(genre);
+        list.appendChild(line);
+   }
+
+   return list;
+    
 }
 
 const BookList = (props) => 
 {
-    let bookInfoArray = test(props);
+    var bookInfoArray = test(props);
+    var list = tet(bookInfoArray);
+    document.getElementById("book-info-container").appendChild(list)
 
-    return(
-        <div>
-            <h2>{
-                    this.getBookInfo.bind(this)
-                    //bookInfoArray[0].split('`')[0]
-                }</h2>
-        </div>
-    )
+    return null;
 }
 
 export default BookList;
