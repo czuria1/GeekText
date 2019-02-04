@@ -7,8 +7,8 @@ const Login = (props) =>
 {
     return(
         <div>
-            <div class="outer">
-                <div class="loginarea">
+            <div className="outer">
+                <div className="loginarea">
                     <TextField 
                         required
                         label="Username"

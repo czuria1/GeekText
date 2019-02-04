@@ -24,7 +24,7 @@ class BookDetails extends Component {
 
     searchButtonClicked(){
         ajaxme.post({
-            url: 'http://127.0.0.1/server.php/post',
+            url: 'http://localhost/server.php/post',
             data: 'method=getSearchInfo&searchParam=' + `${this.state.search}`,
             success: function(XMLHttpRequest) {
                 this.setState({
