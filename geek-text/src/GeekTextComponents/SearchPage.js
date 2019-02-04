@@ -47,7 +47,7 @@ class BookDetails extends Component {
     //Returns the Booklist component if the books array is populated
     retrieveList() {
 
-        if(this.state.books.length != 0)
+        if(this.state.books.length !== 0)
         {
             return (
                 <BookList books={this.state.books}></BookList>
