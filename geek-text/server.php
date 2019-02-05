@@ -28,7 +28,8 @@
 		global $conn;
 		global $myObj;
 
-		$sql = "SELECT books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME 
+		$sql = "SELECT books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
+					   books.DESCRIPTION, books.RATING
 				FROM books 
 				JOIN authors ON books.AUTHOR = authors.ID";
 
@@ -43,7 +44,12 @@
 	    	{
 				$bus = array(
 					"title" => $row["TITLE"],
-					"genre" => $row["GENRE"]
+					"author" => $row["LAST_NAME"]. " " .$row["FIRST_NAME"],
+					"genre" => $row["GENRE"],
+					"publisher" => $row["PUBLISHER"],
+					"pub_date" => $row["PUB_DATE"],
+					"description" => $row["DESCRIPTION"],
+					"rating" => $row["RATING"]
 				);
 
 				array_push($json, $bus);
@@ -66,5 +72,6 @@
 	{
 		getSearchInfo();
 	}
+	
 
 ?>
