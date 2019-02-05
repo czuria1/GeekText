@@ -24,7 +24,7 @@ class BookDetails extends Component {
 
     searchButtonClicked(){
         ajaxme.post({
-            url: 'http://127.0.0.1/server.php/post',
+            url: 'http://localhost/server.php/post',
             data: 'method=getSearchInfo&searchParam=' + `${this.state.search}`,
             success: function(XMLHttpRequest) {
                 this.setState({
@@ -47,7 +47,7 @@ class BookDetails extends Component {
     //Returns the Booklist component if the books array is populated
     retrieveList() {
 
-        if(this.state.books.length != 0)
+        if(this.state.books.length !== 0)
         {
             return (
                 <BookList books={this.state.books}></BookList>
@@ -61,9 +61,9 @@ class BookDetails extends Component {
 
     render() {
         return (
-             <div>
-                 <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
+             <div id="book-info-container">
                  {this.retrieveList()}
+                 <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
              </div>
         );
     }
