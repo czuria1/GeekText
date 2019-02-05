@@ -12,3 +12,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.topnav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: lightskyblue;
+  overflow: hidden;
+  min-height: 100px;
+  height: auto;
+}
+
+.topnav .loginButton {
+  float: right;
+  margin-right: 2%;
+}
+
+.topnav .logo {
+  flex-basis: 100%;
+  margin-left: 15%;
+}
+
+.topnav .shoppingCartButton {
+  float: right;
+  margin-right: 2%;
+}
