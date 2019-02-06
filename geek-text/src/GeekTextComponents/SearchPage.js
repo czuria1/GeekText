@@ -23,6 +23,12 @@ class BookDetails extends Component {
     }
 
     searchButtonClicked(){
+        
+        if (this.state.search == ""){
+            alert("Please enter a search term in the textbox");
+            return;
+        }
+
         ajaxme.post({
             url: 'http://localhost/server.php/post',
             data: 'method=getSearchInfo&searchParam=' + `${this.state.search}`,
@@ -46,7 +52,7 @@ class BookDetails extends Component {
 
     //Returns the Booklist component if the books array is populated
     retrieveList() {
-
+        
         if(this.state.books.length !== 0)
         {
             return (
