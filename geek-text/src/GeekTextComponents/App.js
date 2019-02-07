@@ -10,9 +10,7 @@ class App extends Component {
             <Router>
                 <div>
                     <Header></Header>
-                    <div align ="center">
-                        <SearchPage></SearchPage>
-                    </div>
+                    <SearchPage></SearchPage>
                 </div>
             </Router>
             
