@@ -65,7 +65,7 @@ const BookList = (props) =>
     var bookInfoArray = ConvertToStringArray(props);
     var list = appendHTMLElements(bookInfoArray);
     document.getElementById("book-info-container").appendChild(list);
-
+    props.resetBookState();
     return null;
 }
 

@@ -8,14 +8,17 @@ class BookDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            books: [],
-            search: ''
+            books: [],  //Contains all the book returned by the search
+            search: ''  //Contains the key search term to obtain the books
         };
 
+        //Bind the methods to the component
         this.handleSearch = this.handleSearch.bind(this);
         this.searchButtonClicked = this.searchButtonClicked.bind(this);
+        this.resetBookState = this.resetBookState.bind(this);
     }
 
+    //Sets the state "search" to anything the user types in the search box
     handleSearch(event){
         this.setState({
             search: event.target.value
@@ -23,12 +26,13 @@ class BookDetails extends Component {
     }
 
     searchButtonClicked(){
-        
+        //If nothing is in the search box
         if (this.state.search == ""){
             alert("Please enter a search term in the textbox");
             return;
         }
 
+        //Used to connect to the server
         ajaxme.post({
             url: 'http://localhost/server.php/post',
             data: 'method=getSearchInfo&searchParam=' + `${this.state.search}`,
@@ -50,13 +54,20 @@ class BookDetails extends Component {
         });
     }
 
+    //Sets the books array to empty to prevent continuos rendering of the booklist
+    resetBookState() {
+        this.setState({
+            books: []
+        })
+    }
+
     //Returns the Booklist component if the books array is populated
     retrieveList() {
         
         if(this.state.books.length !== 0)
         {
             return (
-                <BookList books={this.state.books}></BookList>
+                <BookList books={this.state.books} resetBookState={this.resetBookState}></BookList>
             );
         }
         else
