@@ -23,6 +23,7 @@ function appendHTMLElements (bookInfoArray)
 
    for (let index = 0; index < bookInfoArray.length; index++) 
    {
+       //Create list elements
         var title = document.createElement('li');
         var author = document.createElement('li');
         var authorLink = document.createElement('a');

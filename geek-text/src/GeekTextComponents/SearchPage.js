@@ -26,8 +26,9 @@ class SearchPage extends Component {
     }
 
     searchButtonClicked(){
+
         //If nothing is in the search box
-        if (this.state.search == ""){
+        if (this.state.search === ""){
             alert("Please enter a search term in the textbox");
             return;
         }
@@ -105,9 +106,10 @@ class SearchPage extends Component {
         return (
              <div align="center" id="book-info-container">
                  {this.retrieveList()}
-
-                 <div>
-                    <SearchArea handleSearch={this.handleSearch} searchButtonClicked={this.searchButtonClicked}></SearchArea>
+                
+                 <div> 
+                    <SearchArea handleSearch={this.handleSearch} 
+                                searchButtonClicked={this.searchButtonClicked}></SearchArea>
                  </div>
              </div>
              
