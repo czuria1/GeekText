@@ -6,7 +6,7 @@ class Review extends Component {
       <React.Fragment>
         <h1>Create a review</h1>
         <div>
-          <form>
+          <form action="/test_page.php">
             <select>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -15,7 +15,7 @@ class Review extends Component {
               <option value="5">5</option>
             </select>
             <br />
-            <textarea />
+            <textarea name="comment" />
             <br />
             <button>Submit</button>
           </form>
