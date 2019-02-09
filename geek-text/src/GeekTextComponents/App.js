@@ -1,19 +1,24 @@
 import React, {Component} from 'react';
 import SearchPage from './SearchPage'
 import Header from './Header'
-import { BrowserRouter as Router} from 'react-router-dom'
+import LoginScreen from "./LoginScreen";
+import ShoppingCartPage from "./ShoppingCartPage";
+import {Route, HashRouter} from "react-router-dom";
 
 class App extends Component {
     render() {
         return (
-
-            <Router>
+            <HashRouter>
                 <div>
                     <Header></Header>
-                    <SearchPage></SearchPage>
+
+                    <div>
+                        <Route path="/search" component={SearchPage}/>
+                        <Route path="/login" component={LoginScreen}/>
+                        <Route path="/shoppingCart" component={ShoppingCartPage}/>
+                    </div>
                 </div>
-            </Router>
-            
+            </HashRouter>
         );
     }
 }

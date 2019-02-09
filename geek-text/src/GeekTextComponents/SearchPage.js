@@ -27,6 +27,8 @@ class SearchPage extends Component {
 
     searchButtonClicked(){
 
+        //window.open("http://google.com");
+
         //If nothing is in the search box
         if (this.state.search === ""){
             alert("Please enter a search term in the textbox");
