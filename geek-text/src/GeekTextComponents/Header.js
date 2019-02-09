@@ -1,6 +1,4 @@
 import React, {Component} from "react";
-import ProfileLoginButton from './ProfileLoginButton'
-import ShoppingCartIcon from "./ShoppingCartIcon";
 import { Button } from "@material-ui/core";
 
 
