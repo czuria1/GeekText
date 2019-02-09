@@ -27,11 +27,32 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		
+		
+		$keyword = urldecode($_POST['searchParam']);
 
-		$sql = "SELECT books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-					   books.DESCRIPTION, books.RATING
-				FROM books 
-				JOIN authors ON books.AUTHOR = authors.ID";
+		$sql = "SET @SEARCH_TERM = '%$keyword%';";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+			//echo "New record created successfully";
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "SELECT  books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
+			  		    books.DESCRIPTION, books.RATING
+				 FROM   books 
+				 JOIN   authors ON books.AUTHOR = authors.ID
+				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
+			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
+						books.TITLE LIKE @SEARCH_TERM OR
+			            books.GENRE LIKE @SEARCH_TERM";
+
+
+		
 
 		//Executes query string
 		$result = $conn->query($sql);
