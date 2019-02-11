@@ -16,6 +16,10 @@ const ConvertToStringArray = (props) =>
     return arr;
 }
 
+function clicked() {
+    
+}
+
 function appendHTMLElements (bookInfoArray) 
 {
    var list = document.createElement('ul');
@@ -23,9 +27,11 @@ function appendHTMLElements (bookInfoArray)
 
    for (let index = 0; index < bookInfoArray.length; index++) 
    {
+       
        //Create list elements
         var title = document.createElement('li');
-        var author = document.createElement('li');
+        var authorContainer = document.createElement('li');
+        var span = document.createElement('span');
         var authorLink = document.createElement('a');
         var genre = document.createElement('li');
         var publisher = document.createElement('li');
@@ -34,21 +40,24 @@ function appendHTMLElements (bookInfoArray)
         var rating = document.createElement('li');
         var line = document.createElement('hr');
         line.width = "550px";
-        authorLink.href = "";
+        authorLink.href = "#/authorPage";
+        authorLink.id = "link";
+        authorLink.onclick = clicked;
 
         // Set its contents:
         title.appendChild(document.createTextNode("Title: " + bookInfoArray[index].split('`')[0]));
-        author.appendChild(document.createTextNode("Author: " + bookInfoArray[index].split('`')[1]));
-        authorLink.appendChild(author);
+        authorContainer.appendChild(span);
+        span.appendChild(authorLink);
+        authorLink.appendChild(document.createTextNode("Author: " + bookInfoArray[index].split('`')[1]));
         genre.appendChild(document.createTextNode("Genre: " + bookInfoArray[index].split('`')[2]));
         publisher.appendChild(document.createTextNode("Publisher: " + bookInfoArray[index].split('`')[3]));
         pub_date.appendChild(document.createTextNode("Publish Date: " + bookInfoArray[index].split('`')[4]));
         description.appendChild(document.createTextNode("Description: " + bookInfoArray[index].split('`')[5]));
-        rating.appendChild(document.createTextNode("Rating: " + bookInfoArray[index].split('`')[6]));
+        rating.appendChild(document.createTextNode("Rating: " + bookInfoArray[index].split('`')[6]));        
 
         // Add it to the list:
         list.appendChild(title);
-        list.appendChild(authorLink);
+        list.appendChild(authorContainer);
         list.appendChild(genre);
         list.appendChild(publisher);
         list.appendChild(pub_date);

@@ -4,6 +4,7 @@ import Header from './Header'
 import LoginScreen from "./LoginScreen";
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
+import AuthorPage from './AuthorPage';
 
 class App extends Component {
     render() {
@@ -16,6 +17,7 @@ class App extends Component {
                         <Route path="/search" component={SearchPage}/>
                         <Route path="/login" component={LoginScreen}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
+                        <Route path="/authorPage" component={AuthorPage}/>
                     </div>
                 </div>
             </HashRouter>
