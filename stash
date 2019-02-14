@@ -1,0 +1,18 @@
+Created columns and entered them manually some ID numbers to make joint conditions for authors and books in MYSQL.
+Deleted after another team mate created one already.
+MYSQL code/////////
+alter table books
+drop column ID;
+//Not including adding manually part
+
+PGAadmin
+Created sort method for top sellersand had success as it showed top sold books. Need to have MYSQL operational with react but we have 
+working sort method for top sellers. Making seperate button for top sellers. Issue with that currently is can't see if its working or not 
+due to react too MYSQL.
+Partial code///
+--This to find the top sellers 
+select title
+from book, inventory
+where book.bookcode = inventory.bookcode
+group by title
+order by sum (onhand) desc;
