@@ -17,7 +17,7 @@ class App extends Component {
                         <Route path="/search" component={SearchPage}/>
                         <Route path="/login" component={LoginScreen}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
-                        <Route path="/authorPage" component={AuthorPage}/>
+                        <Route path="/authorPage/:author" component={AuthorPage}/>
                     </div>
                 </div>
             </HashRouter>

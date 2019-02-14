@@ -16,10 +16,6 @@ const ConvertToStringArray = (props) =>
     return arr;
 }
 
-function clicked() {
-    
-}
-
 function appendHTMLElements (bookInfoArray) 
 {
    var list = document.createElement('ul');
@@ -39,10 +35,9 @@ function appendHTMLElements (bookInfoArray)
         var description = document.createElement('li');
         var rating = document.createElement('li');
         var line = document.createElement('hr');
-        line.width = "550px";
-        authorLink.href = "#/authorPage";
         authorLink.id = "link";
-        authorLink.onclick = clicked;
+        line.width = "550px";
+        
 
         // Set its contents:
         title.appendChild(document.createTextNode("Title: " + bookInfoArray[index].split('`')[0]));
@@ -53,7 +48,12 @@ function appendHTMLElements (bookInfoArray)
         publisher.appendChild(document.createTextNode("Publisher: " + bookInfoArray[index].split('`')[3]));
         pub_date.appendChild(document.createTextNode("Publish Date: " + bookInfoArray[index].split('`')[4]));
         description.appendChild(document.createTextNode("Description: " + bookInfoArray[index].split('`')[5]));
-        rating.appendChild(document.createTextNode("Rating: " + bookInfoArray[index].split('`')[6]));        
+        rating.appendChild(document.createTextNode("Rating: " + bookInfoArray[index].split('`')[6]));
+        
+        //Pass the author name to the author page
+        var authorPageLinkString = authorLink.innerText;
+        authorPageLinkString = authorPageLinkString.substring(authorPageLinkString.indexOf(" ") + 1);
+        authorLink.href = "#/authorPage/" + `${authorPageLinkString}`; 
 
         // Add it to the list:
         list.appendChild(title);
@@ -64,6 +64,7 @@ function appendHTMLElements (bookInfoArray)
         list.appendChild(description);
         list.appendChild(rating);
         list.appendChild(line);
+        
    }
 
    return list;
