@@ -75,7 +75,16 @@ const BookList = (props) =>
 {
     var bookInfoArray = ConvertToStringArray(props);
     var list = appendHTMLElements(bookInfoArray);
-    document.getElementById("book-info-container").appendChild(list);
+
+    if (props.linkClicked)
+    {
+        document.getElementById("author-book-info-container").appendChild(list);
+    }
+    else
+    {
+        document.getElementById("book-info-container").appendChild(list);
+    }
+    
     props.resetBookState();
     return null;
 }
