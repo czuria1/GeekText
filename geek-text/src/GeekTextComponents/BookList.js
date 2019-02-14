@@ -16,7 +16,7 @@ const ConvertToStringArray = (props) =>
     return arr;
 }
 
-function appendHTMLElements (bookInfoArray) 
+function appendHTMLElements (bookInfoArray, props) 
 {
    var list = document.createElement('ul');
    list.style.listStyleType = "none"
@@ -57,7 +57,12 @@ function appendHTMLElements (bookInfoArray)
 
         // Add it to the list:
         list.appendChild(title);
-        list.appendChild(authorContainer);
+        
+        if (!props.linkClicked)
+        {
+            list.appendChild(authorContainer);
+        }
+        
         list.appendChild(genre);
         list.appendChild(publisher);
         list.appendChild(pub_date);
@@ -74,7 +79,7 @@ function appendHTMLElements (bookInfoArray)
 const BookList = (props) => 
 {
     var bookInfoArray = ConvertToStringArray(props);
-    var list = appendHTMLElements(bookInfoArray);
+    var list = appendHTMLElements(bookInfoArray, props);
 
     if (props.linkClicked)
     {
