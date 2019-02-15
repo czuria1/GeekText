@@ -56,7 +56,7 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-
+//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -93,6 +93,12 @@
 	{
 		getSearchInfo();
 	}
-	
-
+/** 
+	$page = 1;
+	$items_page = 10;
+	$offset = ($items_page * ($page - 1));
+		$sql = "SELECT *
+				FROM books
+				LIMIT".$offset.",". $items_page;
+*/
 ?>
