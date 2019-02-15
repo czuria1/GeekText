@@ -108,6 +108,8 @@ class SearchPage extends Component {
 
     render() {
         return (
+
+           
              <div align="center" id="book-info-container">
                  {this.retrieveList()}
                 
