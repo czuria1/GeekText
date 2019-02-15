@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { Button } from "@material-ui/core";
-
-
+import Image from 'react-bootstrap/Image';
+import image from './Images/shoppingCartIcon.png';
 import {
     NavLink,
     HashRouter
@@ -28,7 +28,9 @@ class Header extends Component {
                     <Button variant="outlined">
                         <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                  to="/shoppingCart"
-                                 >Shopping Cart</NavLink>
+                                 ><Image src={image} width={128}
+                                 height={128} roundedCircle fluid/>
+                        </NavLink>
                     </Button>
                 </div>
                 <div>
