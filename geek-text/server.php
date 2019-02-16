@@ -52,11 +52,16 @@
 			            books.GENRE LIKE @SEARCH_TERM";
 
 
-		
+		//This is for posting in ASC order and then having the function to DESC
+		$queryorder = array('ASC', 'DESC');
+		if(!in_array($_POST['queryorder'], $queryorder)){
+		$_POST['queryorder'] = 'ASC';
+		}
+
 
 		//Executes query string
 		$result = $conn->query($sql);
-//Im making the page number between 10 and 20
+		//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -70,7 +75,10 @@
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
-					"rating" => $row["RATING"]
+					"rating" => $row["RATING"],
+			//order by and page
+					
+
 				);
 
 				array_push($json, $bus);
@@ -93,6 +101,8 @@
 	{
 		getSearchInfo();
 	}
+	
+
 /** 
 	$page = 1;
 	$items_page = 10;
