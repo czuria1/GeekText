@@ -25,6 +25,14 @@ class BookList extends Component{
         return arr;
     }
 
+    wishListClicked(addToWishList) {
+        addToWishList.addEventListener("click", function(e){
+            e.preventDefault();
+            
+            
+        });
+    }
+
     appendHTMLElements (bookInfoArray, props) 
     {
         var list = document.createElement('ul');
@@ -43,10 +51,15 @@ class BookList extends Component{
             var pub_date = document.createElement('li');
             var description = document.createElement('li');
             var rating = document.createElement('li');
+            var addToWishList = document.createElement('a');
             var line = document.createElement('hr');
-            authorLink.id = "link";
             line.width = "550px";
-            
+            addToWishList.style.color = authorLink.style.color = "blue";
+            addToWishList.href = "";
+            this.wishListClicked(addToWishList);
+            //addToWishList.addEventListener("click", function(e){
+            //    e.preventDefault();
+            //});
 
             // Set its contents:
             title.appendChild(document.createTextNode("Title: " + bookInfoArray[index].split('`')[0]));
@@ -58,6 +71,7 @@ class BookList extends Component{
             pub_date.appendChild(document.createTextNode("Publish Date: " + bookInfoArray[index].split('`')[4]));
             description.appendChild(document.createTextNode("Description: " + bookInfoArray[index].split('`')[5]));
             rating.appendChild(document.createTextNode("Rating: " + bookInfoArray[index].split('`')[6]));
+            addToWishList.appendChild(document.createTextNode("Add to wishlist"));
             
             //Pass the author name to the author page
             var authorPageLinkString = authorLink.innerText;
@@ -77,6 +91,7 @@ class BookList extends Component{
             list.appendChild(pub_date);
             list.appendChild(description);
             list.appendChild(rating);
+            list.appendChild(addToWishList);
             list.appendChild(line);
                 
         }
