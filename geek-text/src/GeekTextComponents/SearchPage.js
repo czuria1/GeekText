@@ -44,6 +44,8 @@ class SearchPage extends Component {
                     this.showResultsNotFound();
                     return;
                 }
+                console.log(XMLHttpRequest.responseText);
+                
                 this.setState({
                     books: JSON.parse(XMLHttpRequest.responseText)
                 })
@@ -104,6 +106,8 @@ class SearchPage extends Component {
 
     render() {
         return (
+
+           
              <div align="center" id="book-info-container">
                  {this.retrieveList()}
                 

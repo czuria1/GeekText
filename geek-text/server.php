@@ -3,8 +3,6 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "jyepe";
-	$dbpassword = "9373yepe";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -56,7 +54,7 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-
+//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -158,4 +156,12 @@
 	}
 	
 
+/** 
+	$page = 1;
+	$items_page = 10;
+	$offset = ($items_page * ($page - 1));
+		$sql = "SELECT *
+				FROM books
+				LIMIT".$offset.",". $items_page;
+*/
 ?>
