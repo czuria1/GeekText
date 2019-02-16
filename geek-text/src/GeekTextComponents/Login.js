@@ -12,13 +12,15 @@ const Login = (props) =>
                 <div className="outer">
                     <div className="loginarea">
                         <TextField 
+                            className="textfield"
                             required
                             label="Username"
                             helperText="Enter your Username"
                             variant="outlined"></TextField>
                         <br></br>
                         <br></br>
-                        <TextField 
+                        <TextField
+                            className="textfield" 
                             required
                             type="password"
                             label="Password"
@@ -26,12 +28,17 @@ const Login = (props) =>
                             variant="outlined"></TextField>
                             <br></br>
                             <br></br>
-                            <Button
-                                variant="outlined">Login</Button>
-                            <Button
-                                variant="outlined"><NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                to="/registration"
-                                >Register</NavLink></Button>
+                            <div className="submitArea">
+                                <Button
+                                    className="submitButton"
+                                    variant="outlined">Login</Button>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
+                                    to="/registration"
+                                    >Create Account</NavLink>
+                            </div>
                     </div>
                 </div>
             </div>
