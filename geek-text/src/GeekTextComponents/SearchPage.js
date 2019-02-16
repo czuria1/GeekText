@@ -11,7 +11,7 @@ class SearchPage extends Component {
             books: [],  //Contains all the book returned by the search
             search: ''  //Contains the key search term to obtain the books
         };
-
+        
         //Bind the methods to the component
         this.handleSearch = this.handleSearch.bind(this);
         this.searchButtonClicked = this.searchButtonClicked.bind(this);
@@ -26,8 +26,6 @@ class SearchPage extends Component {
     }
 
     searchButtonClicked(){
-
-        //window.open("http://google.com");
 
         //If nothing is in the search box
         if (this.state.search === ""){
