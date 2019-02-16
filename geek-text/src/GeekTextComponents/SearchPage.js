@@ -33,7 +33,7 @@ class SearchPage extends Component {
 
     //Used to connect to the server
     ajaxme.post({
-      url: "http://localhost:81/server.php/post",
+      url: "http://localhost:82/server.php/post",
       data: "method=getSearchInfo&searchParam=" + `${this.state.search}`,
       success: function(XMLHttpRequest) {
         //If the search returns no result from the db
@@ -41,6 +41,8 @@ class SearchPage extends Component {
           this.showResultsNotFound();
           return;
         }
+        console.log("success");
+
         console.log(XMLHttpRequest.responseText);
 
         this.setState({

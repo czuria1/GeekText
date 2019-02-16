@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "jyepe";
-	$dbpassword = "9373yepe";
+	$dbusername = "root";
+	$dbpassword = "W&tson$2018";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -148,6 +148,31 @@
 		$conn->close();
 	}
 
+	function submitReview()
+	{
+		
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+
+		$sql = "INSERT INTO review (comment,rating)
+				VALUES 
+				('Hello, World', 3);"
+
+
+		//Executes query string
+		if ($conn->query($sql) === TRUE) {
+			echo "New record created successfully";
+		} else {
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$conn->close();
+
+	}
+
+
+
 	if ($method == 'getSearchInfo')
 	{
 		getSearchInfo();
@@ -155,6 +180,11 @@
 	else if ($method == 'getAllBooksFromAuthor')
 	{
 		getAllBooksFromAuthor();
+	}
+
+	else if ($method == 'submitReview')
+	{	
+		submitReview();
 	}
 	
 
