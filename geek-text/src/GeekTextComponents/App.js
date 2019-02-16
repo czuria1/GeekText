@@ -5,6 +5,7 @@ import LoginScreen from "./LoginScreen";
 import RegistrationScreen from './RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
+import AuthorPage from './AuthorPage';
 
 class App extends Component {
     render() {
@@ -18,6 +19,7 @@ class App extends Component {
                         <Route path="/login" component={LoginScreen}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
+                        <Route path="/authorPage/:author" component={AuthorPage}/>
                     </div>
                 </div>
             </HashRouter>

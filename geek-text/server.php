@@ -56,7 +56,7 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-
+//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -66,6 +66,65 @@
 				$bus = array(
 					"title" => $row["TITLE"],
 					"author" => $row["LAST_NAME"]. " " .$row["FIRST_NAME"],
+					"genre" => $row["GENRE"],
+					"publisher" => $row["PUBLISHER"],
+					"pub_date" => $row["PUB_DATE"],
+					"description" => $row["DESCRIPTION"],
+					"rating" => $row["RATING"]
+				);
+
+				array_push($json, $bus);
+				
+			}
+
+			$jsonstring = json_encode($json);
+			echo $jsonstring;
+		}
+		else
+		{
+		    echo "0 results";
+		}
+
+
+		$conn->close();
+	}
+
+	function getAllBooksFromAuthor()
+	{
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+
+		$authorName = urldecode($_POST['searchParam']);
+
+		$sql = "SET @AUTHOR_NAME = '$authorName';";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+			//echo "New record created successfully";
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "SELECT books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING
+				FROM   books
+				JOIN   authors ON books.AUTHOR = authors.ID
+				WHERE  concat(AUTHORS.LAST_NAME, ' ', AUTHORS.FIRST_NAME) = @AUTHOR_NAME;";
+
+
+		//Executes query string
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0) 
+		{
+			$json = array();
+	    	// convert the data into json object
+	    	while($row = $result->fetch_assoc()) 
+	    	{
+				$bus = array(
+					"title" => $row["TITLE"],
 					"genre" => $row["GENRE"],
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
@@ -132,5 +191,18 @@
 		registerUser();
 	}
 	
+	else if ($method == 'getAllBooksFromAuthor')
+	{
+		getAllBooksFromAuthor();
+	}
+	
 
+/** 
+	$page = 1;
+	$items_page = 10;
+	$offset = ($items_page * ($page - 1));
+		$sql = "SELECT *
+				FROM books
+				LIMIT".$offset.",". $items_page;
+*/
 ?>
