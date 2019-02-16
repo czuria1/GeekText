@@ -13,7 +13,8 @@ const Registration = (props) =>
                             required
                             label="Username"
                             helperText="Enter your Username"
-                            variant="outlined"></TextField>
+                            variant="outlined"
+                            onChange={props.username}></TextField>
                         <br></br>
                         <br></br>
                         <TextField 
@@ -21,7 +22,8 @@ const Registration = (props) =>
                             required
                             label="First Name"
                             helperText="Enter your First Name"
-                            variant="outlined"></TextField>
+                            variant="outlined"
+                            onChange={props.fname}></TextField>
                         <br></br>
                         <br></br>
                         <TextField 
@@ -29,14 +31,16 @@ const Registration = (props) =>
                             required
                             label="Last Name"
                             helperText="Enter your Last Name"
-                            variant="outlined"></TextField>
+                            variant="outlined"
+                            onChange={props.lname}></TextField>
                         <br></br>
                         <br></br>
                         <TextField 
                             className="textfield"
                             label="Nickname"
                             helperText="Enter your Nickname"
-                            variant="outlined"></TextField>
+                            variant="outlined"
+                            onChange={props.nickname}></TextField>
                         <br></br>
                         <br></br>
                         <TextField 
@@ -46,7 +50,8 @@ const Registration = (props) =>
                             type="email"
                             label="Email"
                             helperText="Enter your Email"
-                            variant="outlined"></TextField>
+                            variant="outlined"
+                            onChange={props.email}></TextField>
                         <br></br>
                         <br></br>
                         <TextField 
@@ -55,7 +60,8 @@ const Registration = (props) =>
                             type="password"
                             label="Password"
                             helperText="Enter your Password"
-                            variant="outlined"></TextField>
+                            variant="outlined"
+                            onChange={props.password_1}></TextField>
                         <br></br>
                         <br></br>
                         <TextField
@@ -64,13 +70,15 @@ const Registration = (props) =>
                             type="password"
                             label="Password Confirmation"
                             helperText="Enter your Password Again"
-                            variant="outlined"></TextField>
+                            variant="outlined"
+                            onChange={props.password_2}></TextField>
                         <br></br>
                         <br></br>
                         <div className="submitArea">
                             <Button
                                 className="submitButton"
-                                variant="outlined">Submit</Button>
+                                variant="outlined"
+                                onClick={props.registerButtonClicked}>Submit</Button>
                         </div>
                     </div>
                 </div>
