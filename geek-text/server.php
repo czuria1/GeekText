@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "jyepe";
-	$dbpassword = "9373yepe";
+	$dbusername = "root";
+	$dbpassword = "password";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -56,7 +56,7 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-
+//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -152,10 +152,57 @@
 	{
 		getSearchInfo();
 	}
+
+	function registerUser() {
+
+		global $conn;
+		global $myObj;
+
+		$username = urldecode($_POST['username']);
+		$firstname = urldecode($_POST['firstname']);
+		$lastname = urldecode($_POST['lastname']);
+		$nickname = urldecode($_POST['nickname']);
+		$email = urldecode($_POST['email']);
+		$password_1 = urldecode($_POST['password_1']);
+		$password_2 = urldecode($_POST['password_2']);
+
+		if (empty($username)) { array_push($errors, "Username is required"); }
+		if (empty($firstname)) { array_push($errors, "First name is required"); }
+		if (empty($lastname)) { array_push($errors, "Last name is required"); }
+		if (empty($email)) { array_push($errors, "Email is required"); }
+		if (empty($password_1)) { array_push($errors, "Password is required"); }
+		if ($password_1 != $password_2) {
+			array_push($errors, "Your passwords do not match");
+		}
+
+		if (count($errors) == 0) {
+			$password = md5($password_1);
+		}
+
+		$sql = "INSERT INTO users (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD) 
+				VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')";
+		
+		$result = $conn->query($sql);
+
+		$conn->close();
+	}
+
+	if ($method == 'registerUser') {
+		registerUser();
+	}
+	
 	else if ($method == 'getAllBooksFromAuthor')
 	{
 		getAllBooksFromAuthor();
 	}
 	
 
+/** 
+	$page = 1;
+	$items_page = 10;
+	$offset = ($items_page * ($page - 1));
+		$sql = "SELECT *
+				FROM books
+				LIMIT".$offset.",". $items_page;
+*/
 ?>

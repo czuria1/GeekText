@@ -13,12 +13,17 @@ function setTextBoxListner()
 
 const SearchArea = (props) => 
 {
-    //props.setTextBoxListner();
-    
+  
     return(
+
+
+        
         <div>
+            
+            
             <button id="searchButton" onClick={props.searchButtonClicked}>Search...</button>
             <input onFocus={setTextBoxListner} id="searchText" type="text" placeholder = "Author, Title, Genre ... "onChange={props.handleSearch}/>
+            <button id="topSearch" onClick={props.searchButtonClicked}>Top Sellers</button>
         </div>
     )
 }
