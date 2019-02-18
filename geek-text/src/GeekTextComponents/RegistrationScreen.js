@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Registration from "./Registration";
 import ajaxme from "ajaxme";
+import LoginScreen from "./LoginScreen";
 
 class RegistrationScreen extends Component {
 
@@ -42,6 +43,9 @@ class RegistrationScreen extends Component {
                 + '&email=' + `${document.getElementById('emailInput').value}` + '&password_1=' + `${document.getElementById('pw_1_Input').value}`
                 + '&password_2=' + `${document.getElementById('pw_2_Input').value}`,
             success: function (XMLHttpRequest) {
+                this.setState({
+                    isRegistrationSuccess: true
+                })
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -55,12 +59,30 @@ class RegistrationScreen extends Component {
             progress: function(XMLHttpRequest) {
             }
         });
+
+    }
+
+    redirectNewUser () {
+        if (this.state.isRegistrationSuccess === true) {
+            return (
+                <div>
+                    <h1>New User Created!</h1>
+                    <LoginScreen></LoginScreen>
+                </div>
+            );
+        } else {
+            return (
+                <Registration handleSubmit={this.handleSubmit}
+                              registerButtonClicked={this.registerButtonClicked}></Registration>
+            );
+        }
     }
 
     render() {
         return (
-            <Registration handleSubmit={this.handleSubmit}
-                          registerButtonClicked={this.registerButtonClicked}></Registration>
+            <div>
+                {this.redirectNewUser()}
+            </div>
         );
     }
 
