@@ -36,14 +36,12 @@ class SearchPage extends Component {
       url: "http://localhost:82/server.php/post",
       data: "method=getSearchInfo&searchParam=" + `${this.state.search}`,
       success: function(XMLHttpRequest) {
+        console.log(XMLHttpRequest);
         //If the search returns no result from the db
         if (XMLHttpRequest.responseText === "0 results") {
           this.showResultsNotFound();
           return;
         }
-        console.log("success");
-
-        console.log(XMLHttpRequest.responseText);
 
         this.setState({
           books: JSON.parse(XMLHttpRequest.responseText)
