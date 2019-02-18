@@ -15,7 +15,6 @@ class RegistrationScreen extends Component {
             email: '',
             password_1: '',
             password_2: '',
-            userData: []
 
         }
 
@@ -38,14 +37,11 @@ class RegistrationScreen extends Component {
     registerButtonClicked() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=registerUser&username=' + `${this.state.username}` + '&fname=' + `${this.state.fname}` 
-                + '&lname=' + `${this.state.lname}` + '&nickname=' + `${this.state.nickname}`
-                + '&email=' + `${this.state.email}` + '&password_1=' + `${this.state.password_1}`
-                + '&password_2=' + `${this.state.password_2}`,
+            data: 'method=registerUser&username=' + `${document.getElementById('usernameInput').value}` + '&firstname=' + `${document.getElementById('fnameInput').value}` 
+                + '&lastname=' + `${document.getElementById('lnameInput').value}` + '&nickname=' + `${document.getElementById('nicknameInput').value}`
+                + '&email=' + `${document.getElementById('emailInput').value}` + '&password_1=' + `${document.getElementById('pw_1_Input').value}`
+                + '&password_2=' + `${document.getElementById('pw_2_Input').value}`,
             success: function (XMLHttpRequest) {
-                this.setState({
-                    userData: JSON.parse(XMLHttpRequest.responseText)
-                })
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {

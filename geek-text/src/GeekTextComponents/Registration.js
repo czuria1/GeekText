@@ -9,6 +9,7 @@ const Registration = (props) =>
             <div className="outer">
                     <div className="registrationarea">
                         <TextField 
+                            id="usernameInput"
                             className="textfield"
                             required
                             label="Username"
@@ -18,6 +19,7 @@ const Registration = (props) =>
                         <br></br>
                         <br></br>
                         <TextField 
+                            id="fnameInput"
                             className="textfield"
                             required
                             label="First Name"
@@ -26,7 +28,8 @@ const Registration = (props) =>
                             onChange={props.fname}></TextField>
                         <br></br>
                         <br></br>
-                        <TextField 
+                        <TextField
+                            id="lnameInput" 
                             className="textfield"
                             required
                             label="Last Name"
@@ -35,7 +38,8 @@ const Registration = (props) =>
                             onChange={props.lname}></TextField>
                         <br></br>
                         <br></br>
-                        <TextField 
+                        <TextField
+                            id="nicknameInput" 
                             className="textfield"
                             label="Nickname"
                             helperText="Enter your Nickname"
@@ -43,7 +47,8 @@ const Registration = (props) =>
                             onChange={props.nickname}></TextField>
                         <br></br>
                         <br></br>
-                        <TextField 
+                        <TextField
+                            id="emailInput" 
                             className="textfield"
                             required
                             autoComplete="email"
@@ -54,7 +59,8 @@ const Registration = (props) =>
                             onChange={props.email}></TextField>
                         <br></br>
                         <br></br>
-                        <TextField 
+                        <TextField
+                            id="pw_1_Input" 
                             className="textfield"
                             required
                             type="password"
@@ -65,6 +71,7 @@ const Registration = (props) =>
                         <br></br>
                         <br></br>
                         <TextField
+                            id="pw_2_Input"
                             className="textfield"
                             required
                             type="password"
@@ -76,6 +83,7 @@ const Registration = (props) =>
                         <br></br>
                         <div className="submitArea">
                             <Button
+                                id="submitButton"
                                 className="submitButton"
                                 variant="outlined"
                                 onClick={props.registerButtonClicked}>Submit</Button>
