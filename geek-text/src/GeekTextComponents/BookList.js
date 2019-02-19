@@ -19,7 +19,8 @@ class BookList extends Component{
                     props.books[bookIndex].publisher + "`" +
                     props.books[bookIndex].pub_date + "`" +
                     props.books[bookIndex].description + "`" +
-                    props.books[bookIndex].rating);
+                    props.books[bookIndex].rating + "`" +
+                    props.books[bookIndex].cover);
         }
 
         return arr;
@@ -28,8 +29,6 @@ class BookList extends Component{
     wishListClicked(addToWishList) {
         addToWishList.addEventListener("click", function(e){
             e.preventDefault();
-            
-            
         });
     }
 
@@ -42,6 +41,7 @@ class BookList extends Component{
         {
             
             //Create list elements
+            var cover = document.createElement('img');
             var title = document.createElement('li');
             var authorContainer = document.createElement('li');
             var span = document.createElement('span');
@@ -56,10 +56,9 @@ class BookList extends Component{
             line.width = "550px";
             addToWishList.style.color = authorLink.style.color = "blue";
             addToWishList.href = "";
+            cover.src = bookInfoArray[index].split('`')[7];
+            cover.alt = "Image not available";
             this.wishListClicked(addToWishList);
-            //addToWishList.addEventListener("click", function(e){
-            //    e.preventDefault();
-            //});
 
             // Set its contents:
             title.appendChild(document.createTextNode("Title: " + bookInfoArray[index].split('`')[0]));
@@ -71,7 +70,7 @@ class BookList extends Component{
             pub_date.appendChild(document.createTextNode("Publish Date: " + bookInfoArray[index].split('`')[4]));
             description.appendChild(document.createTextNode("Description: " + bookInfoArray[index].split('`')[5]));
             rating.appendChild(document.createTextNode("Rating: " + bookInfoArray[index].split('`')[6]));
-            addToWishList.appendChild(document.createTextNode("Add to wishlist"));
+            addToWishList.appendChild(document.createTextNode("Add to shopping cart"));
             
             //Pass the author name to the author page
             var authorPageLinkString = authorLink.innerText;
@@ -79,6 +78,7 @@ class BookList extends Component{
             authorLink.href = "#/authorPage/" + `${authorPageLinkString}`; 
 
             // Add it to the list:
+            list.appendChild(cover);
             list.appendChild(title);
             
             if (!props.linkClicked)

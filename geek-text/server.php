@@ -56,7 +56,7 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-//Im making the page number between 10 and 20
+		//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -148,12 +148,8 @@
 		$conn->close();
 	}
 
-	if ($method == 'getSearchInfo')
+	function registerUser() 
 	{
-		getSearchInfo();
-	}
-
-	function registerUser() {
 
 		global $conn;
 		global $myObj;
@@ -187,10 +183,14 @@
 		$conn->close();
 	}
 
-	if ($method == 'registerUser') {
+	if ($method == 'getSearchInfo')
+	{
+		getSearchInfo();
+	}
+	else if ($method == 'registerUser') 
+	{
 		registerUser();
 	}
-	
 	else if ($method == 'getAllBooksFromAuthor')
 	{
 		getAllBooksFromAuthor();
