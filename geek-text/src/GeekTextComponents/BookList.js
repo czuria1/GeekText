@@ -51,7 +51,7 @@ class BookList extends Component{
 
         var close = document.createElement('span');
         close.className = "close";
-        close.appendChild(document.createTextNode("&times;"));
+        close.appendChild(document.createTextNode("X"));
         close.style.position = "absolute";
         close.style.top = "15px";
         close.style.right = "35px";
@@ -59,6 +59,15 @@ class BookList extends Component{
         close.style.fontSize = "40px";
         close.style.fontWeight = "bold";
         close.style.transition = "0.3s";
+        close.onmouseover = function() {
+            close.style.color = "#bbb";
+            close.style.textDecoration = "none";
+            close.style.cursor = "pointer";
+        }
+
+        close.onmouseleave = function() {
+            close.style.color = "#f1f1f1";
+        }
 
         var modalImage = document.createElement('img');
         modalImage.className = "modal-content";
@@ -120,8 +129,16 @@ class BookList extends Component{
             cover.style.transition = "0.3s"
             cover.onclick = function() {
                 modalDiv.style.display = "block";
-                modalImage.src = cover.src;
+                modalImage.src = bookInfoArray[index].split('`')[7];
                 caption.innerHTML = "inner";
+            }
+
+            cover.onmouseover = function() {
+                cover.style.opacity = "0.7";
+            }
+
+            cover.onmouseleave = function() {
+                cover.style.opacity = "1";
             }
 
             close.onclick = function() {
