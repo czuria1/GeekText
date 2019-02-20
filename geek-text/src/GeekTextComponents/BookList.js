@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import "./ModalImage.css"
 
 class BookList extends Component{
 
@@ -37,60 +38,17 @@ class BookList extends Component{
         var modalDiv = document.createElement('div');
         modalDiv.id = "myModal";
         modalDiv.className = "modal";
-        modalDiv.style.display = "none";
-        modalDiv.style.position = "fixed";
-        modalDiv.style.zIndex = "1";
-        modalDiv.style.paddingTop = "100px";
-        modalDiv.style.left = "0";
-        modalDiv.style.top = "0";
-        modalDiv.style.width = "100%";
-        modalDiv.style.height = "100%";
-        modalDiv.style.overflow = "auto";
-        modalDiv.style.backgroundColor = "rgb(0,0,0)";
-        modalDiv.style.backgroundColor = "rgb(0,0,0.9)";
 
         var close = document.createElement('span');
         close.className = "close";
         close.appendChild(document.createTextNode("X"));
-        close.style.position = "absolute";
-        close.style.top = "15px";
-        close.style.right = "35px";
-        close.style.color = "#f1f1f1";
-        close.style.fontSize = "40px";
-        close.style.fontWeight = "bold";
-        close.style.transition = "0.3s";
-        close.onmouseover = function() {
-            close.style.color = "#bbb";
-            close.style.textDecoration = "none";
-            close.style.cursor = "pointer";
-        }
-
-        close.onmouseleave = function() {
-            close.style.color = "#f1f1f1";
-        }
 
         var modalImage = document.createElement('img');
         modalImage.className = "modal-content";
         modalImage.id = "img01";
-        modalImage.style.margin = "auto";
-        modalImage.style.display = "block";
-        modalImage.style.width = "80%";
-        modalImage.style.maxWidth = "700px";
-        modalImage.style.animationName = "zoom";
-        modalImage.style.animationDuration = "0.6s";
 
         var caption = document.createElement('div');
         caption.id = "caption";
-        caption.style.margin = "auto";
-        caption.style.display = "block";
-        caption.style.width = "80%";
-        caption.style.maxWidth = "700px";
-        caption.style.textAlign = "center";
-        caption.style.color = "#ccc";
-        caption.style.padding = "10px 0";
-        caption.style.height = "150px";
-        caption.style.animationName = "zoom";
-        caption.style.animationDuration = "0.6s";
 
         modalDiv.appendChild(close);
         modalDiv.appendChild(modalImage);
@@ -124,26 +82,16 @@ class BookList extends Component{
             cover.src = bookInfoArray[index].split('`')[7];
             cover.alt = "Image not available";
             cover.id = "cover";
-            cover.style.borderRadius = "5px";
-            cover.style.cursor = "pointer";
-            cover.style.transition = "0.3s"
             cover.onclick = function() {
                 modalDiv.style.display = "block";
                 modalImage.src = bookInfoArray[index].split('`')[7];
-                caption.innerHTML = "inner";
-            }
-
-            cover.onmouseover = function() {
-                cover.style.opacity = "0.7";
-            }
-
-            cover.onmouseleave = function() {
-                cover.style.opacity = "1";
+                caption.innerHTML = bookInfoArray[index].split('`')[0];
             }
 
             close.onclick = function() {
                 modalDiv.style.display = "none";
             }
+            
             
             this.wishListClicked(addToWishList);
 
