@@ -7,29 +7,42 @@ class Review extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "" //Contains the text contained in a review
+      text: "", //Contains the text contained in a review
+      rating: -1
     };
     //Bind the methods to the component
     this.submitButtonClicked = this.submitButtonClicked.bind(this);
+    this.handleRating = this.handleRating.bind(this);
+    this.handleReview = this.handleReview.bind(this);
+  }
+
+  handleRating(event) {
+    this.setState({
+      rating: event.target.value
+    });
+  }
+
+  handleReview(event) {
+    this.setState({
+      text: event.target.value
+    });
   }
 
   submitButtonClicked() {
-    console.log("Hello, World");
-    /*
-    if (this.state.search === "") {
-      alert("Please enter a search term in the textbox");
-      return;
-    }*/
-
     //Used to connect to the server
     ajaxme.post({
       url: "http://localhost:82/server.php/post",
-      data: "method=submitReview", //+ `${this.state.search}`,
+      data:
+        "method=submitReview" +
+        "&review=" +
+        `${this.state.text}` +
+        "&rating=" +
+        `${this.state.rating}`,
 
       success: function(XMLHttpRequest) {
         console.log("success", XMLHttpRequest);
         if (XMLHttpRequest.responseText == null) {
-          console.log("nulL");
+          console.log("null");
         } else {
           console.log(XMLHttpRequest.responseText);
         }
@@ -51,7 +64,7 @@ class Review extends Component {
         <form>
           <h2>Create a review</h2>
           Rating:
-          <select name="rating">
+          <select name="rating" onChange={this.handleRating}>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -59,7 +72,7 @@ class Review extends Component {
             <option value="5">5</option>
           </select>
           <br />
-          <textarea name="review" />
+          <textarea name="review" onChange={this.handleReview} />
           <br />
           <button
             type="button"

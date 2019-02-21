@@ -156,10 +156,25 @@
 		global $conn;
 		global $myObj;
 
-		$sql = "INSERT INTO reviews (comment,rating)
-				VALUES 
-				('Hello, World', 3)";
+		$review =  urldecode($_POST['review']); 
+		$rating =  intval(urldecode($_POST['rating'])); 
 
+		
+		
+		// Rating is -1 by default
+		//echo ("Review = " + $review + " Rating = " + $rating);
+		//if ($rating == -1) { array_push($errors, "Please select a rating"); }
+
+		if (empty($review)){
+			$sql = "INSERT INTO reviews (comment,rating)
+					VALUES 
+					(NULL,'$rating')";
+		}
+		else {
+			$sql = "INSERT INTO reviews (comment,rating)
+					VALUES 
+					('$review','$rating')";
+		}
 
 		//Executes query string
 		if ($conn->query($sql) === TRUE) {
