@@ -35,7 +35,7 @@ class RegistrationScreen extends Component {
 
   registerButtonClicked() {
     ajaxme.post({
-      url: "http://localhost:82/server.php/post",
+      url: "http://localhost/server.php/post",
       data:
         "method=registerUser&username=" +
         `${this.state.username}` +

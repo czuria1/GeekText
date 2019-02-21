@@ -43,9 +43,31 @@ class SearchPage extends Component {
           this.showResultsNotFound();
           return;
         }
-        console.log(XMLHttpRequest);
-        this.setState({
-          books: JSON.parse(XMLHttpRequest.responseText)
+
+        //Used to connect to the server
+        ajaxme.post({
+          url: "http://localhost/server.php/post",
+          data: "method=getSearchInfo&searchParam=" + `${this.state.search}`,
+          success: function(XMLHttpRequest) {
+            //If the search returns no result from the db
+            if (XMLHttpRequest.responseText === "0 results") {
+              this.showResultsNotFound();
+              return;
+            }
+            console.log(XMLHttpRequest.responseText);
+
+            this.setState({
+              books: JSON.parse(XMLHttpRequest.responseText)
+            });
+          }.bind(this),
+          error: function(XMLHttpRequest) {
+            console.log("error", XMLHttpRequest);
+          },
+          abort: function(XMLHttpRequest) {
+            console.log("abort", XMLHttpRequest);
+          },
+          loadstart: function(XMLHttpRequest) {},
+          progress: function(XMLHttpRequest) {}
         });
       }.bind(this),
       error: function(XMLHttpRequest) {
