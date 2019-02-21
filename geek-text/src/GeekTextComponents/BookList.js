@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import "./ModalImage.css"
+import "./BookList.css"
 
 class BookList extends Component{
 
@@ -27,8 +28,8 @@ class BookList extends Component{
         return arr;
     }
 
-    wishListClicked(addToWishList) {
-        addToWishList.addEventListener("click", function(e){
+    shoppingCartClicked(shoppingCartLink) {
+        shoppingCartLink.addEventListener("click", function(e){
             e.preventDefault();
         });
     }
@@ -39,7 +40,7 @@ class BookList extends Component{
 
 
         var list = document.createElement('ul');
-        list.style.listStyleType = "none"
+        list.id = "list";
 
         list.appendChild(modalDiv);
 
@@ -48,6 +49,7 @@ class BookList extends Component{
             
             //Create list elements
             var cover = document.createElement('img');
+            this.setCoverAttributes(cover, bookInfoArray, index, modalDiv, modalImage, caption);
             var title = document.createElement('li');
             var authorContainer = document.createElement('li');
             var span = document.createElement('span');
@@ -57,26 +59,24 @@ class BookList extends Component{
             var pub_date = document.createElement('li');
             var description = document.createElement('li');
             var rating = document.createElement('li');
-            var addToWishList = document.createElement('a');
+            var shoppingCartLink = document.createElement('a');
+            shoppingCartLink.href = "";
+            this.shoppingCartClicked(shoppingCartLink);
             var line = document.createElement('hr');
-            line.width = "550px";
-            addToWishList.style.color = authorLink.style.color = "blue";
-            addToWishList.href = "";
-            cover.src = bookInfoArray[index].split('`')[7];
-            cover.alt = "Image not available";
-            cover.id = "cover";
-            cover.onclick = function() {
-                modalDiv.style.display = "block";
-                modalImage.src = bookInfoArray[index].split('`')[7];
-                caption.innerHTML = bookInfoArray[index].split('`')[0];
-            }
+
+            line.id = "line";
+            shoppingCartLink.id = "shoppingCartLink";
+            authorLink.id = "authorLink";
+
+            
+            
 
             close.onclick = function() {
                 modalDiv.style.display = "none";
             }
             
             
-            this.wishListClicked(addToWishList);
+            
 
             // Set its contents:
             title.appendChild(document.createTextNode("Title: " + bookInfoArray[index].split('`')[0]));
@@ -88,7 +88,7 @@ class BookList extends Component{
             pub_date.appendChild(document.createTextNode("Publish Date: " + bookInfoArray[index].split('`')[4]));
             description.appendChild(document.createTextNode("Description: " + bookInfoArray[index].split('`')[5]));
             rating.appendChild(document.createTextNode("Rating: " + bookInfoArray[index].split('`')[6]));
-            addToWishList.appendChild(document.createTextNode("Add to shopping cart"));
+            shoppingCartLink.appendChild(document.createTextNode("Add to shopping cart"));
             
             //Pass the author name to the author page
             var authorPageLinkString = authorLink.innerText;
@@ -109,7 +109,7 @@ class BookList extends Component{
             list.appendChild(pub_date);
             list.appendChild(description);
             list.appendChild(rating);
-            list.appendChild(addToWishList);
+            list.appendChild(shoppingCartLink);
             list.appendChild(line);
                 
         }
@@ -118,6 +118,17 @@ class BookList extends Component{
         
     }
     
+    setCoverAttributes(cover, bookInfoArray, index, modalDiv, modalImage, caption) {
+        cover.src = bookInfoArray[index].split('`')[7];
+        cover.alt = "Image not available";
+        cover.id = "cover";
+        cover.onclick = function () {
+            modalDiv.style.display = "block";
+            modalImage.src = bookInfoArray[index].split('`')[7];
+            caption.innerHTML = bookInfoArray[index].split('`')[0];
+        };
+    }
+
     createModalImage() {
         var modalDiv = document.createElement('div');
         modalDiv.id = "myModal";

@@ -1,0 +1,16 @@
+#list {
+    list-style-type: none;
+    text-align: center;
+}
+
+#line {
+    width: 550px;
+}
+
+#authorLink {
+    color: blue;
+}
+
+#shoppingCartLink {
+    color: blue;
+}
