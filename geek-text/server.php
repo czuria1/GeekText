@@ -24,16 +24,16 @@
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
 	{
-		echo "echo test";
+		
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
 		
 		
 		$keyword = urldecode($_POST['searchParam']);
-
+		
 		$sql = "SET @SEARCH_TERM = '%$keyword%';";
-
+		
 		if ($conn->query($sql) === TRUE) 
 		{
 			//echo "New record created successfully";
@@ -52,12 +52,11 @@
 						books.TITLE LIKE @SEARCH_TERM OR
 			            books.GENRE LIKE @SEARCH_TERM";
 
-
+		
 		
 
 		//Executes query string
 		$result = $conn->query($sql);
-
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -156,9 +155,9 @@
 		global $conn;
 		global $myObj;
 
-		$sql = "INSERT INTO review (comment,rating)
+		$sql = "INSERT INTO reviews (comment,rating)
 				VALUES 
-				('Hello, World', 3);"
+				('Hello, World', 3)";
 
 
 		//Executes query string

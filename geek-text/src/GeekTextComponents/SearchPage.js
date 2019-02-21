@@ -40,7 +40,6 @@ class SearchPage extends Component {
         //If the search returns no result from the db
         console.log("SUCCESS");
         if (XMLHttpRequest.responseText === "0 results") {
-          console.log("NO RESULTS FOUND");
           this.showResultsNotFound();
           return;
         }
