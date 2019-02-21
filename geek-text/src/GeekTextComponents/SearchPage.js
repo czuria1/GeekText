@@ -38,11 +38,13 @@ class SearchPage extends Component {
       success: function(XMLHttpRequest) {
         console.log(XMLHttpRequest);
         //If the search returns no result from the db
+        console.log("SUCCESS");
         if (XMLHttpRequest.responseText === "0 results") {
+          console.log("NO RESULTS FOUND");
           this.showResultsNotFound();
           return;
         }
-
+        console.log(XMLHttpRequest);
         this.setState({
           books: JSON.parse(XMLHttpRequest.responseText)
         });

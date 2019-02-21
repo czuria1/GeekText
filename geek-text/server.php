@@ -24,6 +24,7 @@
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
 	{
+		echo "echo test";
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
