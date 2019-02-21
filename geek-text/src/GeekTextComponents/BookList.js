@@ -35,24 +35,7 @@ class BookList extends Component{
 
     appendHTMLElements (bookInfoArray, props) 
     {
-        var modalDiv = document.createElement('div');
-        modalDiv.id = "myModal";
-        modalDiv.className = "modal";
-
-        var close = document.createElement('span');
-        close.className = "close";
-        close.appendChild(document.createTextNode("X"));
-
-        var modalImage = document.createElement('img');
-        modalImage.className = "modal-content";
-        modalImage.id = "img01";
-
-        var caption = document.createElement('div');
-        caption.id = "caption";
-
-        modalDiv.appendChild(close);
-        modalDiv.appendChild(modalImage);
-        modalDiv.appendChild(caption);
+        var { modalDiv, modalImage, caption, close } = this.createModalImage();
 
 
         var list = document.createElement('ul');
@@ -135,6 +118,24 @@ class BookList extends Component{
         
     }
     
+    createModalImage() {
+        var modalDiv = document.createElement('div');
+        modalDiv.id = "myModal";
+        modalDiv.className = "modal";
+        var close = document.createElement('span');
+        close.className = "close";
+        close.appendChild(document.createTextNode("X"));
+        var modalImage = document.createElement('img');
+        modalImage.className = "modal-content";
+        modalImage.id = "img01";
+        var caption = document.createElement('div');
+        caption.id = "caption";
+        modalDiv.appendChild(close);
+        modalDiv.appendChild(modalImage);
+        modalDiv.appendChild(caption);
+        return { modalDiv, modalImage, caption, close };
+    }
+
     render() {
 
         var bookInfoArray = this.ConvertToStringArray(this.props);
@@ -149,12 +150,7 @@ class BookList extends Component{
             document.getElementById("book-info-container").appendChild(list);
         }
 
-
-
-        return (
-             <div>
-             </div>
-        );
+        return null;
     }
 }
 
