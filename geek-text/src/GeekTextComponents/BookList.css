@@ -38,3 +38,7 @@
     text-align: -webkit-center;
     
 }
+
+#noResultsContainer {
+    text-align: center;
+}

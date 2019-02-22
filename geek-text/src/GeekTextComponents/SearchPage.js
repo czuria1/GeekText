@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import SearchArea from "./SearchArea";
 import ajaxme from "ajaxme";
 import BookList from "./BookList";
+import "./BookList.css";
 
 class SearchPage extends Component {
 
@@ -65,6 +66,8 @@ class SearchPage extends Component {
 
     showResultsNotFound() {
         var rootDiv = document.getElementById("book-info-container");
+        var noResultsContainer = document.createElement('div');
+        noResultsContainer.id = "noResultsContainer";
         var noResults = document.createElement('p');
         var diffSearch = document.createElement('p');
         var searchByAuthorTip = document.createElement('p');
@@ -75,11 +78,12 @@ class SearchPage extends Component {
         searchByAuthorTip.appendChild(document.createTextNode("Do a browse search by title, typing just the first few letters of the title."));
         searchByTitleTip.appendChild(document.createTextNode("Do a browse search by author, typing just the first few letters of the author's first or last name."));
         searchByGenreTip.appendChild(document.createTextNode("Do a browse search by genre, typing just the first few letters of the genre"));
-        rootDiv.appendChild(noResults);
-        rootDiv.appendChild(diffSearch);
-        rootDiv.appendChild(searchByAuthorTip);
-        rootDiv.appendChild(searchByTitleTip);
-        rootDiv.appendChild(searchByGenreTip);
+        noResultsContainer.appendChild(noResults);
+        noResultsContainer.appendChild(diffSearch);
+        noResultsContainer.appendChild(searchByAuthorTip);
+        noResultsContainer.appendChild(searchByTitleTip);
+        noResultsContainer.appendChild(searchByGenreTip);
+        rootDiv.appendChild(noResultsContainer);
     }
 
     //Sets the books array to empty to prevent continuos rendering of the booklist
