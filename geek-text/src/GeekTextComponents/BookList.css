@@ -1,5 +1,7 @@
 #list {
-    list-style-type: none;
+    width: 60%;
+    padding-top: 100px;
+    float: right;
 }
 
 #line {
@@ -20,8 +22,8 @@
 }
 
 #coverContainer {
-    padding-left: 250px;
-    padding-top: 100px;
+    padding-left: 10px;
+    padding-top: 10px;
     float: left;
 }
 
