@@ -39,7 +39,7 @@ class BookList extends Component{
         var { modalDiv, modalImage, caption, close } = this.createModalImage();
 
 
-        var list = document.createElement('ul');
+        var list = document.createElement('div');
         list.id = "list";
 
         list.appendChild(modalDiv);
@@ -47,7 +47,10 @@ class BookList extends Component{
         for (let index = 0; index < bookInfoArray.length; index++) 
         {
             //Create list elements
-            var { line, 
+            var { line,
+                  bookListContainer,
+                  coverContainer,
+                  detailContainer,
                   shoppingCartLink, 
                   authorLink, 
                   title, 
@@ -60,7 +63,7 @@ class BookList extends Component{
                   rating, 
                   cover } = this.createElements(bookInfoArray, index, modalDiv, modalImage, caption);
 
-            this.addElementId(line, shoppingCartLink, authorLink);
+            this.addElementId(line, shoppingCartLink, authorLink, bookListContainer, coverContainer, detailContainer);
 
             close.onclick = function() {
                 modalDiv.style.display = "none";
@@ -86,7 +89,10 @@ class BookList extends Component{
             authorLink.href = "#/authorPage/" + `${authorPageLinkString}`; 
 
             // Add it to the list:
-            this.appendChildren(list, 
+            this.appendChildren(detailContainer,
+                                coverContainer,
+                                bookListContainer,
+                                list, 
                                 cover, 
                                 title, 
                                 props, 
@@ -103,18 +109,21 @@ class BookList extends Component{
         return list;
     }
     
-    appendChildren(list, cover, title, props, authorContainer, genre, publisher, pub_date, description, rating, shoppingCartLink, line) {
-        list.appendChild(cover);
-        list.appendChild(title);
+    appendChildren(detailContainer, coverContainer, bookListContainer, list, cover, title, props, authorContainer, genre, publisher, pub_date, description, rating, shoppingCartLink, line) {
+        list.appendChild(bookListContainer);
+        bookListContainer.appendChild(detailContainer);
+        bookListContainer.appendChild(coverContainer);
+        coverContainer.appendChild(cover);
+        detailContainer.appendChild(title);
         if (!props.linkClicked) {
-            list.appendChild(authorContainer);
+            detailContainer.appendChild(authorContainer);
         }
-        list.appendChild(genre);
-        list.appendChild(publisher);
-        list.appendChild(pub_date);
-        list.appendChild(description);
-        list.appendChild(rating);
-        list.appendChild(shoppingCartLink);
+        detailContainer.appendChild(genre);
+        detailContainer.appendChild(publisher);
+        detailContainer.appendChild(pub_date);
+        detailContainer.appendChild(description);
+        detailContainer.appendChild(rating);
+        detailContainer.appendChild(shoppingCartLink);
         list.appendChild(line);
     }
 
@@ -131,29 +140,35 @@ class BookList extends Component{
         shoppingCartLink.appendChild(document.createTextNode("Add to shopping cart"));
     }
 
-    addElementId(line, shoppingCartLink, authorLink) {
+    addElementId(line, shoppingCartLink, authorLink, bookListContainer, coverContainer, detailContainer) {
         line.id = "line";
         shoppingCartLink.id = "shoppingCartLink";
         authorLink.id = "authorLink";
+        bookListContainer.id = "bookListContainer";
+        coverContainer.id = "coverContainer";
+        detailContainer.id = "detailContainer";
     }
 
     createElements(bookInfoArray, index, modalDiv, modalImage, caption) {
+        var detailContainer = document.createElement('div');
+        var coverContainer = document.createElement('div');
+        var bookListContainer = document.createElement('div');
         var cover = document.createElement('img');
         this.setCoverAttributes(cover, bookInfoArray, index, modalDiv, modalImage, caption);
-        var title = document.createElement('li');
-        var authorContainer = document.createElement('li');
-        var span = document.createElement('span');
+        var title = document.createElement('p');
+        var authorContainer = document.createElement('p');
+        var span = document.createElement('p');
         var authorLink = document.createElement('a');
-        var genre = document.createElement('li');
-        var publisher = document.createElement('li');
-        var pub_date = document.createElement('li');
-        var description = document.createElement('li');
-        var rating = document.createElement('li');
+        var genre = document.createElement('p');
+        var publisher = document.createElement('p');
+        var pub_date = document.createElement('p');
+        var description = document.createElement('p');
+        var rating = document.createElement('p');
         var shoppingCartLink = document.createElement('a');
         shoppingCartLink.href = "";
         this.shoppingCartClicked(shoppingCartLink);
         var line = document.createElement('hr');
-        return { line, shoppingCartLink, authorLink, title, authorContainer, span, genre, publisher, pub_date, description, rating, cover };
+        return { line, bookListContainer, coverContainer, detailContainer, shoppingCartLink, authorLink, title, authorContainer, span, genre, publisher, pub_date, description, rating, cover };
     }
 
     setCoverAttributes(cover, bookInfoArray, index, modalDiv, modalImage, caption) {
