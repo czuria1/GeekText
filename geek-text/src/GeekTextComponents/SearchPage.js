@@ -45,7 +45,6 @@ class SearchPage extends Component {
                     this.showResultsNotFound();
                     return;
                 }
-                console.log(XMLHttpRequest.responseText);
                 
                 this.setState({
                     books: JSON.parse(XMLHttpRequest.responseText)
