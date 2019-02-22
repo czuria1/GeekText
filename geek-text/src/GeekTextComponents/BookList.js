@@ -111,8 +111,8 @@ class BookList extends Component{
     
     appendChildren(detailContainer, coverContainer, bookListContainer, list, cover, title, props, authorContainer, genre, publisher, pub_date, description, rating, shoppingCartLink, line) {
         list.appendChild(bookListContainer);
-        bookListContainer.appendChild(detailContainer);
         bookListContainer.appendChild(coverContainer);
+        bookListContainer.appendChild(detailContainer);
         coverContainer.appendChild(cover);
         detailContainer.appendChild(title);
         if (!props.linkClicked) {
