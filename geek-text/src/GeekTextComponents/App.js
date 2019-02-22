@@ -9,6 +9,9 @@ import AuthorPage from './AuthorPage';
 
 class App extends Component {
     render() {
+
+        document.title = "Geek Text";
+
         return (
             <HashRouter>
                 <div>
