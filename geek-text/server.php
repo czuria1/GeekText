@@ -158,8 +158,6 @@
 
 		$review =  urldecode($_POST['review']); 
 		$rating =  intval(urldecode($_POST['rating'])); 
-
-		
 		
 		// Rating is -1 by default
 		//echo ("Review = " + $review + " Rating = " + $rating);
