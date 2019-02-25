@@ -8,11 +8,13 @@ class SearchArea extends Component
 
         this.state = {
             books: [],  //Contains all the book returned by the search
-            searchTerm: ''
+            searchTerm: '',
+            searchButtonClick: false
         };
 
         //Bind the methods to the component
         this.handleSearch = this.handleSearch.bind(this);
+        this.searchButtonClicked = this.searchButtonClicked.bind(this);
     }
 
     setTextBoxListner()
@@ -32,8 +34,13 @@ class SearchArea extends Component
         });
     }
 
+    componentDidMount() {
+        console.log(this.state.searchButtonClick);
+        
+    }
+
     searchButtonClicked() {
-        console.log("searchButtonClicked");
+       
         
     }
 

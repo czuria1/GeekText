@@ -13,8 +13,6 @@ class BookList extends Component{
         };
 
         this.retriveResults = this.retriveResults.bind(this);
-        console.log("here");
-        
     }
 
     componentDidMount() {
@@ -294,7 +292,6 @@ class BookList extends Component{
         return (
             
             <div >
-                <SearchArea></SearchArea>
                 <div id="listContainer">
                 </div>
             </div>
