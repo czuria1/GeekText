@@ -6,8 +6,6 @@ class BookList extends Component{
 
     constructor(props){
         super(props);
-
-        props.resetBookState();
     }
 
     ConvertToStringArray (props)
@@ -202,19 +200,26 @@ class BookList extends Component{
 
     render() {
 
-        var bookInfoArray = this.ConvertToStringArray(this.props);
-        var list = this.appendHTMLElements(bookInfoArray, this.props);
-
-        if (this.props.linkClicked)
+        if (this.props.books.length === 0)
         {
-            document.getElementById("author-book-info-container").appendChild(list);
+            return null;
         }
         else
         {
-            document.getElementById("book-info-container").appendChild(list);
-        }
+            var bookInfoArray = this.ConvertToStringArray(this.props);
+            var list = this.appendHTMLElements(bookInfoArray, this.props);
 
-        return null;
+            if (this.props.linkClicked)
+            {
+                document.getElementById("author-book-info-container").appendChild(list);
+            }
+            else
+            {
+                document.getElementById("listContainer").appendChild(list);
+            }
+
+            return null;
+        }
     }
 }
 

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import SearchPage from './SearchPage'
 import Header from './Header'
 import LoginScreen from "./LoginScreen";
 import RegistrationScreen from './RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
+import SearchArea from './SearchArea';
 
 class App extends Component {
     render() {
@@ -18,7 +18,7 @@ class App extends Component {
                     <Header></Header>
 
                     <div>
-                        <Route path="/search" component={SearchPage}/>
+                        <Route path="/search" component={SearchArea}/>
                         <Route path="/login" component={LoginScreen}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
