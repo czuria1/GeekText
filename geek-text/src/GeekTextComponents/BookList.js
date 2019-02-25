@@ -1,27 +1,119 @@
 import React, {Component} from "react";
 import "./ModalImage.css"
 import "./BookList.css"
+import ajaxme from "ajaxme";
+import SearchArea from "./SearchArea";
 
 class BookList extends Component{
 
     constructor(props){
         super(props);
+        this.state = {
+            books: []
+        };
+
+        this.retriveResults = this.retriveResults.bind(this);
+        console.log("here");
+        
     }
 
-    ConvertToStringArray (props)
+    componentDidMount() {
+
+        //If nothing is in the search box
+        if (this.props.match.params.term === "")
+        {
+            alert("Please enter a search term in the textbox");
+            return;
+        }
+        else
+        {
+            this.retriveResults();
+        }
+    }
+
+    retriveResults() {
+        //Used to connect to the server
+        ajaxme.post({
+          url: "http://localhost/server.php/post",
+          data: "method=getSearchInfo&searchParam=" + `${this.props.match.params.term}`,
+          success: function(XMLHttpRequest) {
+            //If the search returns no result from the db
+            if (XMLHttpRequest.responseText === "0 results") 
+            {
+                console.log("empty");
+                
+                    //this.showResultsNotFound();
+                return;
+            }
+
+            this.setState({
+                books: JSON.parse(XMLHttpRequest.responseText)
+            });
+
+            this.newMethod();
+    
+          }.bind(this),
+          error: function(XMLHttpRequest) {
+            console.log("error", XMLHttpRequest);
+          },
+          abort: function(XMLHttpRequest) {
+            console.log("abort", XMLHttpRequest);
+          },
+          loadstart: function(XMLHttpRequest) {},
+          progress: function(XMLHttpRequest) {}
+        });
+    }
+
+    newMethod() {
+        var bookInfoArray = this.ConvertToStringArray();
+        var list = this.appendHTMLElements(bookInfoArray, this.props);
+        if (this.props.linkClicked) {
+            document.getElementById("author-book-info-container").appendChild(list);
+        }
+        else {
+            document.getElementById("listContainer").appendChild(list);
+        }
+    }
+
+    showResultsNotFound() {
+        var rootDiv = document.getElementById("search-info-container");
+        var noResultsContainer = document.createElement('div');
+        noResultsContainer.id = "noResultsContainer";
+        var noResults = document.createElement('p');
+        var diffSearch = document.createElement('p');
+        var searchByAuthorTip = document.createElement('p');
+        var searchByTitleTip = document.createElement('p');
+        var searchByGenreTip = document.createElement('p');
+        noResults.appendChild(document.createTextNode("No titles found (0 hits) - Try these tips:"));
+        diffSearch.appendChild(document.createTextNode("Try a different kind of search:"));
+        searchByAuthorTip.appendChild(document.createTextNode("Do a browse search by title, typing just the first few letters of the title."));
+        searchByTitleTip.appendChild(document.createTextNode("Do a browse search by author, typing just the first few letters of the author's first or last name."));
+        searchByGenreTip.appendChild(document.createTextNode("Do a browse search by genre, typing just the first few letters of the genre"));
+        noResultsContainer.appendChild(noResults);
+        noResultsContainer.appendChild(diffSearch);
+        noResultsContainer.appendChild(searchByAuthorTip);
+        noResultsContainer.appendChild(searchByTitleTip);
+        noResultsContainer.appendChild(searchByGenreTip);
+        rootDiv.appendChild(noResultsContainer);
+    }
+
+    ConvertToStringArray ()
     {
         var arr = [];
 
-        for (const bookIndex in props.books) {
-            arr.push(props.books[bookIndex].title + "`" + 
-                    props.books[bookIndex].author + "`" + 
-                    props.books[bookIndex].genre + "`" +
-                    props.books[bookIndex].publisher + "`" +
-                    props.books[bookIndex].pub_date + "`" +
-                    props.books[bookIndex].description + "`" +
-                    props.books[bookIndex].rating + "`" +
-                    props.books[bookIndex].cover);
+        for (const bookIndex in this.state.books) {
+            arr.push(this.state.books[bookIndex].title + "`" + 
+                    this.state.books[bookIndex].author + "`" + 
+                    this.state.books[bookIndex].genre + "`" +
+                    this.state.books[bookIndex].publisher + "`" +
+                    this.state.books[bookIndex].pub_date + "`" +
+                    this.state.books[bookIndex].description + "`" +
+                    this.state.books[bookIndex].rating + "`" +
+                    this.state.books[bookIndex].cover);
         }
+
+        console.log("ConvertToStringArray", arr);
+        
 
         return arr;
     }
@@ -199,27 +291,14 @@ class BookList extends Component{
     }
 
     render() {
-
-        if (this.props.books.length === 0)
-        {
-            return null;
-        }
-        else
-        {
-            var bookInfoArray = this.ConvertToStringArray(this.props);
-            var list = this.appendHTMLElements(bookInfoArray, this.props);
-
-            if (this.props.linkClicked)
-            {
-                document.getElementById("author-book-info-container").appendChild(list);
-            }
-            else
-            {
-                document.getElementById("listContainer").appendChild(list);
-            }
-
-            return null;
-        }
+        return (
+            
+            <div >
+                <SearchArea></SearchArea>
+                <div id="listContainer">
+                </div>
+            </div>
+        )
     }
 }
 

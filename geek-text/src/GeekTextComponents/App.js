@@ -6,6 +6,7 @@ import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
 import SearchArea from './SearchArea';
+import BookList from './BookList';
 
 class App extends Component {
     render() {
@@ -23,6 +24,7 @@ class App extends Component {
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
+                        <Route path="/bookList/:term" component={BookList}/>
                     </div>
                 </div>
             </HashRouter>
