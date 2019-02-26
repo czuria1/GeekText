@@ -241,3 +241,12 @@ ALTER USER 'awors001'@'localhost' IDENTIFIED WITH mysql_native_password BY 'May1
 This was under a query tab so every time I ran something it was being inserted over and over again. I currently have 16 copies if I 
 were to search up the goblet of fire.
 15:29:46	ALTER TABLE books ADD price char(20) NOT NULL	Error Code: 1060. Duplicate column name 'price'	0.000 sec
+ERROR
+ALTER USER 'awors001'@'localhost' IDENTIFIED WITH mysql_native_password BY 'May1993!';
+INSERT INTO `books` (`ID`,`COVER`,`TITLE`,`AUTHOR`,`GENRE`,`PUBLISHER`,`PUB_DATE`,`DESCRIPTION`,`RATING`,`PRICE`,`INVENTORY`) VALUES (1,'./51JALSoL4dL.jpg','A Deepness in the Sky',5,'Science Fiction','Basic Books','1990-05-30','After thousands of years searching, humans stand on the verge of first contact with an alien race. Two human groups: the Qeng Ho, a culture of free traders, and the Emergents, a ruthless society based on the technological enslavement of minds.',NULL);
+INSERT INTO `books` (`ID`,`COVER`,`TITLE`,`AUTHOR`,`GENRE`,`PUBLISHER`,`PUB_DATE`,`DESCRIPTION`,`RATING`,`PRICE`,`INVENTORY`) VALUES (2,'./magic terror.jpg','Magic Terror',9,'Horror','Arkham House','2005-12-25','Bunny Is Good Bread takes us into the mind of a small boy trapped in grotesque circumstances to portray the creation of a serial killer in a manner that compels pity, sorrow, comprehension, and grief-as well as judgment. Hunger, an Introduction, narrated by the ghost of a pompous, self-pitying murderer, evokes a profoundly beautiful vision of earthly life, one appreciated far more by the dead than the living. The award-winning novella Mr. Clubb and Mr. Cuff, a masterpiece of black comedy, draws upon Melville\'s Bartleby the Scrivener to create a revenge tale in which torture is a moral art and the revenger undergoes a transforming, albeit painful, education.',NULL);
+................
+15:39:56	ALTER USER 'awors001'@'localhost' IDENTIFIED WITH mysql_native_password BY 'May1993!'	Error Code: 1396. Operation ALTER USER failed for 'awors001'@'localhost'	0.000 sec
+
+
+
