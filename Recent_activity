@@ -240,3 +240,4 @@ ALTER USER 'awors001'@'localhost' IDENTIFIED WITH mysql_native_password BY 'May1
 
 This was under a query tab so every time I ran something it was being inserted over and over again. I currently have 16 copies if I 
 were to search up the goblet of fire.
+15:29:46	ALTER TABLE books ADD price char(20) NOT NULL	Error Code: 1060. Duplicate column name 'price'	0.000 sec
