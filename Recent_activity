@@ -56,3 +56,187 @@ Rating: null
 Recently Discovered Julian made changes: I don't know if it includes the images like he says.
 I created seperate columns and connected them together those two columns are inventory and price.
 For some reason it isn't popping up on react. This is what I worked on last week. Just didn't post anything.
+
+
+Found out Monday the issue:
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('A Deepness in the Sky',5,'Science Fiction','Basic Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Magic Terror',9,'Horror','Arkham House');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('The Stranger',12,'Fiction','Arcade Publishing');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Venice',23,'Art','Farrar Straus and Giroux');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Second Wind',20,'Mystery','Simon and Schuster');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('The Edge',19,'Mystery','Thames and Hudson');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Dreamcatcher: A Novel',9,'Horror','Westview Press');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Treasure Chests',15,'Art','W.W. Norton');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Beloved',18,'Fiction','Random House');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Harry Potter and the Prisoner of Azkaban',15,'Science Fiction','Potter Publishing');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Van Gogh and Gauguin',24,'Art','Jeremy P. Tarcher');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Of Mice and Men',24,'Fiction','Fawcett Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Electric Light',4,'Poetry','Back Bay Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Group: Six People in Search of a Life',25,'Psy','Lb Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Nine Stories',6,'Fiction','Plume');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('The Soul of a New Machine',13,'Science','Schoken Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Travels with Charley',19,'Tra','Tor Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Catch-22',21,'Fiction','W.W. Norton');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Jazz',20,'Fiction','Lb Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Band of Brothers',9,'History','Back Bay Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('A Guide to SQL',23,'Computing','Arkham House');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Franny and Zooey',21,'Fiction','McPherson and Co.');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('East of Eden',22,'Fiction','Simon and Schuster');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Harry Potter and the Goblet of Fire',15,'Science Fiction','Potter Publishing');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('The Fall',1,'Fiction','W.W. Norton');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Godel, Escher, Bach',2,'PHI','Penguin USA');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('When Rabbit Howls',3,'PSY','Scholastic Trade');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Black House',4,'Horror','Basic Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Song of Solomon',7,'Fiction','Lb Books');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('The Grapes of Wrath',8,'Fiction','Simon and Schuster');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('Slay Ride',11,'Mystery','W.W. Norton');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('The Catcher in the Rye',13,'Fiction','HarperCollins Publishers');
+INSERT INTO books (title, author, genre, publisher)
+VALUES
+('To Kill a Mockingbird',14,'Fiction','Plume');
+
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Morrison','Toni');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Solotaroff','Paul');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Vintage','Vernor');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Francis','Dick');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Straub','Peter');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('King','Stephen');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Pratt','Philip');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Chase','Truddi');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Collins','Bradley');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Heller','Joseph');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Wills','Gary');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Hofstadter','Douglas R.');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Lee','Harper');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Ambrose','Stephen E.');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Rowling','J.K.');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Salinger','J.D.');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Heaney','Seamus');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Camus','Albert');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Collins, Jr.','Bradley');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Steinbeck','John');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Castelman','Riva');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Owen','Barbara');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('O''Rourke','Randy');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Kidder','Tracy');
+INSERT INTO authors (first_name, last_name)
+VALUES
+('Schleining','Lon');
+ALTER TABLE books ADD price char(20) NOT NULL;
+ALTER TABLE books ADD inventory char(20);
+ALTER USER 'awors001'@'localhost' IDENTIFIED WITH mysql_native_password BY 'May1993!';
+
+This was under a query tab so every time I ran something it was being inserted over and over again. I currently have 16 copies if I 
+were to search up the goblet of fire.
