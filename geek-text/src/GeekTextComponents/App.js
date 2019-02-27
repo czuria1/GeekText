@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import SearchPage from './SearchPage'
 import Header from './Header'
-import LoginScreen from "./LoginScreen";
-import RegistrationScreen from './RegistrationScreen';
+import LoginScreen from "./ProfileManagement/LoginScreen";
+import RegistrationScreen from './ProfileManagement/RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
