@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import ajaxme from "ajaxme";
-import LoginScreen from "./Registration";
+import LoginScreen from "./LoginScreen";
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 
-class RegistrationScreen extends Component {
+export default class RegistrationScreen extends Component {
 
     constructor (props) {
         super (props);
@@ -63,6 +63,10 @@ class RegistrationScreen extends Component {
 
     }
 
+    handleValidation() {
+        
+    }
+
     redirectNewUser () {
         if (this.state.isRegistrationSuccess === true) {
             return (
@@ -84,7 +88,8 @@ class RegistrationScreen extends Component {
                                 label="Username"
                                 helperText="Enter your Username"
                                 variant="outlined"
-                                onChange={this.username}></TextField>
+                                onChange={event => this.setState({username: event.target.value})}
+                                error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField 
@@ -94,7 +99,8 @@ class RegistrationScreen extends Component {
                                 label="First Name"
                                 helperText="Enter your First Name"
                                 variant="outlined"
-                                onChange={this.fname}></TextField>
+                                onChange={this.fname}
+                                error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -104,7 +110,8 @@ class RegistrationScreen extends Component {
                                 label="Last Name"
                                 helperText="Enter your Last Name"
                                 variant="outlined"
-                                onChange={this.lname}></TextField>
+                                onChange={this.lname}
+                                error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -125,7 +132,8 @@ class RegistrationScreen extends Component {
                                 label="Email"
                                 helperText="Enter your Email"
                                 variant="outlined"
-                                onChange={this.email}></TextField>
+                                onChange={this.email}
+                                error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -136,7 +144,8 @@ class RegistrationScreen extends Component {
                                 label="Password"
                                 helperText="Enter your Password"
                                 variant="outlined"
-                                onChange={this.password_1}></TextField>
+                                onChange={this.password_1}
+                                error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -147,7 +156,8 @@ class RegistrationScreen extends Component {
                                 label="Password Confirmation"
                                 helperText="Enter your Password Again"
                                 variant="outlined"
-                                onChange={this.password_2}></TextField>
+                                onChange={this.password_2}
+                                error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
                             <div className="submitArea">
@@ -174,5 +184,3 @@ class RegistrationScreen extends Component {
     }
 
 }
-
-export default RegistrationScreen;

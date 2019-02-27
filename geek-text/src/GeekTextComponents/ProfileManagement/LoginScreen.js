@@ -11,7 +11,7 @@ export default class LoginScreen extends Component {
         this.state = {
             username:'', 
             password:'', 
-            isLogin: true
+            isLoggedIn: false
         }
     }
 
