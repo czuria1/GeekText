@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import Registration from "./Registration";
 import ajaxme from "ajaxme";
 import LoginScreen from "./Registration";
+import TextField from '@material-ui/core/TextField';
+import { Button } from '@material-ui/core';
 
 class RegistrationScreen extends Component {
 
@@ -72,8 +73,94 @@ class RegistrationScreen extends Component {
             );
         } else {
             return (
-                <Registration handleSubmit={this.handleSubmit}
-                              registerButtonClicked={this.registerButtonClicked}></Registration>
+            <div>
+                <div className="outer">
+                        <div className="registrationarea"
+                             handleSubmit={this.handleSubmit}>
+                            <TextField 
+                                id="usernameInput"
+                                className="textfield"
+                                required
+                                label="Username"
+                                helperText="Enter your Username"
+                                variant="outlined"
+                                onChange={this.username}></TextField>
+                            <br></br>
+                            <br></br>
+                            <TextField 
+                                id="fnameInput"
+                                className="textfield"
+                                required
+                                label="First Name"
+                                helperText="Enter your First Name"
+                                variant="outlined"
+                                onChange={this.fname}></TextField>
+                            <br></br>
+                            <br></br>
+                            <TextField
+                                id="lnameInput" 
+                                className="textfield"
+                                required
+                                label="Last Name"
+                                helperText="Enter your Last Name"
+                                variant="outlined"
+                                onChange={this.lname}></TextField>
+                            <br></br>
+                            <br></br>
+                            <TextField
+                                id="nicknameInput" 
+                                className="textfield"
+                                label="Nickname"
+                                helperText="Enter your Nickname"
+                                variant="outlined"
+                                onChange={this.nickname}></TextField>
+                            <br></br>
+                            <br></br>
+                            <TextField
+                                id="emailInput" 
+                                className="textfield"
+                                required
+                                autoComplete="email"
+                                type="email"
+                                label="Email"
+                                helperText="Enter your Email"
+                                variant="outlined"
+                                onChange={this.email}></TextField>
+                            <br></br>
+                            <br></br>
+                            <TextField
+                                id="pw_1_Input" 
+                                className="textfield"
+                                required
+                                type="password"
+                                label="Password"
+                                helperText="Enter your Password"
+                                variant="outlined"
+                                onChange={this.password_1}></TextField>
+                            <br></br>
+                            <br></br>
+                            <TextField
+                                id="pw_2_Input"
+                                className="textfield"
+                                required
+                                type="password"
+                                label="Password Confirmation"
+                                helperText="Enter your Password Again"
+                                variant="outlined"
+                                onChange={this.password_2}></TextField>
+                            <br></br>
+                            <br></br>
+                            <div className="submitArea">
+                                <Button
+                                    id="submitButton"
+                                    className="submitButton"
+                                    variant="outlined"
+                                    onClick={this.registerButtonClicked}>Submit</Button>
+                            </div>
+                        </div>
+                </div>
+        </div>
+                
             );
         }
     }
