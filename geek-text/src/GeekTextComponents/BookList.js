@@ -15,17 +15,20 @@ class BookList extends Component{
         this.retriveResults = this.retriveResults.bind(this);
     }
 
-    componentDidMount() {
-
-        //If nothing is in the search box
-        if (this.props.match.params.term === "")
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.match.params.term === nextProps.match.params.term)
         {
-            alert("Please enter a search term in the textbox");
-            return;
+            return false;
         }
         else
         {
-            this.retriveResults();
+            var parent = document.getElementById("route-container");
+            var child = document.getElementById("listContainer");
+            child.remove();
+            var listContainer = document.createElement('div');
+            listContainer.id = "listContainer";
+            parent.appendChild(listContainer);
+            return true;
         }
     }
 
@@ -38,10 +41,12 @@ class BookList extends Component{
             //If the search returns no result from the db
             if (XMLHttpRequest.responseText === "0 results") 
             {
-                console.log("empty");
-                
-                    //this.showResultsNotFound();
+                this.showResultsNotFound();
                 return;
+            }
+            else if (document.getElementById("noResultsContainer") !== null)
+            {
+                document.getElementById("noResultsContainer").remove();
             }
 
             this.setState({
@@ -109,9 +114,6 @@ class BookList extends Component{
                     this.state.books[bookIndex].rating + "`" +
                     this.state.books[bookIndex].cover);
         }
-
-        console.log("ConvertToStringArray", arr);
-        
 
         return arr;
     }
@@ -289,9 +291,12 @@ class BookList extends Component{
     }
 
     render() {
+
+        this.retriveResults();
         return (
             
             <div >
+                <SearchArea></SearchArea>
                 <div id="listContainer">
                 </div>
             </div>

@@ -18,7 +18,7 @@ class App extends Component {
                 <div>
                     <Header></Header>
 
-                    <div>
+                    <div id="route-container">
                         <Route path="/search" component={SearchArea}/>
                         <Route path="/login" component={LoginScreen}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>

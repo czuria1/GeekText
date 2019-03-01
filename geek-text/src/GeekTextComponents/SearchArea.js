@@ -35,13 +35,17 @@ class SearchArea extends Component
     }
 
     componentDidMount() {
-        console.log(this.state.searchButtonClick);
         
     }
 
-    searchButtonClicked() {
-       
+    searchButtonClicked(e) {
         
+        if (this.state.searchTerm === "")
+        {
+            alert("Please enter a search term in the textbox");
+            e.preventDefault();
+        }
+       
     }
 
     
@@ -50,18 +54,19 @@ class SearchArea extends Component
         
         return(
             <div id="search-info-container" align="center">
-                <button id="searchButton" 
-                        onClick={this.searchButtonClicked}>
-                        <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to={"/bookList/" + this.state.searchTerm}
-                                 >Search</NavLink>
+            
+                <button id="searchButton" >
+                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                to={"/bookList/" + this.state.searchTerm}
+                                onClick={this.searchButtonClicked}
+                                >Search</NavLink>
                 </button>
 
                 <input onFocus={this.setTextBoxListner} 
-                       id="searchText" 
-                       type="text" 
-                       placeholder = "Author, Title, Genre ... " 
-                       onChange={this.handleSearch}/>
+                    id="searchText" 
+                    type="text" 
+                    placeholder = "Author, Title, Genre ... " 
+                    onChange={this.handleSearch}/>
 
                 <button id="topSearch">Top Sellers</button>
                 
