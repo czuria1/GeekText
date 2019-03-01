@@ -6,6 +6,7 @@ import RegistrationScreen from './ProfileManagement/RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
+import NewUser from './ProfileManagement/NewUser';
 
 class App extends Component {
     render() {
@@ -17,6 +18,7 @@ class App extends Component {
                     <div>
                         <Route path="/search" component={SearchPage}/>
                         <Route path="/login" component={LoginScreen}/>
+                        <Route path="/login/welcome" component={NewUser}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>

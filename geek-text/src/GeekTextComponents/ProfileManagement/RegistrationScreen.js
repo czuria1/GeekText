@@ -3,6 +3,7 @@ import ajaxme from "ajaxme";
 import LoginScreen from "./LoginScreen";
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
+import {Route, HashRouter} from "react-router-dom";
 
 export default class RegistrationScreen extends Component {
 
@@ -10,18 +11,19 @@ export default class RegistrationScreen extends Component {
         super (props);
         this.state = {
             isRegistrationSuccess: false, 
-            username: '', 
-            fname: '',
-            lname: '',
-            nickname: '',
-            email: '',
-            password_1: '',
-            password_2: '',
+            username: 'null', 
+            fname: 'null',
+            lname: 'null',
+            nickname: 'null',
+            email: 'null',
+            password_1: 'null',
+            password_2: 'null',
 
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.registerButtonClicked = this.registerButtonClicked.bind(this);
+        // this.handleErrors = this.handleErrors.bind(this);
     }
 
     handleSubmit (event) {
@@ -39,14 +41,15 @@ export default class RegistrationScreen extends Component {
     registerButtonClicked() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=registerUser&username=' + `${document.getElementById('usernameInput').value}` + '&firstname=' + `${document.getElementById('fnameInput').value}` 
-                + '&lastname=' + `${document.getElementById('lnameInput').value}` + '&nickname=' + `${document.getElementById('nicknameInput').value}`
-                + '&email=' + `${document.getElementById('emailInput').value}` + '&password_1=' + `${document.getElementById('pw_1_Input').value}`
-                + '&password_2=' + `${document.getElementById('pw_2_Input').value}`,
+            data: 'method=registerUser&username=' + `${this.state.username}` + '&firstname=' + `${this.state.fname}` 
+                + '&lastname=' + `${this.state.lname}` + '&nickname=' + `${this.state.nickname}`
+                + '&email=' + `${this.state.email}` + '&password_1=' + `${this.state.password_1}`
+                + '&password_2=' + `${this.state.password_2}`,
             success: function (XMLHttpRequest) {
                 this.setState({
                     isRegistrationSuccess: true
                 })
+                this.props.history.push('/login/welcome');
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -62,20 +65,14 @@ export default class RegistrationScreen extends Component {
         });
 
     }
-
-    handleValidation() {
-        
-    }
+    
+    // TODO
+    // handleErrors () {
+    //     console.log(this.state.username);
+    // }
 
     redirectNewUser () {
-        if (this.state.isRegistrationSuccess === true) {
-            return (
-                <div>
-                    <h1>New User Created!</h1>
-                    <LoginScreen></LoginScreen>
-                </div>
-            );
-        } else {
+        if (this.state.isRegistrationSuccess !== true) {
             return (
             <div>
                 <div className="outer">
@@ -89,6 +86,7 @@ export default class RegistrationScreen extends Component {
                                 helperText="Enter your Username"
                                 variant="outlined"
                                 onChange={event => this.setState({username: event.target.value})}
+                                onClick={this.state.username === "" ? event => this.setState({username: ""}) : event => this.setState({username: event.target.value})}
                                 error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
@@ -99,8 +97,9 @@ export default class RegistrationScreen extends Component {
                                 label="First Name"
                                 helperText="Enter your First Name"
                                 variant="outlined"
-                                onChange={this.fname}
-                                error={this.state.username === ""}></TextField>
+                                onChange={event => this.setState({fname: event.target.value})}
+                                onClick={this.state.fname === "" ? event => this.setState({fname: ""}) : event => this.setState({fname: event.target.value})}
+                                error={this.state.fname === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -110,8 +109,9 @@ export default class RegistrationScreen extends Component {
                                 label="Last Name"
                                 helperText="Enter your Last Name"
                                 variant="outlined"
-                                onChange={this.lname}
-                                error={this.state.username === ""}></TextField>
+                                onChange={event => this.setState({lname: event.target.value})}
+                                onClick={this.state.lname === "" ? event => this.setState({lname: ""}) : event => this.setState({lname: event.target.value})}
+                                error={this.state.lname === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -120,7 +120,7 @@ export default class RegistrationScreen extends Component {
                                 label="Nickname"
                                 helperText="Enter your Nickname"
                                 variant="outlined"
-                                onChange={this.nickname}></TextField>
+                                onChange={event => this.setState({nickname: event.target.value})}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -132,8 +132,9 @@ export default class RegistrationScreen extends Component {
                                 label="Email"
                                 helperText="Enter your Email"
                                 variant="outlined"
-                                onChange={this.email}
-                                error={this.state.username === ""}></TextField>
+                                onChange={event => this.setState({email: event.target.value})}
+                                onClick={this.state.email === "" ? event => this.setState({email: ""}) : event => this.setState({email: event.target.value})}
+                                error={this.state.email === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -144,8 +145,9 @@ export default class RegistrationScreen extends Component {
                                 label="Password"
                                 helperText="Enter your Password"
                                 variant="outlined"
-                                onChange={this.password_1}
-                                error={this.state.username === ""}></TextField>
+                                onChange={event => this.setState({password_1: event.target.value})}
+                                onClick={this.state.password_1 === "" ? event => this.setState({password_1: ""}) : event => this.setState({password_1: event.target.value})}
+                                error={this.state.password_1 === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
@@ -156,8 +158,8 @@ export default class RegistrationScreen extends Component {
                                 label="Password Confirmation"
                                 helperText="Enter your Password Again"
                                 variant="outlined"
-                                onChange={this.password_2}
-                                error={this.state.username === ""}></TextField>
+                                onChange={event => this.setState({password_2: event.target.value})}
+                                error={this.state.password_1 !== this.state.password_2}></TextField>
                             <br></br>
                             <br></br>
                             <div className="submitArea">

@@ -46,7 +46,7 @@ export default class LoginScreen extends Component {
                                 <br></br>
                                 <br></br>
                                 <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
-                                    to="/registration"
+                                    to="/registration" replace
                                     >Create Account</NavLink>
                             </div>
                     </div>
