@@ -24,15 +24,16 @@
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
 	{
+		
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
 		
 		
 		$keyword = urldecode($_POST['searchParam']);
-
+		
 		$sql = "SET @SEARCH_TERM = '%$keyword%';";
-
+		
 		if ($conn->query($sql) === TRUE) 
 		{
 			//echo "New record created successfully";
@@ -51,7 +52,7 @@
 						books.TITLE LIKE @SEARCH_TERM OR
 			            books.GENRE LIKE @SEARCH_TERM";
 
-
+		
 		
 
 		//Executes query string
@@ -148,6 +149,46 @@
 		$conn->close();
 	}
 
+	function submitReview()
+	{
+		
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+
+		$review =  urldecode($_POST['review']); 
+		$rating =  intval(urldecode($_POST['rating'])); 
+
+		
+		
+		// Rating is -1 by default
+		//echo ("Review = " + $review + " Rating = " + $rating);
+		//if ($rating == -1) { array_push($errors, "Please select a rating"); }
+
+		if (empty($review)){
+			$sql = "INSERT INTO reviews (comment,rating)
+					VALUES 
+					(NULL,'$rating')";
+		}
+		else {
+			$sql = "INSERT INTO reviews (comment,rating)
+					VALUES 
+					('$review','$rating')";
+		}
+
+		//Executes query string
+		if ($conn->query($sql) === TRUE) {
+			echo "New record created successfully";
+		} else {
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$conn->close();
+
+	}
+
+
+
 	if ($method == 'getSearchInfo')
 	{
 		getSearchInfo();
@@ -186,6 +227,57 @@
 
 		$conn->close();
 	}
+    
+    function loginUser() {
+        global $conn;
+        global $myObj;
+        
+        $username = urldecode($_POST['username']);
+        $password = urldecode($_POST['password']);
+        
+        $sql = "SELECT (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD)
+                VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')
+                FROM USERS
+                WHERE USERS.username = username AND USERS.password = password";
+        
+        if (empty($username)) { array_push($errors, "Username is required"); }
+        if (empty(password)) { array_push($errors, "Password is required"); }
+        
+        if (count($errors) == 0) {
+            $password = md5($password);
+        }
+        
+        $result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "username" => $row["USERNAME"],
+                             "fname" => $row["FNAME"],
+                             "lname" => $row["LNAME"],
+                             "nickname" => $row["NICKNAME"],
+                             "EMAIL" => $row["EMAIL"],
+                             "PASSWORD" => $row["PASSWORD"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No such user exists";
+        }
+        
+        $conn->close();
+    }
 
 	if ($method == 'registerUser') {
 		registerUser();
@@ -195,6 +287,15 @@
 	{
 		getAllBooksFromAuthor();
 	}
+
+	else if ($method == 'submitReview')
+	{	
+		submitReview();
+	}
+    else if ($method == 'loginUser')
+    {
+        loginUser();
+    }
 	
 
 /** 

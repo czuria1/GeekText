@@ -159,7 +159,8 @@ export default class RegistrationScreen extends Component {
                                 helperText="Enter your Password Again"
                                 variant="outlined"
                                 onChange={event => this.setState({password_2: event.target.value})}
-                                error={this.state.password_1 !== this.state.password_2}></TextField>
+                                error={this.state.password_1 !== this.state.password_2}
+                                helperText={this.state.password_1 !== this.state.password_2 ? "Passwords do not match": "Enter your Password Again"}></TextField>
                             <br></br>
                             <br></br>
                             <div className="submitArea">

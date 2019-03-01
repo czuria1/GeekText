@@ -9,8 +9,6 @@ export default class ProfileSettings extends Component {
     constructor (props) {
         super (props);
         this.state = {
-            username:'', 
-            password:'', 
             isLoggedIn: true
         }
     }
@@ -24,11 +22,10 @@ export default class ProfileSettings extends Component {
                         <TextField 
                                 id="usernameInput"
                                 className="textfield"
-                                required
+                                value={this.state.username}
                                 label="Username"
-                                helperText="Enter your Username"
                                 variant="outlined"
-                                onChange={this.username}></TextField>
+                                onChange={this.state.username}></TextField>
                             <br></br>
                             <br></br>
                             <TextField 

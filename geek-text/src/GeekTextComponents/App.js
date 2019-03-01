@@ -6,19 +6,41 @@ import RegistrationScreen from './ProfileManagement/RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
-import NewUser from './ProfileManagement/NewUser';
+import NewUserLogin from './ProfileManagement/NewUser';
 
 class App extends Component {
+
+    constructor (props) {
+        super (props);
+        this.state = {
+            currentUser: '',
+            isUserLoggedIn: false
+        }
+
+        this.setCurrentUser = this.setCurrentUser.bind(this);
+    }
+
+    setCurrentUser(newUser) {
+        this.setState({
+            isUserLoggedIn: true,
+            currentUser: newUser
+        });
+    }
+
     render() {
         return (
             <HashRouter>
                 <div>
-                    <Header></Header>
+                    <Header 
+                        currentUser={this.state.currentUser}
+                        isUserLoggedIn={this.state.isUserLoggedIn}
+                        setCurrentUser={this.setCurrentUser.bind(this)}></Header>
 
                     <div>
                         <Route path="/search" component={SearchPage}/>
-                        <Route path="/login" component={LoginScreen}/>
-                        <Route path="/login/welcome" component={NewUser}/>
+                        <Route path="/login" render={(props) => <LoginScreen 
+                                                                            isLoggedIn={this.state.isUserLoggedIn}/>}/>
+                        <Route path="/login/welcome" component={NewUserLogin}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
