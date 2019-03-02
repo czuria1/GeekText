@@ -65,11 +65,6 @@ export default class RegistrationScreen extends Component {
         });
 
     }
-    
-    // TODO
-    // handleErrors () {
-    //     console.log(this.state.username);
-    // }
 
     redirectNewUser () {
         if (this.state.isRegistrationSuccess !== true) {
