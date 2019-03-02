@@ -10,16 +10,50 @@ export default class LoginScreen extends Component {
     constructor (props) {
         super (props);
         this.state = { 
-            username: '', 
-            password: '', 
+            username: 'null', 
+            password: 'null', 
             isLoggedIn: props.isUserLoggedIn
         }
 
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
+        this.updateCurrentUser = this.updateCurrentUser.bind(this);
     }
 
     updateCurrentUser() {
-        this.props.setCurrentUser(this.state.username);
+        this.props.setCurrentUser(this.state.username, true);
+    }
+
+    componentWillMount() {
+        console.log("LoginScreen will mount");
+    }
+
+    componentDidMount() {
+        console.log("LoginScreen did mount!");
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("LoginScreen will receive props", nextProps);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log("Should LoginScreen update", nextProps, nextState);
+        // if (nextState.status === 1) {
+        //     return false;
+        // }
+        
+        return true;
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log("LoginScreen will update", nextProps, nextState);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log("LoginScreen did update", prevProps, prevState);
+    }
+
+    componentWillUnmount() {
+        console.log("LoginScreen will unmount");
     }
 
     loginButtonClicked() {
@@ -27,10 +61,7 @@ export default class LoginScreen extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=loginUser&username=' + `${this.state.username}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
-                this.setState({
-                    isLoggedIn: true
-                })
-                this.updateCurrentUser.bind(this);
+                this.updateCurrentUser();
                 this.props.history.push('/');
                 console.log('success', XMLHttpRequest);
             }.bind(this),
@@ -60,7 +91,10 @@ export default class LoginScreen extends Component {
                                     required
                                     label="Username"
                                     helperText="Enter your Username"
-                                    variant="outlined"></TextField>
+                                    variant="outlined"
+                                    onChange={event => this.setState({username: event.target.value})}
+                                    onClick={this.state.username === "" ? event => this.setState({username: ""}) : event => this.setState({username: event.target.value})}
+                                    error={this.state.username === ""}></TextField>
                                 <br></br>
                                 <br></br>
                                 <TextField
@@ -69,14 +103,18 @@ export default class LoginScreen extends Component {
                                     type="password"
                                     label="Password"
                                     helperText="Enter your Password"
-                                    variant="outlined"></TextField>
+                                    variant="outlined"
+                                    onChange={event => this.setState({password: event.target.value})}
+                                    onClick={this.state.password === "" ? event => this.setState({password: ""}) : event => this.setState({password: event.target.value})}
+                                    error={this.state.password === ""}></TextField>
                                     <br></br>
                                     <br></br>
                                     <div className="submitArea">
                                         <Button
                                             className="submitButton"
                                             variant="outlined"
-                                            onClick={this.loginButtonClicked}>Login</Button>
+                                            onClick={this.loginButtonClicked}>Login
+                                        </Button>
                                         <br></br>
                                         <br></br>
                                         <br></br>
@@ -91,7 +129,7 @@ export default class LoginScreen extends Component {
             )
         } else {
             return (
-                <h1>User successfully logged in</h1>
+                <h1>User is logged in</h1>
             )
         }
     }
