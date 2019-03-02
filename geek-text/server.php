@@ -3,12 +3,13 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "root";
-	$dbpassword = "W&tson$2018";
+	$dbusername = "jyepe";
+	$dbpassword = "9373yepe";
 	$dbname = "geektext_db";
 
 	//what method to execute
 	$method = urldecode($_POST['method']);
+	
 	//used to create json objects
 	$myObj = new \stdClass();
 	
@@ -43,7 +44,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT  books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
+		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
 			  		    books.DESCRIPTION, books.RATING
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
@@ -57,7 +58,7 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-//Im making the page number between 10 and 20
+		//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -65,8 +66,9 @@
 	    	while($row = $result->fetch_assoc()) 
 	    	{
 				$bus = array(
+					"cover" => $row["COVER"],
 					"title" => $row["TITLE"],
-					"author" => $row["LAST_NAME"]. " " .$row["FIRST_NAME"],
+					"author" => $row["FIRST_NAME"]. " " .$row["LAST_NAME"],
 					"genre" => $row["GENRE"],
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
@@ -109,10 +111,10 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING
+		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING
 				FROM   books
 				JOIN   authors ON books.AUTHOR = authors.ID
-				WHERE  concat(AUTHORS.LAST_NAME, ' ', AUTHORS.FIRST_NAME) = @AUTHOR_NAME;";
+				WHERE  concat(AUTHORS.FIRST_NAME, ' ', AUTHORS.LAST_NAME) = @AUTHOR_NAME;";
 
 
 		//Executes query string
@@ -125,6 +127,7 @@
 	    	while($row = $result->fetch_assoc()) 
 	    	{
 				$bus = array(
+					"cover" => $row["COVER"],
 					"title" => $row["TITLE"],
 					"genre" => $row["GENRE"],
 					"publisher" => $row["PUBLISHER"],
@@ -158,8 +161,6 @@
 
 		$review =  urldecode($_POST['review']); 
 		$rating =  intval(urldecode($_POST['rating'])); 
-
-		
 		
 		// Rating is -1 by default
 		//echo ("Review = " + $review + " Rating = " + $rating);
@@ -187,48 +188,7 @@
 
 	}
 
-
-
-	if ($method == 'getSearchInfo')
-	{
-		getSearchInfo();
-	}
-
-	function registerUser() {
-
-		global $conn;
-		global $myObj;
-
-		$username = urldecode($_POST['username']);
-		$firstname = urldecode($_POST['firstname']);
-		$lastname = urldecode($_POST['lastname']);
-		$nickname = urldecode($_POST['nickname']);
-		$email = urldecode($_POST['email']);
-		$password_1 = urldecode($_POST['password_1']);
-		$password_2 = urldecode($_POST['password_2']);
-
-		if (empty($username)) { array_push($errors, "Username is required"); }
-		if (empty($firstname)) { array_push($errors, "First name is required"); }
-		if (empty($lastname)) { array_push($errors, "Last name is required"); }
-		if (empty($email)) { array_push($errors, "Email is required"); }
-		if (empty($password_1)) { array_push($errors, "Password is required"); }
-		if ($password_1 != $password_2) {
-			array_push($errors, "Your passwords do not match");
-		}
-
-		if (count($errors) == 0) {
-			$password = md5($password_1);
-		}
-
-		$sql = "INSERT INTO users (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD) 
-				VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')";
-		
-		$result = $conn->query($sql);
-
-		$conn->close();
-	}
-    
-    function loginUser() {
+	function loginUser() {
         global $conn;
         global $myObj;
         
@@ -279,15 +239,55 @@
         $conn->close();
     }
 
-	if ($method == 'registerUser') {
+	function registerUser()
+	{
+
+		global $conn;
+		global $myObj;
+
+		$username = urldecode($_POST['username']);
+		$firstname = urldecode($_POST['firstname']);
+		$lastname = urldecode($_POST['lastname']);
+		$nickname = urldecode($_POST['nickname']);
+		$email = urldecode($_POST['email']);
+		$password_1 = urldecode($_POST['password_1']);
+		$password_2 = urldecode($_POST['password_2']);
+
+		if (empty($username)) { array_push($errors, "Username is required"); }
+		if (empty($firstname)) { array_push($errors, "First name is required"); }
+		if (empty($lastname)) { array_push($errors, "Last name is required"); }
+		if (empty($email)) { array_push($errors, "Email is required"); }
+		if (empty($password_1)) { array_push($errors, "Password is required"); }
+		if ($password_1 != $password_2) {
+			array_push($errors, "Your passwords do not match");
+		}
+
+		if (count($errors) == 0) {
+			$password = md5($password_1);
+		}
+
+		$sql = "INSERT INTO users (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD) 
+				VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')";
+		
+		$result = $conn->query($sql);
+
+		$conn->close();
+	}
+    
+    
+
+	if ($method == 'getSearchInfo')
+	{
+		getSearchInfo();
+	}
+	else if ($method == 'registerUser') 
+	{
 		registerUser();
 	}
-	
 	else if ($method == 'getAllBooksFromAuthor')
 	{
 		getAllBooksFromAuthor();
 	}
-
 	else if ($method == 'submitReview')
 	{	
 		submitReview();

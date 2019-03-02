@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import SearchPage from './SearchPage'
 import Header from './Header'
 import LoginScreen from "./ProfileManagement/LoginScreen";
 import RegistrationScreen from './ProfileManagement/RegistrationScreen';
@@ -7,12 +6,8 @@ import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
-
-const Login = () => (
-    <Route render={props => (
-        <LoginScreen {...props}></LoginScreen>
-    )}/>
-)
+import BookList from './BookList';
+import SearchArea from './SearchArea';
 
 class App extends Component {
 
@@ -25,6 +20,8 @@ class App extends Component {
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
         this.logoutUser = this.logoutUser.bind(this);
+
+        document.title = "Geek Text";
     }
 
     setCurrentUser(newUser, loggedIn) {
@@ -32,6 +29,7 @@ class App extends Component {
             currentUser: newUser,
             isUserLoggedIn: loggedIn
         });
+        
     }
 
     logoutUser(oldUser, loggedIn) {
@@ -42,7 +40,7 @@ class App extends Component {
     }
 
     render() {
-        
+      
         return (
             <HashRouter>
                 <div>
@@ -52,7 +50,8 @@ class App extends Component {
                         logoutUser={this.state.logoutUser}></Header>
 
                     <div>
-                        <Route path="/search" component={SearchPage}/>
+                      <div id="route-container">
+                        <Route path="/search" component={SearchArea}/>
                         <Route path="/login" render={(props) => <LoginScreen {...props}
                                                                             username={this.state.currentUser}
                                                                             isLoggedIn={this.state.isUserLoggedIn}
@@ -62,6 +61,8 @@ class App extends Component {
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
+                        <Route path="/bookList/:term" component={BookList}/>
+                     </div>
                     </div>
                 </div>
             </HashRouter>

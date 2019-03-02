@@ -52,25 +52,29 @@ class AuthorPage extends Component{
 
     //Returns the Booklist component if the books array is populated
     retrieveList() {
-        
-        if(this.state.books.length !== 0)
-        {
-            return (
-                <BookList books={this.state.books} resetBookState={this.resetBookState} linkClicked={true}></BookList>
-            );
-        }
-        else
-        {
-            return;
-        }
+        return(
+            <button>hello</button>
+        )
     }
 
     render() {
         
         return(
             <div align="center" id="author-book-info-container">
-                {this.retrieveList()}
-                Books By : {this.props.match.params.author}
+                {}
+                Books By : {
+                    
+                            // for (let index = 0; index < 3; index++) 
+                            // {
+                            //     const element = array[index];
+                    
+                            // } 
+                            // this.retrieveList()
+                
+                
+                
+                
+                            }
             </div>
         )
     }
