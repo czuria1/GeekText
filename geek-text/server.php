@@ -224,6 +224,57 @@
 
 		$conn->close();
 	}
+    
+    function loginUser() {
+        global $conn;
+        global $myObj;
+        
+        $username = urldecode($_POST['username']);
+        $password = urldecode($_POST['password']);
+        
+        $sql = "SELECT (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD)
+                VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')
+                FROM USERS
+                WHERE USERS.username = username AND USERS.password = password";
+        
+        if (empty($username)) { array_push($errors, "Username is required"); }
+        if (empty(password)) { array_push($errors, "Password is required"); }
+        
+        if (count($errors) == 0) {
+            $password = md5($password);
+        }
+        
+        $result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "username" => $row["USERNAME"],
+                             "fname" => $row["FNAME"],
+                             "lname" => $row["LNAME"],
+                             "nickname" => $row["NICKNAME"],
+                             "EMAIL" => $row["EMAIL"],
+                             "PASSWORD" => $row["PASSWORD"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No such user exists";
+        }
+        
+        $conn->close();
+    }
 
 	if ($method == 'getSearchInfo')
 	{
@@ -242,6 +293,10 @@
 	{	
 		submitReview();
 	}
+    else if ($method == 'loginUser')
+    {
+        loginUser();
+    }
 	
 
 /** 
