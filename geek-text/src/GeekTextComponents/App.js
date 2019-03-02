@@ -23,11 +23,19 @@ class App extends Component {
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
+        this.logoutUser = this.logoutUser.bind(this);
     }
 
     setCurrentUser(newUser, loggedIn) {
         this.setState({
             currentUser: newUser,
+            isUserLoggedIn: loggedIn
+        });
+    }
+
+    logoutUser(oldUser, loggedIn) {
+        this.setState({
+            currentUser: oldUser,
             isUserLoggedIn: loggedIn
         });
     }
@@ -39,7 +47,8 @@ class App extends Component {
                 <div>
                     <Header 
                         currentUser={this.state.currentUser}
-                        isUserLoggedIn={this.state.isUserLoggedIn}></Header>
+                        isUserLoggedIn={this.state.isUserLoggedIn}
+                        logoutUser={this.state.logoutUser}></Header>
 
                     <div>
                         <Route path="/search" component={SearchPage}/>

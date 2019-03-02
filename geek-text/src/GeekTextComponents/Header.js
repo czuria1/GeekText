@@ -18,45 +18,18 @@ class Header extends Component {
             currentUser: props.currentUser,
             isUserLoggedIn: props.isUserLoggedIn
         }
-    }
 
-    componentWillMount() {
-        console.log("Header will mount");
-    }
-
-    componentDidMount() {
-        console.log("Header did mount!");
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log("Header will receive props", nextProps);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log("Should Header update", nextProps, nextState);
-        // if (nextState.status === 1) {
-        //     return false;
-        // }
-        
-        return true;
+        this.logoutCurrentUser = this.logoutCurrentUser.bind(this);
     }
 
     componentWillUpdate(nextProps, nextState) {
         console.log("Header will update", nextProps, nextState);
-        if (nextProps.username !== this.state.currentUser) {
+        if (nextProps !== this.props) {
             this.setState({
                 currentUser: nextProps.username, 
                 isUserLoggedIn: nextProps.isUserLoggedIn
             })
         }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        console.log("Header did update", prevProps, prevState);
-    }
-
-    componentWillUnmount() {
-        console.log("Header will unmount");
     }
     
     render () {
@@ -98,6 +71,18 @@ class Header extends Component {
         this.setState({ anchorEl: null });
     };
 
+    handleLogout = () => {
+        this.logoutCurrentUser();
+    };
+
+    logoutCurrentUser() {
+        // this.props.logoutCurrentUser("null", false);
+        this.setState({
+            currentUser: "null", 
+            isUserLoggedIn: false
+        })
+    }
+
     loggedInUser () {
 
         const { anchorEl } = this.state;
@@ -117,9 +102,8 @@ class Header extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                             >
-                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                             <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                            <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                         </Menu>
                     </div>
                 </div>

@@ -61,7 +61,7 @@ export default class LoginScreen extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=loginUser&username=' + `${this.state.username}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
-                this.updateCurrentUser(this.state.username);
+                this.updateCurrentUser();
                 this.props.history.push('/');
                 console.log('success', XMLHttpRequest);
             }.bind(this),
