@@ -25,15 +25,16 @@
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
 	{
+		
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
 		
 		
 		$keyword = urldecode($_POST['searchParam']);
-
+		
 		$sql = "SET @SEARCH_TERM = '%$keyword%';";
-
+		
 		if ($conn->query($sql) === TRUE) 
 		{
 			//echo "New record created successfully";
@@ -52,7 +53,7 @@
 						books.TITLE LIKE @SEARCH_TERM OR
 			            books.GENRE LIKE @SEARCH_TERM";
 
-
+		
 		
 
 		//Executes query string
@@ -151,7 +152,45 @@
 		$conn->close();
 	}
 
-	function registerUser() 
+	function submitReview()
+	{
+		
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+
+		$review =  urldecode($_POST['review']); 
+		$rating =  intval(urldecode($_POST['rating'])); 
+		
+		// Rating is -1 by default
+		//echo ("Review = " + $review + " Rating = " + $rating);
+		//if ($rating == -1) { array_push($errors, "Please select a rating"); }
+
+		if (empty($review)){
+			$sql = "INSERT INTO reviews (comment,rating)
+					VALUES 
+					(NULL,'$rating')";
+		}
+		else {
+			$sql = "INSERT INTO reviews (comment,rating)
+					VALUES 
+					('$review','$rating')";
+		}
+
+		//Executes query string
+		if ($conn->query($sql) === TRUE) {
+			echo "New record created successfully";
+		} else {
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$conn->close();
+
+	}
+
+
+
+	if ($method == 'getSearchInfo')
 	{
 
 		global $conn;
@@ -197,6 +236,11 @@
 	else if ($method == 'getAllBooksFromAuthor')
 	{
 		getAllBooksFromAuthor();
+	}
+
+	else if ($method == 'submitReview')
+	{	
+		submitReview();
 	}
 	
 
