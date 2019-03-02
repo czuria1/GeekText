@@ -3,12 +3,13 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "root";
-	$dbpassword = "W&tson$2018";
+	$dbusername = "jyepe";
+	$dbpassword = "9373yepe";
 	$dbname = "geektext_db";
 
 	//what method to execute
 	$method = urldecode($_POST['method']);
+	
 	//used to create json objects
 	$myObj = new \stdClass();
 	
@@ -43,7 +44,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT  books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
+		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
 			  		    books.DESCRIPTION, books.RATING
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
@@ -57,7 +58,7 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-//Im making the page number between 10 and 20
+		//Im making the page number between 10 and 20
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -65,8 +66,9 @@
 	    	while($row = $result->fetch_assoc()) 
 	    	{
 				$bus = array(
+					"cover" => $row["COVER"],
 					"title" => $row["TITLE"],
-					"author" => $row["LAST_NAME"]. " " .$row["FIRST_NAME"],
+					"author" => $row["FIRST_NAME"]. " " .$row["LAST_NAME"],
 					"genre" => $row["GENRE"],
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
@@ -109,10 +111,10 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING
+		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING
 				FROM   books
 				JOIN   authors ON books.AUTHOR = authors.ID
-				WHERE  concat(AUTHORS.LAST_NAME, ' ', AUTHORS.FIRST_NAME) = @AUTHOR_NAME;";
+				WHERE  concat(AUTHORS.FIRST_NAME, ' ', AUTHORS.LAST_NAME) = @AUTHOR_NAME;";
 
 
 		//Executes query string
@@ -125,6 +127,7 @@
 	    	while($row = $result->fetch_assoc()) 
 	    	{
 				$bus = array(
+					"cover" => $row["COVER"],
 					"title" => $row["TITLE"],
 					"genre" => $row["GENRE"],
 					"publisher" => $row["PUBLISHER"],
@@ -189,10 +192,6 @@
 
 	if ($method == 'getSearchInfo')
 	{
-		getSearchInfo();
-	}
-
-	function registerUser() {
 
 		global $conn;
 		global $myObj;
@@ -226,10 +225,14 @@
 		$conn->close();
 	}
 
-	if ($method == 'registerUser') {
+	if ($method == 'getSearchInfo')
+	{
+		getSearchInfo();
+	}
+	else if ($method == 'registerUser') 
+	{
 		registerUser();
 	}
-	
 	else if ($method == 'getAllBooksFromAuthor')
 	{
 		getAllBooksFromAuthor();
