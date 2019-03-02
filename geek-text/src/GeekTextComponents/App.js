@@ -6,6 +6,7 @@ import RegistrationScreen from './ProfileManagement/RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
+import ProfileSettings from './ProfileManagement/ProfileSettings';
 
 const Login = () => (
     <Route render={props => (
@@ -18,7 +19,7 @@ class App extends Component {
     constructor (props) {
         super (props);
         this.state = {
-            currentUser: 'null',
+            currentUser: 'test',
             isUserLoggedIn: false
         }
 
@@ -50,12 +51,17 @@ class App extends Component {
                         isUserLoggedIn={this.state.isUserLoggedIn}
                         logoutUser={this.state.logoutUser}></Header>
 
+                    <ProfileSettings
+                        currentUser={this.state.currentUser}></ProfileSettings>
+
                     <div>
                         <Route path="/search" component={SearchPage}/>
                         <Route path="/login" render={(props) => <LoginScreen {...props}
                                                                             username={this.state.currentUser}
                                                                             isLoggedIn={this.state.isUserLoggedIn}
                                                                             setCurrentUser={this.setCurrentUser}/>}/>
+                        <Route path="/profilesettings" render={(props) => <ProfileSettings {...props}
+                                                                            currentUser={this.state.currentUser}/>}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>

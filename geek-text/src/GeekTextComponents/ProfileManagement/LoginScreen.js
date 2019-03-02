@@ -84,7 +84,6 @@ export default class LoginScreen extends Component {
             return (
                 <HashRouter>
                     <div>
-                        <h1>{this.state.isLoggedIn}</h1>
                         <div className="outer">
                             <div className="loginarea">
                                 <TextField 
