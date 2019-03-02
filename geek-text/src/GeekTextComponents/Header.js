@@ -73,6 +73,7 @@ class Header extends Component {
 
     handleLogout = () => {
         this.logoutCurrentUser();
+        alert("You have been logged out");
     };
 
     logoutCurrentUser() {
@@ -80,7 +81,7 @@ class Header extends Component {
         this.setState({
             currentUser: "null", 
             isUserLoggedIn: false
-        })
+        });
     }
 
     loggedInUser () {
@@ -102,7 +103,12 @@ class Header extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                             >
-                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/profilesettings"
+                                 onClick={this.handleClose}
+                                 >My account</NavLink>
+                                </MenuItem>
                             <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                         </Menu>
                     </div>

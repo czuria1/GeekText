@@ -51,7 +51,8 @@ export default class ProfileSettings extends Component {
                             <br></br>
                             <br></br>
                             <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
-                                        to="/profilesettings" replace
+                                        to="/profilesettings"
+                                        onClick={event => alert("Go to personal information settings")}
                                         >Edit Personal Information</NavLink>
                         </div>
                     </div>

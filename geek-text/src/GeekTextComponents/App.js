@@ -51,9 +51,6 @@ class App extends Component {
                         isUserLoggedIn={this.state.isUserLoggedIn}
                         logoutUser={this.state.logoutUser}></Header>
 
-                    <ProfileSettings
-                        currentUser={this.state.currentUser}></ProfileSettings>
-
                     <div>
                         <Route path="/search" component={SearchPage}/>
                         <Route path="/login" render={(props) => <LoginScreen {...props}
