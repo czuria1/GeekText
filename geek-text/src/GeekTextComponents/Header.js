@@ -9,6 +9,14 @@ import {
 
 
 class Header extends Component {
+
+    constructor (props) {
+        super (props);
+        this.state = {
+            currentUser: props.currentUser,
+            isUserLoggedIn: props.isUserLoggedIn
+        }
+    }
     
     render () {
         return (
@@ -18,11 +26,7 @@ class Header extends Component {
                     <h1 align = "center">Geek Text</h1>
                 </div>
                 <div className="loginButton">
-                    <Button variant="outlined">
-                        <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/login"
-                                 >Login</NavLink>
-                    </Button>
+                    {this.loggedInUser()}
                 </div>
                 <div className="shoppingCartButton">
                     <Button variant="outlined">
@@ -43,6 +47,28 @@ class Header extends Component {
             </div>
             </HashRouter>
         )
+    }
+
+    loggedInUser () {
+        if (this.state.isUserLoggedIn) {
+            return (
+                <div>
+                    <div>
+                        <h3>{this.state.currentUser}</h3>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <Button variant="outlined">
+                        <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/login"
+                                 >Login</NavLink>
+                    </Button>
+                </div>
+            )
+        }
     }
 }
 
