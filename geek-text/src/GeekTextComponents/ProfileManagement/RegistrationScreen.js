@@ -23,7 +23,6 @@ export default class RegistrationScreen extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.registerButtonClicked = this.registerButtonClicked.bind(this);
-        // this.handleErrors = this.handleErrors.bind(this);
     }
 
     handleSubmit (event) {
@@ -49,7 +48,7 @@ export default class RegistrationScreen extends Component {
                 this.setState({
                     isRegistrationSuccess: true
                 })
-                this.props.history.push('/login/welcome');
+                this.props.history.push('/login');
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {

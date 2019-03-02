@@ -31,6 +31,7 @@ export default class LoginScreen extends Component {
                     isLoggedIn: true
                 })
                 this.updateCurrentUser.bind(this);
+                this.props.history.push('/');
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
