@@ -1,107 +1,63 @@
 import React, {Component} from "react";
 import './login.css';
-import TextField from '@material-ui/core/TextField';
-import { Button } from '@material-ui/core';
 import {NavLink, HashRouter} from "react-router-dom";
+import { Button } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 export default class ProfileSettings extends Component {
 
     constructor (props) {
         super (props);
         this.state = {
+            currentUser: props.currentUser, 
+            newPassword: 'null',
             isLoggedIn: true
         }
     }
 
+    handleClick() {
+        alert("Your password has been updated!");
+    }
+
     render() {
+        
         return (
-            <HashRouter>
-                <div>
-                    <div className="outer">
-                        <div className="loginarea">
+            <div>
+                <div className="outer">
+                    <div className="loginarea">
                         <TextField 
-                                id="usernameInput"
-                                className="textfield"
-                                value={this.state.username}
-                                label="Username"
-                                variant="outlined"
-                                onChange={this.state.username}></TextField>
-                            <br></br>
-                            <br></br>
-                            <TextField 
-                                id="fnameInput"
-                                className="textfield"
-                                required
-                                label="First Name"
-                                helperText="Enter your First Name"
-                                variant="outlined"
-                                onChange={this.fname}></TextField>
-                            <br></br>
-                            <br></br>
-                            <TextField
-                                id="lnameInput" 
-                                className="textfield"
-                                required
-                                label="Last Name"
-                                helperText="Enter your Last Name"
-                                variant="outlined"
-                                onChange={this.lname}></TextField>
-                            <br></br>
-                            <br></br>
-                            <TextField
-                                id="nicknameInput" 
-                                className="textfield"
-                                label="Nickname"
-                                helperText="Enter your Nickname"
-                                variant="outlined"
-                                onChange={this.nickname}></TextField>
-                            <br></br>
-                            <br></br>
-                            <TextField
-                                id="emailInput" 
-                                className="textfield"
-                                required
-                                autoComplete="email"
-                                type="email"
-                                label="Email"
-                                helperText="Enter your Email"
-                                variant="outlined"
-                                onChange={this.email}></TextField>
-                            <br></br>
-                            <br></br>
-                            <TextField
-                                id="pw_1_Input" 
-                                className="textfield"
-                                required
-                                type="password"
-                                label="Password"
-                                helperText="Enter your Password"
-                                variant="outlined"
-                                onChange={this.password_1}></TextField>
-                            <br></br>
-                            <br></br>
-                            <TextField
-                                id="pw_2_Input"
-                                className="textfield"
-                                required
-                                type="password"
-                                label="Password Confirmation"
-                                helperText="Enter your Password Again"
-                                variant="outlined"
-                                onChange={this.password_2}></TextField>
-                            <br></br>
-                            <br></br>
-                            <div className="submitArea">
-                                <Button
-                                    id="submitButton"
-                                    className="submitButton"
+                            className="textfield"
+                            disabled
+                            value={this.state.currentUser}
+                            helperText="Current Username"
+                            variant="outlined"
+                            ></TextField>
+                                <br></br>
+                                <br></br>
+                                <TextField
+                                    className="textfield" 
+                                    type="password"
+                                    label="New Password"
+                                    helperText="Update your Password"
                                     variant="outlined"
-                                    onClick={this.registerButtonClicked}>Submit</Button>
-                            </div>
+                                    onChange={event => this.setState({newPassword: event.target.value})}
+                                    ></TextField>
+                                    <br></br>
+                                    <br></br>
+                        <div className="submitArea">
+                            <Button
+                                onClick={this.handleClick}>Update Password</Button>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
+                                        to="/profilesettings"
+                                        onClick={event => alert("Go to personal information settings")}
+                                        >Edit Personal Information</NavLink>
                         </div>
                     </div>
                 </div>
-            </HashRouter>
+            </div>
         );
     }
 

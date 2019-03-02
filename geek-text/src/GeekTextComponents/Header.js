@@ -6,15 +6,29 @@ import {
     NavLink,
     HashRouter
   } from "react-router-dom";
-
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 class Header extends Component {
 
     constructor (props) {
         super (props);
         this.state = {
+            anchorEl: null,
             currentUser: props.currentUser,
             isUserLoggedIn: props.isUserLoggedIn
+        }
+
+        this.logoutCurrentUser = this.logoutCurrentUser.bind(this);
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log("Header will update", nextProps, nextState);
+        if (nextProps !== this.props) {
+            this.setState({
+                currentUser: nextProps.username, 
+                isUserLoggedIn: nextProps.isUserLoggedIn
+            })
         }
     }
     
@@ -49,12 +63,54 @@ class Header extends Component {
         )
     }
 
+    handleClick = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
+    handleLogout = () => {
+        this.logoutCurrentUser();
+        alert("You have been logged out");
+    };
+
+    logoutCurrentUser() {
+        // this.props.logoutCurrentUser("null", false);
+        this.setState({
+            currentUser: "null", 
+            isUserLoggedIn: false
+        });
+    }
+
     loggedInUser () {
+
+        const { anchorEl } = this.state;
+
         if (this.state.isUserLoggedIn) {
             return (
                 <div>
                     <div>
-                        <h3>{this.state.currentUser}</h3>
+                        <Button
+                            aria-owns={anchorEl ? 'simple-menu' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleClick}
+                            >{this.props.currentUser}</Button>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={this.handleClose}
+                            >
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/profilesettings"
+                                 onClick={this.handleClose}
+                                 >My account</NavLink>
+                                </MenuItem>
+                            <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                        </Menu>
                     </div>
                 </div>
             )
