@@ -6,16 +6,57 @@ import {
     NavLink,
     HashRouter
   } from "react-router-dom";
-
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 class Header extends Component {
 
     constructor (props) {
         super (props);
         this.state = {
+            anchorEl: null,
             currentUser: props.currentUser,
             isUserLoggedIn: props.isUserLoggedIn
         }
+    }
+
+    componentWillMount() {
+        console.log("Header will mount");
+    }
+
+    componentDidMount() {
+        console.log("Header did mount!");
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("Header will receive props", nextProps);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log("Should Header update", nextProps, nextState);
+        // if (nextState.status === 1) {
+        //     return false;
+        // }
+        
+        return true;
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log("Header will update", nextProps, nextState);
+        if (nextProps.username !== this.state.currentUser) {
+            this.setState({
+                currentUser: nextProps.username, 
+                isUserLoggedIn: nextProps.isUserLoggedIn
+            })
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log("Header did update", prevProps, prevState);
+    }
+
+    componentWillUnmount() {
+        console.log("Header will unmount");
     }
     
     render () {
@@ -49,12 +90,37 @@ class Header extends Component {
         )
     }
 
+    handleClick = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
     loggedInUser () {
+
+        const { anchorEl } = this.state;
+
         if (this.state.isUserLoggedIn) {
             return (
                 <div>
                     <div>
-                        <h3>{this.state.currentUser}</h3>
+                        <Button
+                            aria-owns={anchorEl ? 'simple-menu' : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleClick}
+                            >{this.props.currentUser}</Button>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={this.handleClose}
+                            >
+                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                            <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                        </Menu>
                     </div>
                 </div>
             )

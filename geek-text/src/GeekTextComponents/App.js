@@ -7,22 +7,28 @@ import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './AuthorPage';
 
+const Login = () => (
+    <Route render={props => (
+        <LoginScreen {...props}></LoginScreen>
+    )}/>
+)
+
 class App extends Component {
 
     constructor (props) {
         super (props);
         this.state = {
-            currentUser: '',
+            currentUser: 'null',
             isUserLoggedIn: false
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
     }
 
-    setCurrentUser(newUser) {
+    setCurrentUser(newUser, loggedIn) {
         this.setState({
-            isUserLoggedIn: true,
-            currentUser: newUser
+            currentUser: newUser,
+            isUserLoggedIn: loggedIn
         });
     }
 
@@ -33,13 +39,14 @@ class App extends Component {
                 <div>
                     <Header 
                         currentUser={this.state.currentUser}
-                        isUserLoggedIn={this.state.isUserLoggedIn}
-                        setCurrentUser={this.setCurrentUser.bind(this)}></Header>
+                        isUserLoggedIn={this.state.isUserLoggedIn}></Header>
 
                     <div>
                         <Route path="/search" component={SearchPage}/>
                         <Route path="/login" render={(props) => <LoginScreen {...props}
-                                                                            isLoggedIn={this.state.isUserLoggedIn}/>}/>
+                                                                            username={this.state.currentUser}
+                                                                            isLoggedIn={this.state.isUserLoggedIn}
+                                                                            setCurrentUser={this.setCurrentUser}/>}/>
                         <Route path="/shoppingCart" component={ShoppingCartPage}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
