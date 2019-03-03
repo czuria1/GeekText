@@ -21,7 +21,7 @@ class App extends Component {
         this.setCurrentUser = this.setCurrentUser.bind(this);
         this.logoutUser = this.logoutUser.bind(this);
 
-        document.title = "Geek Text";
+        document.title = "Geek Text Home";
     }
 
     setCurrentUser(newUser, loggedIn) {
