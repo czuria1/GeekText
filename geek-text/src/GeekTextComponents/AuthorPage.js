@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import ajaxme from "ajaxme";
-import BookList from "./BookList";
+import "./ModalImage.css"
+import "./BookList.css"
 
 class AuthorPage extends Component{
 
@@ -12,11 +13,7 @@ class AuthorPage extends Component{
 
         //Bind the methods to the component
         this.getAllBooksFromAuthor = this.getAllBooksFromAuthor.bind(this);
-        this.resetBookState = this.resetBookState.bind(this);
-    }
-    
-    componentDidMount()
-    {
+        this.returnList = this.returnList.bind(this);
         this.getAllBooksFromAuthor();
     }
 
@@ -42,39 +39,36 @@ class AuthorPage extends Component{
             }
         });
     }
-    
-    //Sets the books array to empty to prevent continuos rendering of the booklist
-    resetBookState() {
-        this.setState({
-            books: []
-        })
-    }
 
-    //Returns the Booklist component if the books array is populated
-    retrieveList() {
-        return(
-            <button>hello</button>
-        )
+    returnList() {
+        var bookList = this.state.books.map(function(book){
+            return <div id="bookListContainer">
+                    <div id="detailContainer">
+                        <p>{book.title}</p>
+                        <p>{book.genre}</p>
+                        <p>{book.publisher}</p>
+                        <p>{book.pub_date}</p>
+                        <p>{book.description}</p>
+                        <p>{book.rating}</p>
+                        <p id="shoppingCartLink">Add To Shopping Cart</p>
+                        <hr id="line"></hr>
+                    </div>
+                    <div id="coverContainer">
+                        <img id="cover" src={book.cover} alt="Image not available"></img>
+                    </div>
+                </div>;
+          })
+
+        return bookList;
     }
 
     render() {
-        
         return(
             <div align="center" id="author-book-info-container">
-                {}
-                Books By : {
-                    
-                            // for (let index = 0; index < 3; index++) 
-                            // {
-                            //     const element = array[index];
-                    
-                            // } 
-                            // this.retrieveList()
-                
-                
-                
-                
-                            }
+                <div id="list">
+                    <div id="myModal" className="modal"></div>
+                    {this.returnList()}
+                </div>
             </div>
         )
     }
