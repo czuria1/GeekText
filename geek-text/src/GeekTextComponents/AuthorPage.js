@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import ajaxme from "ajaxme";
-import "./ModalImage.css"
-import "./BookList.css"
+//import "./ModalImage.css"
+//import "./BookList.css"
+
+import SearchArea from "./SearchArea";
 
 class AuthorPage extends Component{
 
@@ -14,6 +16,7 @@ class AuthorPage extends Component{
         //Bind the methods to the component
         this.getAllBooksFromAuthor = this.getAllBooksFromAuthor.bind(this);
         this.returnList = this.returnList.bind(this);
+        this.closeModalImage = this.closeModalImage.bind(this);
         this.getAllBooksFromAuthor();
     }
 
@@ -41,8 +44,8 @@ class AuthorPage extends Component{
     }
 
     returnList() {
-        var bookList = this.state.books.map(function(book){
-            return <div id="bookListContainer">
+        var bookList = this.state.books.map(function(book, index){
+            return <div key={index} id="bookListContainer">
                     <div id="detailContainer">
                         <p>{book.title}</p>
                         <p>{book.genre}</p>
@@ -54,7 +57,19 @@ class AuthorPage extends Component{
                         <hr id="line"></hr>
                     </div>
                     <div id="coverContainer">
-                        <img id="cover" src={book.cover} alt="Image not available"></img>
+                        <img id="cover" 
+                             src={book.cover} 
+                             alt="Image not available" 
+                             onClick={function(){  
+                                                    var modalDiv = document.getElementById("myModal");
+                                                    var modalImage = document.getElementById("img01");
+                                                    var caption = document.getElementById("caption");
+                                                    var sourceImage = document.getElementById("cover");
+                                                    modalDiv.style.display = "block";
+                                                    modalImage.src = sourceImage.src;
+                                                    caption.innerHTML = book.title;
+                                                }}>
+                        </img>
                     </div>
                 </div>;
           })
@@ -62,11 +77,21 @@ class AuthorPage extends Component{
         return bookList;
     }
 
+    closeModalImage() {
+         var modalDiv = document.getElementById("myModal");
+         modalDiv.style.display = "none";
+    }
+
     render() {
         return(
             <div align="center" id="author-book-info-container">
+                <SearchArea></SearchArea>
                 <div id="list">
-                    <div id="myModal" className="modal"></div>
+                    <div id="myModal" className="modal">
+                        <span id="closeButton" className="close" onClick={this.closeModalImage}>X</span>
+                        <img className="modalContent" id="img01"></img>
+                        <div id="caption"></div>
+                    </div>
                     {this.returnList()}
                 </div>
             </div>
