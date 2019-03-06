@@ -64,9 +64,8 @@ class AuthorPage extends Component{
                                                     var modalDiv = document.getElementById("myModal");
                                                     var modalImage = document.getElementById("img01");
                                                     var caption = document.getElementById("caption");
-                                                    var sourceImage = document.getElementById("cover");
                                                     modalDiv.style.display = "block";
-                                                    modalImage.src = sourceImage.src;
+                                                    modalImage.src = book.cover;
                                                     caption.innerHTML = book.title;
                                                 }}>
                         </img>
@@ -84,12 +83,12 @@ class AuthorPage extends Component{
 
     render() {
         return(
-            <div align="center" id="author-book-info-container">
+            <div >
                 <SearchArea></SearchArea>
                 <div id="list">
                     <div id="myModal" className="modal">
                         <span id="closeButton" className="close" onClick={this.closeModalImage}>X</span>
-                        <img className="modalContent" id="img01"></img>
+                        <img className="modal-content" id="img01"></img>
                         <div id="caption"></div>
                     </div>
                     {this.returnList()}
