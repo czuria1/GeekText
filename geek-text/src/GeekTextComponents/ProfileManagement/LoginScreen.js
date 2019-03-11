@@ -4,6 +4,16 @@ import ajaxme from "ajaxme";
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import {NavLink, HashRouter} from "react-router-dom";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+  }
 
 export default class LoginScreen extends Component {
 
@@ -17,11 +27,22 @@ export default class LoginScreen extends Component {
 
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
         this.updateCurrentUser = this.updateCurrentUser.bind(this);
+        this.validateLogin = this.validateLogin.bind(this);
+        // this.validateEmail = this.validateEmail.bind(this);
     }
 
     updateCurrentUser() {
         this.props.setCurrentUser(this.state.username, true);
     }
+
+    validateLogin() {
+        return this.state.username.length > 0 && this.state.password.length > 6;
+    }
+
+    // validateEmail(email) {
+    //     const regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //     return regexp.test(email);
+    // }
 
     componentWillMount() {
         console.log("LoginScreen will mount");
@@ -61,9 +82,15 @@ export default class LoginScreen extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=loginUser&username=' + `${this.state.username}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
-                this.updateCurrentUser();
-                this.props.history.push('/');
-                console.log('success', XMLHttpRequest);
+                if (XMLHttpRequest.responseText === "No such user exists") {
+                    // TODO
+                    alert("No such user exists");
+                    return;
+                } else {
+                    this.updateCurrentUser();
+                    this.props.history.push('/');
+                    console.log('success', XMLHttpRequest);
+                }
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -90,11 +117,11 @@ export default class LoginScreen extends Component {
                                     className="textfield"
                                     required
                                     label="Username"
-                                    helperText="Enter your Username"
                                     variant="outlined"
                                     onChange={event => this.setState({username: event.target.value})}
                                     onClick={this.state.username === "" ? event => this.setState({username: ""}) : event => this.setState({username: event.target.value})}
-                                    error={this.state.username === ""}></TextField>
+                                    error={this.state.username === ""}
+                                    helperText={this.state.username.length > 0 ? "Enter your username": "Not a valid username"}></TextField>
                                 <br></br>
                                 <br></br>
                                 <TextField
@@ -102,17 +129,18 @@ export default class LoginScreen extends Component {
                                     required
                                     type="password"
                                     label="Password"
-                                    helperText="Enter your Password"
                                     variant="outlined"
                                     onChange={event => this.setState({password: event.target.value})}
                                     onClick={this.state.password === "" ? event => this.setState({password: ""}) : event => this.setState({password: event.target.value})}
-                                    error={this.state.password === ""}></TextField>
+                                    error={this.state.password === ""}
+                                    helperText={this.state.password.length > 5 ? "Password is long enough": "Password must be at least 6 characters long"}></TextField>
                                     <br></br>
                                     <br></br>
                                     <div className="submitArea">
                                         <Button
                                             className="submitButton"
                                             variant="outlined"
+                                            disabled={!this.validateLogin()}
                                             onClick={this.loginButtonClicked}>Login
                                         </Button>
                                         <br></br>

@@ -74,6 +74,7 @@ class Header extends Component {
     handleLogout = () => {
         this.logoutCurrentUser();
         alert("You have been logged out");
+        
     };
 
     logoutCurrentUser() {
