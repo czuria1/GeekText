@@ -108,9 +108,9 @@ class Header extends Component {
                                 <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                  to="/profilesettings"
                                  onClick={this.handleClose}
-                                 >My account</NavLink>
+                                 >Profile</NavLink>
                                 </MenuItem>
-                            <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                            <MenuItem onClick={this.handleLogout}>Sign Out</MenuItem>
                         </Menu>
                     </div>
                 </div>
