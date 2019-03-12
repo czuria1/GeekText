@@ -35,7 +35,7 @@ class SearchPage extends Component {
 //Trying to show the additional pages     
         //Only have 30 books so keep it low
         //Shows only the tabs left for book
-        this.neighbors = typeof neighbors === 'number' ? Math.max(0, Math.min(neighbors, 3)) : 0;
+        this.neighbors = typeof neighbors === 'number' ? Math.max(0, Math.min(neighbors, 2)) : 0;
         this.exactPages = Math.ceil(this.exact / this.pages);
         this.state = {
             currentPage: 1, //Current page being 1
@@ -169,7 +169,7 @@ class SearchPage extends Component {
             case(spill1 && spill2):
                 
               default:{
-                prange = [page1, secondaryPages, prange];
+                prange = [page1, prange, page2];
                 break;         
             }
         }
@@ -213,13 +213,10 @@ class SearchPage extends Component {
                         <a className = "pglink" href = "#" onClick = {this.handleClick(page)}>{page}</a>
                         </li>
                     );
+                    
                 })}
                 </ul>
-                </nav>
-            </Fragment>
-
-           
-             <div align="center" id="book-info-container">
+                <div align="center" id="book-info-container">
                  {this.retrieveList()}
                 
                  <div> 
@@ -227,6 +224,11 @@ class SearchPage extends Component {
                                 searchButtonClicked={this.searchButtonClicked}></SearchArea>
                  </div>
              </div>
+                </nav>
+                
+            </Fragment>
+
+         
              
         );
     }
