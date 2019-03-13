@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import ajaxme from "ajaxme";
-//import "./ModalImage.css"
-//import "./BookList.css"
+import "./ModalImage.css"
+import "./BookList.css"
 
 import SearchArea from "./SearchArea";
 
@@ -46,16 +46,6 @@ class AuthorPage extends Component{
     returnList() {
         var bookList = this.state.books.map(function(book, index){
             return <div key={index} id="bookListContainer">
-                    <div id="detailContainer">
-                        <p>{book.title}</p>
-                        <p>{book.genre}</p>
-                        <p>{book.publisher}</p>
-                        <p>{book.pub_date}</p>
-                        <p>{book.description}</p>
-                        <p>{book.rating}</p>
-                        <p id="shoppingCartLink">Add To Shopping Cart</p>
-                        <hr id="line"></hr>
-                    </div>
                     <div id="coverContainer">
                         <img id="cover" 
                              src={book.cover} 
@@ -70,6 +60,16 @@ class AuthorPage extends Component{
                                                 }}>
                         </img>
                     </div>
+                    <div id="detailContainer">
+                        <p>{book.title}</p>
+                        <p>{book.genre}</p>
+                        <p>{book.publisher}</p>
+                        <p>{book.pub_date}</p>
+                        <p>{book.description}</p>
+                        <p>{book.rating}</p>
+                        <p id="shoppingCartLink">Add To Shopping Cart</p>
+                    </div>
+                    <hr id="line"></hr>
                 </div>;
           })
 

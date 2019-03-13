@@ -113,7 +113,7 @@ class BookList extends Component {
     closeModalImage() {
         var modalDiv = document.getElementById("myModal");
         modalDiv.style.display = "none";
-   }
+    }
 
     render() { 
         
