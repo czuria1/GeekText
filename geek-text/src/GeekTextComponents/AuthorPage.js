@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import ajaxme from "ajaxme";
 import "./ModalImage.css"
 import "./BookList.css"
-
 import SearchArea from "./SearchArea";
+import List from "./List";
+import ModalCover from "./ModalCover";
 
 class AuthorPage extends Component{
 
@@ -45,40 +46,10 @@ class AuthorPage extends Component{
 
     returnList() {
         var bookList = this.state.books.map(function(book, index){
-            return <div key={index} id="bookListContainer">
-                    <div id="coverContainer">
-                        <img id="cover" 
-                             src={book.cover} 
-                             alt="Image not available" 
-                             onClick={function(){  
-                                                    var modalDiv = document.getElementById("myModal");
-                                                    var modalImage = document.getElementById("img01");
-                                                    var caption = document.getElementById("caption");
-                                                    modalDiv.style.display = "block";
-                                                    modalImage.src = book.cover;
-                                                    caption.innerHTML = book.title;
-                                                }}>
-                        </img>
-                    </div>
-                    <div id="detailContainer">
-                        <p>{book.title}</p>
-                        <p>{book.genre}</p>
-                        <p>{book.publisher}</p>
-                        <p>{book.pub_date}</p>
-                        <p>{book.description}</p>
-                        <p>{book.rating}</p>
-                        <p id="shoppingCartLink">Add To Shopping Cart</p>
-                    </div>
-                    <hr id="line"></hr>
-                </div>;
+            return <List bookInfo={book} key={index}></List>;
           })
 
         return bookList;
-    }
-
-    closeModalImage() {
-         var modalDiv = document.getElementById("myModal");
-         modalDiv.style.display = "none";
     }
 
     render() {
@@ -86,11 +57,7 @@ class AuthorPage extends Component{
             <div >
                 <SearchArea></SearchArea>
                 <div id="list">
-                    <div id="myModal" className="modal">
-                        <span id="closeButton" className="close" onClick={this.closeModalImage}>X</span>
-                        <img className="modal-content" id="img01"></img>
-                        <div id="caption"></div>
-                    </div>
+                    <ModalCover></ModalCover>
                     {this.returnList()}
                 </div>
             </div>
