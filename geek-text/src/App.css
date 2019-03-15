@@ -22,6 +22,39 @@
   color: #61dafb;
 }
 
+#dropInput{
+font-size: 16px;
+padding: 12px 18px 10px 26px;
+border: none;
+}
+
+.dContent a {
+  color: black;
+  padding: 14px 18px;
+  display: block;
+}
+
+.dDown{
+  position: relative;
+  display: inline-block;
+}
+
+.droptab{
+background-color: goldenrod;
+border: none;
+color: blue;
+cursor: pointer;
+font-size: 18px;
+padding: 18px;
+}
+
+.show{
+  display:block;
+}
+
+
+
+
 .topnav {
   background-color: #61dafb;
   overflow: hidden;

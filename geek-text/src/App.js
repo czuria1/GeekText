@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-function dropFunction(){
-  document.getElementById("down").classList.toggle("show");
-}
+
+
+
+
 class App extends Component {
   render() {
     return (
