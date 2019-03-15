@@ -19,16 +19,15 @@ class BookDetails extends Component {
                     <ListItem>Author: {bookInfo.author}</ListItem>
                     <ListItem>Publisher: {bookInfo.publisher}</ListItem>
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
+                    <ListItem>ISBN: {bookInfo.isbn}</ListItem>
                 </List>
                 <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
-                <p></p>
                 <h3>Summary</h3>
                 <hr></hr>
                 <span>{bookInfo.description}</span>
-                <p></p>
                 <h3>About the author</h3>
                 <hr></hr>
-                <p></p>
+                <span>{bookInfo.bio}</span>
                 <h3>Reviews</h3>
             </div> 
         );
