@@ -4,11 +4,11 @@ import LoginScreen from "./ProfileManagement/LoginScreen";
 import RegistrationScreen from './ProfileManagement/RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
-import AuthorPage from './AuthorPage';
+import AuthorPage from './Display Book Info Components/AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
-import BookList from './BookList';
+import BookList from './Display Book Info Components/BookList';
 import SearchArea from './SearchArea';
-import BookDetails from './BookDetails';
+import BookDetails from './Display Book Info Components/BookDetails';
 
 class App extends Component {
 
