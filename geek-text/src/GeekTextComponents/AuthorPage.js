@@ -17,7 +17,6 @@ class AuthorPage extends Component{
         //Bind the methods to the component
         this.getAllBooksFromAuthor = this.getAllBooksFromAuthor.bind(this);
         this.returnList = this.returnList.bind(this);
-        this.closeModalImage = this.closeModalImage.bind(this);
         this.getAllBooksFromAuthor();
     }
 
@@ -46,7 +45,7 @@ class AuthorPage extends Component{
 
     returnList() {
         var bookList = this.state.books.map(function(book, index){
-            return <List bookInfo={book} key={index}></List>;
+            return <List bookInfo={book} key={index} bookIndex={index}></List>;
           })
 
         return bookList;

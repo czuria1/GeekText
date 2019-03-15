@@ -64,7 +64,7 @@ class BookList extends Component {
         if (this.state.books.length !== 0)
         {
             var bookList = this.state.books.map(function(book, index){
-                return <List bookInfo={book} key={index}></List>;
+                return <List bookInfo={book} key={index} bookIndex={index}></List>;
               })
     
             return bookList;

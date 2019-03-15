@@ -8,6 +8,7 @@ import AuthorPage from './AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
 import BookList from './BookList';
 import SearchArea from './SearchArea';
+import BookDetails from './BookDetails';
 
 class App extends Component {
 
@@ -62,6 +63,7 @@ class App extends Component {
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>
+                        <Route path="/bookDetails" component={BookDetails}/>
                      </div>
                     </div>
                 </div>
