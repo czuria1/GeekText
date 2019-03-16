@@ -1,8 +1,18 @@
 import React, {Component} from "react";
 import './login.css';
-import {NavLink, HashRouter} from "react-router-dom";
-import { Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
+import Card from './ProfileCard';
+import Key from 'react-icons/lib/ti/key-outline';
+import Address from 'react-icons/lib/ti/location-outline';
+import Credit from 'react-icons/lib/ti/credit-card';
+import Grid from '@material-ui/core/Grid';
+import {HashRouter} from "react-router-dom";
+
+const styles = theme => ({
+    root: {
+      flexGrow: 1,
+      height: 300,
+    },
+});
 
 export default class ProfileSettings extends Component {
 
@@ -20,44 +30,52 @@ export default class ProfileSettings extends Component {
     }
 
     render() {
-        
         return (
-            <div>
-                <div className="outer">
-                    <div className="loginarea">
-                        <TextField 
-                            className="textfield"
-                            disabled
-                            value={this.state.currentUser}
-                            helperText="Current Username"
-                            variant="outlined"
-                            ></TextField>
-                                <br></br>
-                                <br></br>
-                                <TextField
-                                    className="textfield" 
-                                    type="password"
-                                    label="New Password"
-                                    helperText="Update your Password"
-                                    variant="outlined"
-                                    onChange={event => this.setState({newPassword: event.target.value})}
-                                    ></TextField>
-                                    <br></br>
-                                    <br></br>
-                        <div className="submitArea">
-                            <Button
-                                onClick={this.handleClick}>Update Password</Button>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
-                                        to="/profilesettings"
-                                        onClick={event => alert("Go to personal information settings")}
-                                        >Edit Personal Information</NavLink>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <HashRouter>
+                <Grid
+                    style={{flexGrow: 1,
+                        height: 500}}
+                    container spacing={24}
+                    direction="row"
+                    justify="center"
+                    alignItems="center"> 
+                    <Grid 
+                        item xs={12}
+                        container
+                        direction="row"
+                        justify="center"
+                        alignItems="center">
+                    <h1>Account Settings</h1>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Card 
+                            icon={<div style={{color: 'red'}}>
+                                <Key size={90}></Key>
+                            </div>}
+                            title="Login & Security"
+                            subtitle="Edit login, name, email, and home address"
+                            event={event => this.props.history.push('/loginSettings')}></Card>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Card 
+                            icon={<div style={{color: 'red'}}>
+                            <Address size={70}></Address>
+                        </div>}
+                            title="Addresses"
+                            subtitle="Edit addresses for orders"
+                            event={event => this.props.history.push('/addressSettings')}></Card>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Card 
+                            icon={<div style={{color: 'red'}}>
+                            <Credit size={70}></Credit>
+                        </div>}
+                            title="Payment Options"
+                            subtitle="Edit or add payment methods"
+                            event={event => this.props.history.push('/paymentSettings')}></Card>
+                    </Grid>
+                </Grid>
+            </HashRouter>
         );
     }
 

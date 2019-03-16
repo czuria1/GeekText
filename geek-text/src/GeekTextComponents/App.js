@@ -8,6 +8,9 @@ import AuthorPage from './AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
 import BookList from './BookList';
 import SearchArea from './SearchArea';
+import LoginSettings from './ProfileManagement/LoginSettings';
+import AddressSettings from './ProfileManagement/AddressSettings';
+import PaymentSettings from './ProfileManagement/PaymentSettings';
 
 class App extends Component {
 
@@ -15,7 +18,7 @@ class App extends Component {
         super (props);
         this.state = {
             currentUser: 'test',
-            isUserLoggedIn: false
+            isUserLoggedIn: true
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
@@ -62,6 +65,9 @@ class App extends Component {
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>
+                        <Route path="/loginSettings" component={LoginSettings}/>
+                        <Route path="/addressSettings" component={AddressSettings}/>
+                        <Route path="/paymentSettings" component={PaymentSettings}/>
                      </div>
                     </div>
                 </div>
