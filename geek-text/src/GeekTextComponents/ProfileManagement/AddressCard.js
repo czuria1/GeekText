@@ -25,11 +25,19 @@ function MediaCard(props) {
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Lizard
+            {props.name}
           </Typography>
           <Typography component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
+            {props.address}
+          </Typography>
+          <Typography component="p">
+            {props.city}
+          </Typography>
+          <Typography component="p">
+            {props.country}
+          </Typography>
+          <Typography component="p">
+            {props.phoneNum}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -37,7 +45,7 @@ function MediaCard(props) {
         <Button size="small" color="primary">
           Edit
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={props.removeAddress}>
           Delete
         </Button>
       </CardActions>

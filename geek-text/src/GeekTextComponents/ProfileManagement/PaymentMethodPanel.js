@@ -65,11 +65,12 @@ function SimpleExpansionPanel(props) {
         <ExpansionPanelDetails>
             <div className={classes.column}>
                 <Typography variant="subtitle1">Name on card</Typography>
-                <Typography>{props.nameOnCard}</Typography>
+                <Typography>{props.name}</Typography>
             </div>
             <div className={classes.column}>
                 <Typography variant="subtitle1">Billing Address</Typography>
-                <Typography variant="subtitle2">Full Name</Typography>
+                <Typography variant="subtitle2">{props.name}</Typography>
+                <Typography variant="p">{props.address}</Typography>
             </div>
         </ExpansionPanelDetails>
         <Divider />
