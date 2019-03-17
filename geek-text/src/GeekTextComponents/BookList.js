@@ -7,7 +7,8 @@ import "./BookList.css"
 import ajaxme from "ajaxme";
 
 import SearchArea from "./SearchArea";
-
+//I can download one from reacts pagination
+//import Pagination from ""; 
 
 
 class BookList extends Component{
@@ -19,13 +20,16 @@ class BookList extends Component{
         super(props);
 
         this.state = {
-
-            books: []
+            handlerBooks: [],
+            books: [],
+            order: 1,
+            currentPage: 1,
+            pages: 9
 
         };
 
 
-
+        this.retriveDESCResults = this.retriveDESCResults.bind(this);
         this.retriveResults = this.retriveResults.bind(this);
 
     }
@@ -134,6 +138,83 @@ class BookList extends Component{
 
     }
 
+    
+    retriveDESCResults() {
+
+        //Used to connect to the server
+
+        ajaxme.post({
+
+          url: "http://localhost/server.php/post",
+
+          data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
+
+          success: function(XMLHttpRequest) {
+
+            //If the search returns no result from the db
+
+            if (XMLHttpRequest.responseText === "0 results") 
+
+            {
+
+                this.showResultsNotFound();
+
+                return;
+
+            }
+
+            else if (document.getElementById("noResultsContainer") !== null)
+
+            {
+
+                document.getElementById("noResultsContainer").remove();
+
+            }
+
+
+
+            this.setState({
+
+                books: JSON.parse(XMLHttpRequest.responseText)
+
+            });
+
+
+
+            this.newMethod();
+
+    
+
+          }.bind(this),
+
+          error: function(XMLHttpRequest) {
+
+            console.log("error", XMLHttpRequest);
+
+          },
+
+          abort: function(XMLHttpRequest) {
+
+            console.log("abort", XMLHttpRequest);
+
+          },
+
+          loadstart: function(XMLHttpRequest) {},
+
+          progress: function(XMLHttpRequest) {}
+
+        });
+
+    }
+
+  filterByGenre(array,genre){
+        return array.filter(function(book){
+          return book.genre===genre || genre==="All";
+        })
+    }
+    filterByGenre(event){
+        this.setState({currentPage: 1, genre: event.target.value, handlerBooks: sortBykey(filterByGenre(this.state.books, event.target.value),this.state.sort,this.state.order) });
+    }
 
 
     newMethod() {
@@ -579,6 +660,7 @@ class BookList extends Component{
         return { modalDiv, modalImage, caption, close };
 
     }
+    
 
 
 

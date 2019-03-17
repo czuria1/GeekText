@@ -100,7 +100,7 @@
 	}
 
 
-	function getASCInfo()
+	function getDESCInfo()
 	{
 		//Global allows variables outside the function scope to be used here
 		global $conn;
@@ -128,7 +128,7 @@
 			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM
-				ORDER BY books	ASC;"
+				ORDER BY books	DESC;"
 
 
 
@@ -182,18 +182,11 @@
 		getSearchInfo();
 	}
 
-	if ($method == 'getASChInfo')
+	if ($method == 'getDescInfo')
 	{
-		getSearchInfo();
+		getDESCInfo();
 	}
 	
 
-/** 
-	$page = 1;
-	$items_page = 10;
-	$offset = ($items_page * ($page - 1));
-		$sql = "SELECT *
-				FROM books
-				LIMIT".$offset.",". $items_page;
-*/
+
 ?>

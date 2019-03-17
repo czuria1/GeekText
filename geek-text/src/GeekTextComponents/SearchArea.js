@@ -53,7 +53,11 @@ class SearchArea extends Component
     render() {
         
         return(
+            
+            
             <div id="search-info-container" align="center">
+
+
             
                 <button id="searchButton" >
                     <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
@@ -69,6 +73,11 @@ class SearchArea extends Component
                     onChange={this.handleSearch}/>
 
                 <button id="topSearch">Top Sellers</button>
+                <button id="searchButton"><NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                to={"/bookList/" + this.state.searchTerm}
+                                onClick={this.searchButtonClicked}
+                                >ASC</NavLink></button>
+                <button id="DESC">DESC</button>
                 
             </div>
         )
