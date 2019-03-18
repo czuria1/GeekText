@@ -15,8 +15,6 @@ class SearchArea extends Component
         //Bind the methods to the component
         this.handleSearch = this.handleSearch.bind(this);
         this.searchButtonClicked = this.searchButtonClicked.bind(this);
-
-        document.title = "Geek Text Search";
     }
 
     setTextBoxListner()

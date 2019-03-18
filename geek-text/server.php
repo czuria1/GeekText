@@ -111,8 +111,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING,
-					   authors.FIRST_NAME, authors.LAST_NAME
+		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING
 				FROM   books
 				JOIN   authors ON books.AUTHOR = authors.ID
 				WHERE  concat(AUTHORS.FIRST_NAME, ' ', AUTHORS.LAST_NAME) = @AUTHOR_NAME;";
@@ -130,7 +129,6 @@
 				$bus = array(
 					"cover" => $row["COVER"],
 					"title" => $row["TITLE"],
-					"author" => $row["FIRST_NAME"]. " " .$row["LAST_NAME"],
 					"genre" => $row["GENRE"],
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
