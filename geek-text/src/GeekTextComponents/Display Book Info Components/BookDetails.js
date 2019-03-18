@@ -29,6 +29,9 @@ class BookDetails extends Component {
                 <hr></hr>
                 <span>{bookInfo.bio}</span>
                 <h3>Reviews</h3>
+                <hr></hr>
+                <span>{bookInfo.rating}</span>
+                <span>{bookInfo.comment}</span>
             </div> 
         );
     }
