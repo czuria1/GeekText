@@ -4,6 +4,7 @@ import LoginScreen from "./LoginScreen";
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import {Route, HashRouter} from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
 
 export default class RegistrationScreen extends Component {
 
@@ -150,7 +151,6 @@ export default class RegistrationScreen extends Component {
                                 required
                                 type="password"
                                 label="Password Confirmation"
-                                helperText="Enter your Password Again"
                                 variant="outlined"
                                 onChange={event => this.setState({password_2: event.target.value})}
                                 error={this.state.password_1 !== this.state.password_2}

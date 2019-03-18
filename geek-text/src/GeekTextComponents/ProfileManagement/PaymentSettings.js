@@ -177,12 +177,13 @@ export default class PaymentSettings extends Component {
                     direction="row"
                     justify="center"
                     alignItems="center">
-                    <Grid
-                        item xs={12}
+                    <Grid 
+                        item xs={7}
                         container
-                        direction="row"
-                        justify="center"
-                        alignItems="center">
+                        direction="column"
+                        justify="flex-start"
+                        alignItems="left">
+                    <h3>Your Payment Methods</h3>
                     <Button onClick={this.handleClickOpen}>Add A Payment Method</Button>
                     </Grid>
                     <Grid 

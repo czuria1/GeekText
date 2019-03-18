@@ -108,7 +108,25 @@ class Header extends Component {
                                 <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                  to="/profilesettings"
                                  onClick={this.handleClose}
-                                 >Profile</NavLink>
+                                 >Your Account</NavLink>
+                                </MenuItem>
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/loginSettings"
+                                 onClick={this.handleClose}
+                                 >Your Login Settings</NavLink>
+                                </MenuItem>
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/addressSettings"
+                                 onClick={this.handleClose}
+                                 >Your Addresses</NavLink>
+                                </MenuItem>
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/paymentSettings"
+                                 onClick={this.handleClose}
+                                 >Your Payment Methods</NavLink>
                                 </MenuItem>
                             <MenuItem onClick={this.handleLogout}>Sign Out</MenuItem>
                         </Menu>
