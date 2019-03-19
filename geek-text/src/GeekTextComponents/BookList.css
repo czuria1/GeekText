@@ -40,3 +40,21 @@
 #noResultsContainer {
     text-align: center;
 }
+
+#selectLabels{
+    margin-bottom: "auto";
+    margin-top: "auto";
+}
+
+#selectStlye {
+    margin-left: "4px";
+    margin-right: "8px";
+}
+#sortStyle {
+    align-items: "center";
+    display: "flex";
+    flex-wrap: "wrap";
+    justify-content: "center";
+}
+
+

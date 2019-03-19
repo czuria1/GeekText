@@ -106,7 +106,7 @@ class App extends Component {
 
                         <Route path="/search" component={SearchArea}/>
 
-                        <Route path = "/DESC" component={SearchArea}/>
+                        
                         
 
                        

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {NavLink} from "react-router-dom";
+import { reverse } from 'dns';
 
 class SearchArea extends Component
 {
@@ -9,12 +10,13 @@ class SearchArea extends Component
         this.state = {
             books: [],  //Contains all the book returned by the search
             searchTerm: '',
-            searchButtonClick: false
+            searchButtonClick: false,
         };
 
         //Bind the methods to the component
         this.handleSearch = this.handleSearch.bind(this);
         this.searchButtonClicked = this.searchButtonClicked.bind(this);
+        //this.updateList = this.updateList.bind(this);
     }
 
     setTextBoxListner()
@@ -38,6 +40,8 @@ class SearchArea extends Component
         
     }
 
+    
+
     searchButtonClicked(e) {
         
         if (this.state.searchTerm === "")
@@ -47,7 +51,12 @@ class SearchArea extends Component
         }
        
     }
+  
+  
 
+    searchASCClicked() {   
+        this.props.updateList();
+    }
     
 
     render() {
@@ -73,11 +82,16 @@ class SearchArea extends Component
                     onChange={this.handleSearch}/>
 
                 <button id="topSearch">Top Sellers</button>
-                <button id="searchButton"><NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                <button id="searchButton">
+                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                to={"/bookList/" + this.state.searchTerm}
+                                onClick={this.searchASCClicked}
+                                >ASC/DESC</NavLink></button>
+                <button id="DESC">
+                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                 to={"/bookList/" + this.state.searchTerm}
                                 onClick={this.searchButtonClicked}
-                                >ASC</NavLink></button>
-                <button id="DESC">DESC</button>
+                                >DESC</NavLink></button>
                 
             </div>
         )

@@ -8,7 +8,28 @@ import ajaxme from "ajaxme";
 
 import SearchArea from "./SearchArea";
 //I can download one from reacts pagination
-//import Pagination from ""; 
+import Pagination from "rc-pagination"; 
+import 'rc-pagination/assets/index.css'; //React is
+// import { sortByKey } from "./sortByKey";
+const pageSize = 5;
+//Might get rid of genre handler as when searching one can already search jusr by genre
+
+// //Reference stack flow
+// function sortByKey(array, key, order) {
+//     return array.sort(function(a, b) {
+//         var i = a[key];
+//         var j = b[key];
+//         if(i < j){
+//           return order * -1 ;
+//         }
+//         else if(i > j){
+//           return order * 1;
+//         }
+//         else{
+//           return 0;
+//         }
+//     });
+// }
 
 
 class BookList extends Component{
@@ -20,22 +41,31 @@ class BookList extends Component{
         super(props);
 
         this.state = {
+            //The search is outside for some reason ask julain
+            asd: '',
             handlerBooks: [],
             books: [],
             order: 1,
             currentPage: 1,
-            pages: 9
-
+            pages: 9,
+            sort: 'title'
         };
 
-
-        this.retriveDESCResults = this.retriveDESCResults.bind(this);
+        // this.handleSorting = this.handleSorting.bind(this);
+        // this.handleGenre = this.handleGenre.bind(this);
+        // this.retriveDESCResults = this.retriveDESCResults.bind(this);
         this.retriveResults = this.retriveResults.bind(this);
 
     }
-
-
-
+//     //Sorting event
+// handleSorting(event){
+//     this.setState({sort: event.target.value, handlerBooks: sortByKey(this.state.filteredBooks, event.target.value, this.state.order)});
+// }
+//     //Genre event
+//     handleGenre(event){
+//         this.setState({pages: 1, genre: event.target.value, handlerBooks: sortByGenre(this.state.filteredBooks, event.target.value, this.state.order)});
+//     }
+    
     shouldComponentUpdate(nextProps, nextState) {
 
         if (this.props.match.params.term === nextProps.match.params.term)
@@ -49,6 +79,10 @@ class BookList extends Component{
         else
 
         {
+
+            this.setState ({
+                books: nextProps.books
+            })
 
             var parent = document.getElementById("route-container");
 
@@ -68,7 +102,13 @@ class BookList extends Component{
 
     }
 
-
+    updateList(){
+        var rev = this.state.books;
+        rev.reverse();
+        this.setState ({
+            books: rev 
+        })
+    }
 
     retriveResults() {
 
@@ -78,7 +118,9 @@ class BookList extends Component{
 
           url: "http://localhost/server.php/post",
 
-          data: "method=getSearchInfo&searchParam=" + `${this.props.match.params.term}`,
+          data: "method=getSearchInfo&searchParam=&ASCDESC=asd" + `${this.props.match.params.term}` + "&ASCDESC" + `${this.state.asd}`,
+
+        
 
           success: function(XMLHttpRequest) {
 
@@ -102,7 +144,7 @@ class BookList extends Component{
 
             }
 
-
+            console.log(XMLHttpRequest.responseText);
 
             this.setState({
 
@@ -139,82 +181,82 @@ class BookList extends Component{
     }
 
     
-    retriveDESCResults() {
+    // retriveDESCResults() {
 
-        //Used to connect to the server
+    //     //Used to connect to the server
 
-        ajaxme.post({
+    //     ajaxme.post({
 
-          url: "http://localhost/server.php/post",
+    //       url: "http://localhost/server.php/post",
 
-          data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
+    //       data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
 
-          success: function(XMLHttpRequest) {
+    //       success: function(XMLHttpRequest) {
 
-            //If the search returns no result from the db
+    //         //If the search returns no result from the db
 
-            if (XMLHttpRequest.responseText === "0 results") 
+    //         if (XMLHttpRequest.responseText === "0 results") 
 
-            {
+    //         {
 
-                this.showResultsNotFound();
+    //             this.showResultsNotFound();
 
-                return;
+    //             return;
 
-            }
+    //         }
 
-            else if (document.getElementById("noResultsContainer") !== null)
+    //         else if (document.getElementById("noResultsContainer") !== null)
 
-            {
+    //         {
 
-                document.getElementById("noResultsContainer").remove();
+    //             document.getElementById("noResultsContainer").remove();
 
-            }
-
-
-
-            this.setState({
-
-                books: JSON.parse(XMLHttpRequest.responseText)
-
-            });
+    //         }
 
 
 
-            this.newMethod();
+    //         this.setState({
+
+    //             books: JSON.parse(XMLHttpRequest.responseText)
+
+    //         });
+
+
+
+    //         this.newMethod();
 
     
 
-          }.bind(this),
+    //       }.bind(this),
 
-          error: function(XMLHttpRequest) {
+    //       error: function(XMLHttpRequest) {
 
-            console.log("error", XMLHttpRequest);
+    //         console.log("error", XMLHttpRequest);
 
-          },
+    //       },
 
-          abort: function(XMLHttpRequest) {
+    //       abort: function(XMLHttpRequest) {
 
-            console.log("abort", XMLHttpRequest);
+    //         console.log("abort", XMLHttpRequest);
 
-          },
+    //       },
 
-          loadstart: function(XMLHttpRequest) {},
+    //       loadstart: function(XMLHttpRequest) {},
 
-          progress: function(XMLHttpRequest) {}
+    //       progress: function(XMLHttpRequest) {}
 
-        });
+    //     });
 
-    }
-
-  filterByGenre(array,genre){
-        return array.filter(function(book){
-          return book.genre===genre || genre==="All";
-        })
-    }
-    filterByGenre(event){
-        this.setState({currentPage: 1, genre: event.target.value, handlerBooks: sortBykey(filterByGenre(this.state.books, event.target.value),this.state.sort,this.state.order) });
-    }
+    // }
+//   filterByGenre( array, genre){
+//         return array.filter(function(book){
+//           return book.genre === genre || genre=== "All";
+//         })
+//     }
+//     //www.w3schools.com /php_arrays_sort
+//     filterByGenre(event){
+//         this.setState({currentPage: 1, genre: event.target.value, handlerBooks: sortByKey(filterByGenre(this.state.books, event.target.value),this.state.sort,this.state.order) });
+//     }
 
 
     newMethod() {
@@ -604,6 +646,17 @@ class BookList extends Component{
     }
 
 
+    componentDidMount(){
+        if(this.props.pageSize){
+            this.setState({pageSize: this.props.pageSize});
+        }
+    }
+//This will acquire more work 
+    componentWillReceiveProps(rops){
+        if(rops.pageSize){
+          this.setState({pageSize:rops.pageSize})};
+        }
+
 
     setCoverAttributes(cover, bookInfoArray, index, modalDiv, modalImage, caption) {
 
@@ -660,23 +713,30 @@ class BookList extends Component{
         return { modalDiv, modalImage, caption, close };
 
     }
-    
+    //Ref. react and yotube videos use this method a few time to change pages
+   //Pages isn't defined error solution possibly need const.
+   //const pagesize may be neede instead
+    changePages = (page) => {
+        console.log(Math.ceil(this.state.handlerBooks.length/pageSize));
+        this.setState({currentPage: page});
+    }
 
 
-
+ 
     render() {
 
 
 
         this.retriveResults();
-
+    
+        //this.retriveDESCResults();
         return (
 
             
 
             <div >
 
-                <SearchArea></SearchArea>
+                <SearchArea books={this.state.books}></SearchArea>
 
                 <div id="listContainer">
 
