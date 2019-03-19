@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { List, ListItem } from '@material-ui/core';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
+import StarsRating from 'stars-rating'
 
 class BookDetails extends Component {
     constructor(props) {
@@ -28,9 +29,9 @@ class BookDetails extends Component {
                 <h3>About the author</h3>
                 <hr></hr>
                 <span>{bookInfo.bio}</span>
-                <h3>Reviews</h3>
+                <h3>Ratings and Comments</h3>
                 <hr></hr>
-                <span>{bookInfo.rating}</span>
+                <StarsRating count={5} value={bookInfo.rating} size={30} edit={false}></StarsRating>
                 <span>{bookInfo.comment}</span>
             </div> 
         );
