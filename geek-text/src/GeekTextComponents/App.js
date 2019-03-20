@@ -14,12 +14,6 @@ import BookDetails from './Display Book Info Components/BookDetails';
 
 //import ProfileSettings from './ProfileManagement/ProfileSettings';
 
-import BookList from './BookList';
-
-import SearchArea from './SearchArea';
-
-
-
 class App extends Component {
 
     constructor (props) {

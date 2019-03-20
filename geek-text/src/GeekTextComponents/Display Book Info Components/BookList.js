@@ -15,13 +15,23 @@ class BookList extends Component {
         this.retriveResults = this.retriveResults.bind(this);
         this.returnList = this.returnList.bind(this);
         this.showNoResults = this.showNoResults.bind(this);
+        this.updateList = this.updateList.bind(this);
+    }
+
+    updateList() {
+        var revList = this.state.books;
+        revList.reverse();
+
+        this.setState({
+            books: revList
+        });
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.match.params.term === this.props.match.params.term && this.state.books.length === nextState.books.length)
         {
             return false;
-        }
+        } 
         else
         {
             return true;
@@ -37,6 +47,7 @@ class BookList extends Component {
             //If the search returns no result from the db
             if (XMLHttpRequest.responseText !== "0 results") 
             {
+                console.log("success", XMLHttpRequest);
                 this.setState({
                     books: JSON.parse(XMLHttpRequest.responseText)
                 });
@@ -90,7 +101,7 @@ class BookList extends Component {
         this.retriveResults();
         return ( 
             <div>
-                <SearchArea></SearchArea>
+                <SearchArea ascFunc={this.updateList}></SearchArea>
                 {this.showNoResults()}
                 <div id="list">
                     <ModalCover></ModalCover>
