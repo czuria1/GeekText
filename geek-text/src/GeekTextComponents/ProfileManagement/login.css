@@ -1,0 +1,41 @@
+.outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginarea {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 500px;
+}
+
+.submitButton {
+    width: 70%;
+}
+
+.submitArea {
+    text-align: center;
+}
+
+.textfield {
+    width: 100%;
+}
+
+.footer {
+    width: 100%;
+    min-height: 50px;
+    position:absolute;
+    bottom:0;
+}
+
+/* CSS only for Registration Page */
+.registrationarea {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 500px;
+}
