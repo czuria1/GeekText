@@ -60,7 +60,7 @@ class BookList extends Component {
     }
 
     returnList() {
-        //todo put coverContainer before detailContainer to fox styling issue
+        
         if (this.state.books.length !== 0)
         {
             var bookList = this.state.books.map(function(book, index){
