@@ -61,6 +61,8 @@ class BookDetails extends Component {
                 return <div key={index} id="reviewContainer">
                             <StarsRating count={5} value={review.rating} size={30} edit={false}></StarsRating>
                             <span>{review.comment}</span>
+                            <p></p>
+                            <span>By: {review.username}</span>
                        </div>
               })
         }
