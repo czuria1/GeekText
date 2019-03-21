@@ -14,7 +14,16 @@ class BookDetails extends Component {
         }
 
         this.getBookReview = this.getBookReview.bind(this);
+        
+    }
+    
+    componentDidMount() {
         this.getBookReview();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log(prevProps);
+        console.log(prevState);
     }
 
     getBookReview() {

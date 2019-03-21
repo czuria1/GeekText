@@ -47,6 +47,10 @@ class SearchArea extends Component
             alert("Please enter a search term in the textbox");
             e.preventDefault();
         }
+        else
+        {
+            document.getElementById("searchText").value = "";
+        }
        
     }
 

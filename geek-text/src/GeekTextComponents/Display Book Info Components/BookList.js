@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, PureComponent} from "react";
 import "./ModalImage.css"
 import "./BookList.css"
 import ajaxme from "ajaxme";
@@ -17,14 +17,14 @@ class BookList extends Component {
         this.showNoResults = this.showNoResults.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.match.params.term === this.props.match.params.term && this.state.books.length === nextState.books.length)
+    componentDidMount() {
+        this.retriveResults();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.match.params.term !== prevProps.match.params.term)
         {
-            return false;
-        }
-        else
-        {
-            return true;
+            this.retriveResults();
         }
     }
 
@@ -85,9 +85,7 @@ class BookList extends Component {
         }
     }
 
-    render() { 
-        
-        this.retriveResults();
+    render() {
         return ( 
             <div>
                 <SearchArea></SearchArea>
