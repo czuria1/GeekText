@@ -6,6 +6,8 @@ import SearchArea from "../SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
 
+
+
 class BookList extends Component {
     constructor(props) {
         super(props);
@@ -101,6 +103,27 @@ class BookList extends Component {
         this.retriveResults();
         return ( 
             <div>
+                <div style = {styles.sortedDivStyle}>
+                <p style = {styles.selectLabelStyle}>Genre</p>
+<select style = {styles.selectStyle} defaultValue={this.state.genre} onChange = {this.GenreChange}>
+<option value="Horror">Horror</option>
+<option value="Science Fiction">Science Fiction</option>
+<option value="Fiction">Fiction</option>
+<option value="Mystery">Mystery</option>
+<option value="Art">Art</option>
+<option value="Poetry">Poetry</option>
+<option value="Psy">Psy</option>
+<option value="Science">Science</option>
+<option value="Tra">Travel</option>
+<option value="History">History</option>
+<option value="Computing">Computing</option>
+<option value="PSY">PSY</option>
+<option value="PHI">PHI</option>
+</select>
+
+
+                </div>
+
                 <SearchArea ascFunc={this.updateList}></SearchArea>
                 {this.showNoResults()}
                 <div id="list">
@@ -110,6 +133,33 @@ class BookList extends Component {
             </div>
          );
     }
+    
 }
  
 export default BookList;
+
+//W3Schools way of doing drop box and I can see it without switching pages
+var styles={
+    booksStyle:{
+    display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around"
+    },
+    sortedDivStyle:{
+    alignItems: "center",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center"
+    },
+    selectStyle:{
+    height:"2.0em",
+      marginLeft:"4px",
+      marginRight: "12px"
+      
+    },
+    selectLabelStyle:{
+    marginBottom:"auto",
+    marginTop:"auto"
+      
+    }
+}

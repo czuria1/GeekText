@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {NavLink} from "react-router-dom";
+//import { reverse } from 'dns';
 
 class SearchArea extends Component
 {
@@ -9,14 +10,13 @@ class SearchArea extends Component
         this.state = {
             books: [],  //Contains all the book returned by the search
             searchTerm: '',
-            searchButtonClick: false
+            searchButtonClick: false,
         };
 
         //Bind the methods to the component
         this.handleSearch = this.handleSearch.bind(this);
         this.searchButtonClicked = this.searchButtonClicked.bind(this);
-
-        document.title = "Geek Text Search";
+        //this.updateList = this.updateList.bind(this);
     }
 
     setTextBoxListner()
@@ -40,6 +40,8 @@ class SearchArea extends Component
         
     }
 
+    
+
     searchButtonClicked(e) {
         
         if (this.state.searchTerm === "")
@@ -49,16 +51,47 @@ class SearchArea extends Component
         }
        
     }
+  
+  
 
+    searchASCClicked() {   
+        this.props.updateList();
+    }
     
 
     render() {
         
         return(
+            
+            
             <div id="search-info-container" align="center">
+       
+            
+            <div id="dropFunc" align="center" style = {styles.sortedDivStyle}>
+                <p style = {styles.selectLabelStyle}>Genre</p>
+<select style = {styles.selectStyle} defaultValue={this.state.genre} onChange = {this.GenreChange}>
+<option disabled selected value> -- select an Genre -- </option>
+<option value="Horror">Horror</option>
+<option value="Science Fiction">Science Fiction</option>
+<option value="Fiction">Fiction</option>
+<option value="Mystery">Mystery</option>
+<option value="Art">Art</option>
+<option value="Poetry">Poetry</option>
+<option value="Psy">Psy</option>
+<option value="Science">Science</option>
+<option value="Tra">Travel</option>
+<option value="History">History</option>
+<option value="Computing">Computing</option>
+<option value="PSY">PSY</option>
+<option value="PHI">PHI</option>
+</select>
+
+
+                </div>
+
             
                 <button id="searchButton" >
-                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+<                    NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                 to={"/bookList/" + this.state.searchTerm}
                                 onClick={this.searchButtonClicked}
                                 >Search</NavLink>
@@ -71,7 +104,12 @@ class SearchArea extends Component
                     onChange={this.handleSearch}/>
 
                 <button id="topSearch">Top Sellers</button>
-                <button id="ascSearch" onClick={this.props.ascFunc}>ASC</button>
+                <button id="searchButton">
+                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                to={"/bookList/" + this.state.searchTerm}
+                                onClick={this.searchASCClicked}
+                                >ASC/DESC</NavLink></button>
+                
                 
             </div>
         )
@@ -79,3 +117,33 @@ class SearchArea extends Component
 }
 
 export default SearchArea;
+
+var styles={
+    booksStyle:{
+    display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around"
+    },
+    sortedDivStyle:{
+    alignItems: "center",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center"
+    },
+    selectStyle:{
+    height:"2.0em",
+      marginLeft:"4px",
+      marginRight: "12px"
+      
+    },
+    selectLabelStyle:{
+    marginBottom:"auto",
+    marginTop:"auto"
+      
+    }
+}
+
+function dropFunc(){
+   document.getElementById.searchASCClicked.toggle("Show");
+
+}
