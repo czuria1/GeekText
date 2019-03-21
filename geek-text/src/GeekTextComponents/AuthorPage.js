@@ -1,10 +1,6 @@
 import React, {Component} from "react";
 import ajaxme from "ajaxme";
-import "./ModalImage.css"
-import "./BookList.css"
-import SearchArea from "../SearchArea";
-import List from "./List";
-import ModalCover from "./ModalCover";
+import BookList from "./BookList";
 
 class AuthorPage extends Component{
 
@@ -16,7 +12,11 @@ class AuthorPage extends Component{
 
         //Bind the methods to the component
         this.getAllBooksFromAuthor = this.getAllBooksFromAuthor.bind(this);
-        this.returnList = this.returnList.bind(this);
+        this.resetBookState = this.resetBookState.bind(this);
+    }
+    
+    componentDidMount()
+    {
         this.getAllBooksFromAuthor();
     }
 
@@ -42,23 +42,39 @@ class AuthorPage extends Component{
             }
         });
     }
+    
+    //Sets the books array to empty to prevent continuos rendering of the booklist
+    resetBookState() {
+        this.setState({
+            books: []
+        })
+    }
 
-    returnList() {
-        var bookList = this.state.books.map(function(book, index){
-            return <List bookInfo={book} key={index} bookIndex={index}></List>;
-          })
-
-        return bookList;
+    //Returns the Booklist component if the books array is populated
+    retrieveList() {
+        return(
+            <button>hello</button>
+        )
     }
 
     render() {
+        
         return(
-            <div >
-                <SearchArea></SearchArea>
-                <div id="list">
-                    <ModalCover></ModalCover>
-                    {this.returnList()}
-                </div>
+            <div align="center" id="author-book-info-container">
+                {}
+                Books By : {
+                    
+                            // for (let index = 0; index < 3; index++) 
+                            // {
+                            //     const element = array[index];
+                    
+                            // } 
+                            // this.retrieveList()
+                
+                
+                
+                
+                            }
             </div>
         )
     }

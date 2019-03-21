@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "awor001";
-	$dbpassword = "May1993!";
+	$dbusername = "root";
+	$dbpassword = "password";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -152,7 +152,6 @@
 				$bus = array(
 					"cover" => $row["COVER"],
 					"title" => $row["TITLE"],
-					"author" => $row["FIRST_NAME"]. " " .$row["LAST_NAME"],
 					"genre" => $row["GENRE"],
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],

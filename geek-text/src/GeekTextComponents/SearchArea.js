@@ -70,7 +70,7 @@ class SearchArea extends Component
             <div id="dropFunc" align="center" style = {styles.sortedDivStyle}>
                 <p style = {styles.selectLabelStyle}>Genre</p>
 <select style = {styles.selectStyle} defaultValue={this.state.genre} onChange = {this.GenreChange}>
-<option disabled selected value> -- select an Genre -- </option>
+{/* <option disabled selected value> -- select an Genre -- </option> */}
 <option value="Horror">Horror</option>
 <option value="Science Fiction">Science Fiction</option>
 <option value="Fiction">Fiction</option>
