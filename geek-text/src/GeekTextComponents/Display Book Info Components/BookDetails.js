@@ -21,11 +21,6 @@ class BookDetails extends Component {
         this.getBookReview();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        console.log(prevProps);
-        console.log(prevState);
-    }
-
     getBookReview() {
         
         //Used to connect to the server
@@ -54,15 +49,15 @@ class BookDetails extends Component {
     }
 
     displayReviews() {
-
         if (this.state.reviews.length !== 0)
         {
             var reviewList = this.state.reviews.map(function(review, index){
                 return <div key={index} id="reviewContainer">
-                            <StarsRating count={5} value={review.rating} size={30} edit={false}></StarsRating>
+                            <StarsRating count={5} value={parseInt(review.rating, 10)} size={30} edit={false}></StarsRating>
                             <span>{review.comment}</span>
                             <p></p>
                             <span>By: {review.username}</span>
+                            <hr></hr>
                        </div>
               })
         }
@@ -70,7 +65,21 @@ class BookDetails extends Component {
         {
             return <span>No reviews for this book</span>
         }
+
+        
+        
         return reviewList;
+    }
+
+    getTotalReviews() {
+        if (this.state.reviews.length !== 0) 
+        {
+            return parseInt(this.state.reviews[0].total , 10) / this.state.reviews.length;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     render() { 
@@ -95,7 +104,12 @@ class BookDetails extends Component {
                 <span>{bookInfo.bio}</span>
                 <h3>Ratings and Comments</h3>
                 <hr></hr>
-                {this.displayReviews()}
+                <div id="reviewsContainer">
+                    <span>Total reviews</span>
+                    <StarsRating count={5} value={this.getTotalReviews()} size={30} edit={false}></StarsRating>
+                    <hr></hr>
+                    {this.displayReviews()}
+                </div>
             </div> 
         );
     }
