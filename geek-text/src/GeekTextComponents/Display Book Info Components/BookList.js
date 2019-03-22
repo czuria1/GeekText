@@ -5,6 +5,7 @@ import ajaxme from "ajaxme";
 import SearchArea from "../SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
+import FilterSearch from "./FilterSearch";
 
 class BookList extends Component {
     constructor(props) {
@@ -89,6 +90,7 @@ class BookList extends Component {
         return ( 
             <div>
                 <SearchArea></SearchArea>
+                <FilterSearch></FilterSearch>
                 {this.showNoResults()}
                 <div id="list">
                     <ModalCover></ModalCover>
