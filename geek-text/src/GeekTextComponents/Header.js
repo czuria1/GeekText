@@ -78,11 +78,7 @@ class Header extends Component {
     };
 
     logoutCurrentUser() {
-        // this.props.logoutCurrentUser("null", false);
-        this.setState({
-            currentUser: "null", 
-            isUserLoggedIn: false
-        });
+        this.props.logoutUser("null", false);
     }
 
     loggedInUser () {
@@ -91,7 +87,7 @@ class Header extends Component {
 
         if (this.state.isUserLoggedIn) {
             return (
-                <div>
+                <HashRouter>
                     <div>
                         <Button
                             aria-owns={anchorEl ? 'simple-menu' : undefined}
@@ -128,10 +124,15 @@ class Header extends Component {
                                  onClick={this.handleClose}
                                  >Your Payment Methods</NavLink>
                                 </MenuItem>
-                            <MenuItem onClick={this.handleLogout}>Sign Out</MenuItem>
+                            <MenuItem onClick={this.handleLogout}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                    to="/"
+                                    onClick={this.handleClose}
+                                    >Sign Out</NavLink>
+                            </MenuItem>
                         </Menu>
                     </div>
-                </div>
+                </HashRouter>
             )
         } else {
             return (

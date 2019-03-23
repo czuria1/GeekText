@@ -40,6 +40,7 @@ class App extends Component {
             currentUser: oldUser,
             isUserLoggedIn: loggedIn
         });
+
     }
 
     render() {
@@ -50,7 +51,7 @@ class App extends Component {
                     <Header 
                         currentUser={this.state.currentUser}
                         isUserLoggedIn={this.state.isUserLoggedIn}
-                        logoutUser={this.state.logoutUser}></Header>
+                        logoutUser={this.logoutUser}></Header>
 
                     <div>
                       <div id="route-container">

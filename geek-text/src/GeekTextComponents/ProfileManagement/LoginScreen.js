@@ -121,7 +121,7 @@ export default class LoginScreen extends Component {
             success: function (XMLHttpRequest) {
                 if (XMLHttpRequest.responseText === "No such user exists") {
                     // TODO
-                    alert("No such user exists");
+                    alert("Username or password is invalid");
                     return;
                 } else {
                     this.updateCurrentUser();
