@@ -12,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {TextInputMask}  from 'react-masked-text';
 
 function Address(name, address, city, country, phoneNum) {
     this.name = name;
@@ -92,6 +93,12 @@ export default class AddressSettings extends Component {
                         <DialogContentText>
                         Please enter your address information here in the fields below.
                         </DialogContentText>
+                        <TextInputMask
+                                ref={this.state.name}
+                                kind={'datetime'}
+                                options={{
+                                    format: 'DD-MM-YYYY HH:mm:ss'
+                                }} />
                         <TextField
                             autoFocus
                             required

@@ -19,11 +19,48 @@ export default class RegistrationScreen extends Component {
             email: 'null',
             password_1: 'null',
             password_2: 'null',
+            formErrors: {username: '', password: ''},
+            usernameValid: false, 
+            passwordValid: false, 
+            formValid: false
 
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.registerButtonClicked = this.registerButtonClicked.bind(this);
+    }
+
+    handleInput = (e) => {
+        const fieldName = e.target.name;
+        const fieldValue = e.target.value;
+        
+        // this.setState({[fieldName] : fieldValue}, () => {this.validateField(fieldName, fieldValue)});
+        this.setState({[fieldName] : fieldValue});
+    }
+
+    validateField(field, value) {
+        let usernameValid = this.state.usernameValid;
+        let passwordValid = this.state.passwordValid;
+        let formErrors = this.state.formErrors;
+        
+        switch (field) {
+            case 'username':
+                usernameValid = value.length > 0;
+                formErrors.username = usernameValid ? '' : ' invalid';
+                break;
+            case 'password':
+                passwordValid = value.length >= 6;
+                formErrors.password = passwordValid ? '' : ' invalid';
+                break;
+            default:
+                break;
+        }
+        
+        this.setState({
+            formErrors: formErrors, 
+            usernameValid: usernameValid, 
+            passwordValid: passwordValid
+        }, this.validateLoginForm);
     }
 
     handleSubmit (event) {
@@ -75,51 +112,56 @@ export default class RegistrationScreen extends Component {
                              handleSubmit={this.handleSubmit}>
                             <TextField 
                                 id="usernameInput"
+                                name="username"
                                 className="textfield"
                                 required
                                 label="Username"
                                 helperText="Enter your Username"
                                 variant="outlined"
-                                onChange={event => this.setState({username: event.target.value})}
+                                onChange={this.handleInput}
                                 onClick={this.state.username === "" ? event => this.setState({username: ""}) : event => this.setState({username: event.target.value})}
                                 error={this.state.username === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField 
                                 id="fnameInput"
+                                name="fname"
                                 className="textfield"
                                 required
                                 label="First Name"
                                 helperText="Enter your First Name"
                                 variant="outlined"
-                                onChange={event => this.setState({fname: event.target.value})}
+                                onChange={this.handleInput}
                                 onClick={this.state.fname === "" ? event => this.setState({fname: ""}) : event => this.setState({fname: event.target.value})}
                                 error={this.state.fname === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
                                 id="lnameInput" 
+                                name="lname"
                                 className="textfield"
                                 required
                                 label="Last Name"
                                 helperText="Enter your Last Name"
                                 variant="outlined"
-                                onChange={event => this.setState({lname: event.target.value})}
+                                onChange={this.handleInput}
                                 onClick={this.state.lname === "" ? event => this.setState({lname: ""}) : event => this.setState({lname: event.target.value})}
                                 error={this.state.lname === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
-                                id="nicknameInput" 
+                                id="nicknameInput"
+                                name="nickname" 
                                 className="textfield"
                                 label="Nickname"
                                 helperText="Enter your Nickname"
                                 variant="outlined"
-                                onChange={event => this.setState({nickname: event.target.value})}></TextField>
+                                onChange={this.handleInput}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
                                 id="emailInput" 
+                                name="email"
                                 className="textfield"
                                 required
                                 autoComplete="email"
@@ -127,32 +169,34 @@ export default class RegistrationScreen extends Component {
                                 label="Email"
                                 helperText="Enter your Email"
                                 variant="outlined"
-                                onChange={event => this.setState({email: event.target.value})}
+                                onChange={this.handleInput}
                                 onClick={this.state.email === "" ? event => this.setState({email: ""}) : event => this.setState({email: event.target.value})}
                                 error={this.state.email === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
                                 id="pw_1_Input" 
+                                name="password_1"
                                 className="textfield"
                                 required
                                 type="password"
                                 label="Password"
                                 helperText="Enter your Password"
                                 variant="outlined"
-                                onChange={event => this.setState({password_1: event.target.value})}
+                                onChange={this.handleInput}
                                 onClick={this.state.password_1 === "" ? event => this.setState({password_1: ""}) : event => this.setState({password_1: event.target.value})}
                                 error={this.state.password_1 === ""}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
                                 id="pw_2_Input"
+                                name="password_2"
                                 className="textfield"
                                 required
                                 type="password"
                                 label="Password Confirmation"
                                 variant="outlined"
-                                onChange={event => this.setState({password_2: event.target.value})}
+                                onChange={this.handleInput}
                                 error={this.state.password_1 !== this.state.password_2}
                                 helperText={this.state.password_1 !== this.state.password_2 ? "Passwords do not match": "Enter your Password Again"}></TextField>
                             <br></br>
