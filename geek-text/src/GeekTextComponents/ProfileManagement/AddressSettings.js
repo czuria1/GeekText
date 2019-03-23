@@ -147,36 +147,31 @@ export default class AddressSettings extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
-                <Grid
-                    style={{flexGrow: 1,
-                        height: 200}}
-                    container spacing={8}
-                    direction="column"
+                  <Grid
+                    style={{
+                      height: 300}}
+                    container spacing={0}
+                    direction="row"
                     justify="center"
-                    alignItems="center"> 
+                    alignItems="center">
                     <Grid 
-                        item xs={7}
-                        container
-                        direction="column"
-                        justify="flex-start"
-                        alignItems="left">
-                    {/* <h6 style={{'padding-bottom': 30}}>
-                    <NavLink style={{ textDecoration: 'true', color: 'black'}}
-                                 to="/addressSettings"
-                                 >Your Account</NavLink>
-                                 > Your Addresses</h6> */}
-                    <h3>Your Addresses</h3>
-                    <Button onClick={this.handleClickOpen}>Add Address</Button>
-                    <Grid container spacing={7}
-                          style={{flexGrow: 1, padding: 7}}
+                      item xs={7}
+                      container
+                      direction="column"
+                      justify="flex-start"
+                      alignItems="left">
+                      <h3>Your Addresses</h3>
+                      <Button onClick={this.handleClickOpen}>Add Address</Button>
+                      </Grid>
+                        <Grid 
+                          item xs={6}
+                          container
                           direction="row"
-                          justify="space-evenly"
-                          alignItems="flex-start">
-                        {cards}
-                    </Grid>
-                    </Grid>
-                    </Grid>
+                          justify="center"
+                          alignItems="center">
+                            {cards}
+                        </Grid>
+                      </Grid>
                     </div>
             </HashRouter>
         );

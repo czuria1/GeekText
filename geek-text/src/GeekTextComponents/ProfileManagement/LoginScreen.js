@@ -23,39 +23,75 @@ export default class LoginScreen extends Component {
         this.state = { 
             username: 'null', 
             password: 'null', 
-            isLoggedIn: props.isUserLoggedIn
+            isLoggedIn: props.isUserLoggedIn, 
+            formErrors: {username: '', password: ''},
+            usernameValid: false, 
+            passwordValid: false, 
+            formValid: false
         }
 
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
         this.updateCurrentUser = this.updateCurrentUser.bind(this);
-        this.validateLogin = this.validateLogin.bind(this);
-        // this.validateEmail = this.validateEmail.bind(this);
     }
 
     updateCurrentUser() {
         this.props.setCurrentUser(this.state.username, true);
     }
 
-    validateLogin() {
-        return this.state.username.length > 0 && this.state.password.length > 6;
-    }
-
     // validateEmail(email) {
     //     const regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     //     return regexp.test(email);
     // }
-
-    componentWillMount() {
-        console.log("LoginScreen will mount");
+    
+    handleInput = (e) => {
+        const fieldName = e.target.name;
+        const fieldValue = e.target.value;
+        
+        this.setState({[fieldName] : fieldValue}, () => {this.validateField(fieldName, fieldValue)})
+    }
+    
+    validateField(field, value) {
+        let usernameValid = this.state.usernameValid;
+        let passwordValid = this.state.passwordValid;
+        let formErrors = this.state.formErrors;
+        
+        switch (field) {
+            case 'username':
+                usernameValid = value.length > 0;
+                formErrors.username = usernameValid ? '' : ' invalid';
+                break;
+            case 'password':
+                passwordValid = value.length >= 6;
+                formErrors.password = passwordValid ? '' : ' invalid';
+                break;
+            default:
+                break;
+        }
+        
+        this.setState({
+            formErrors: formErrors, 
+            usernameValid: usernameValid, 
+            passwordValid: passwordValid
+        }, this.validateLoginForm);
+    }
+    
+    validateLoginForm() {
+        this.setState({
+           formValid: this.state.usernameValid && this.state.passwordValid 
+        });
     }
 
-    componentDidMount() {
-        console.log("LoginScreen did mount!");
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log("LoginScreen will receive props", nextProps);
-    }
+//    componentWillMount() {
+//        console.log("LoginScreen will mount");
+//    }
+//
+//    componentDidMount() {
+//        console.log("LoginScreen did mount!");
+//    }
+//
+//    componentWillReceiveProps(nextProps) {
+//        console.log("LoginScreen will receive props", nextProps);
+//    }
 
     shouldComponentUpdate(nextProps, nextState) {
         console.log("Should LoginScreen update", nextProps, nextState);
@@ -66,17 +102,17 @@ export default class LoginScreen extends Component {
         return true;
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        console.log("LoginScreen will update", nextProps, nextState);
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        console.log("LoginScreen did update", prevProps, prevState);
-    }
-
-    componentWillUnmount() {
-        console.log("LoginScreen will unmount");
-    }
+//    componentWillUpdate(nextProps, nextState) {
+//        console.log("LoginScreen will update", nextProps, nextState);
+//    }
+//
+//    componentDidUpdate(prevProps, prevState) {
+//        console.log("LoginScreen did update", prevProps, prevState);
+//    }
+//
+//    componentWillUnmount() {
+//        console.log("LoginScreen will unmount");
+//    }
 
     loginButtonClicked() {
         ajaxme.post({
@@ -119,32 +155,32 @@ export default class LoginScreen extends Component {
                             </Grid>
                                 <TextField 
                                     className="textfield"
+                                    name="username"
                                     required
                                     label="Username"
                                     variant="outlined"
-                                    onChange={event => this.setState({username: event.target.value})}
-                                    onClick={this.state.username === "" ? event => this.setState({username: ""}) : event => this.setState({username: event.target.value})}
+                                    onChange={this.handleInput}
                                     error={this.state.username === ""}
                                     helperText={this.state.username.length > 0 ? "Enter your username": "Not a valid username"}></TextField>
                                 <br></br>
                                 <br></br>
                                 <TextField
-                                    className="textfield" 
+                                    className="textfield"
+                                    name="password" 
                                     required
                                     type="password"
                                     label="Password"
                                     variant="outlined"
-                                    onChange={event => this.setState({password: event.target.value})}
-                                    onClick={this.state.password === "" ? event => this.setState({password: ""}) : event => this.setState({password: event.target.value})}
+                                    onChange={this.handleInput}
                                     error={this.state.password === ""}
-                                    helperText={this.state.password.length > 5 ? "Password is long enough": "Password must be at least 6 characters long"}></TextField>
+                                    helperText={this.state.password.length > 5 ? "Password meets requirements": "Password must be at least 6 characters long"}></TextField>
                                     <br></br>
                                     <br></br>
                                     <div className="submitArea">
                                         <Button
                                             className="submitButton"
                                             variant="outlined"
-                                            disabled={!this.validateLogin()}
+                                            disabled={!this.state.formValid}
                                             onClick={this.loginButtonClicked}>Login
                                         </Button>
                                         <br></br>
