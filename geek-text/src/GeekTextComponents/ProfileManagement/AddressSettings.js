@@ -13,6 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {TextInputMask}  from 'react-masked-text';
+import ajaxme from "ajaxme";
 
 function Address(name, address, city, country, phoneNum) {
     this.name = name;
@@ -27,7 +28,7 @@ export default class AddressSettings extends Component {
     constructor (props) {
         super (props);
         this.state = { 
-            currentUser: props.isUserLoggedIn,
+            currentUserId: props.currentUserId, 
             dialogOpen: false, 
             addresses: [], 
             name: '',
@@ -40,6 +41,26 @@ export default class AddressSettings extends Component {
         this.addAddress = this.addAddress.bind(this);
     }
 
+    getUserAddresses() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=getAddress&userId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+    }
+
     addAddress() {
         this.state.addresses.push(new Address(this.state.name, this.state.address, this.state.city, this.state.country, this.state.phoneNum));
         this.setState({addresses: this.state.addresses, dialogOpen: false});
@@ -49,6 +70,27 @@ export default class AddressSettings extends Component {
                         city: '',
                         country: '',
                         phoneNum: ''});
+    }
+
+    addAddressButtonClicked() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=addAddress&address=' + `${this.state.address}` + '&password=' + `${this.state.password}`,
+            success: function (XMLHttpRequest) {
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+
     }
 
     removeAddress(index) {

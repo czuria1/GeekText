@@ -181,7 +181,7 @@ export default class LoginScreen extends Component {
                                             className="submitButton"
                                             variant="outlined"
                                             disabled={!this.state.formValid}
-                                            onClick={this.loginButtonClicked}>Login
+                                             onClick={this.loginButtonClicked}>Login
                                         </Button>
                                         <br></br>
                                         <br></br>
