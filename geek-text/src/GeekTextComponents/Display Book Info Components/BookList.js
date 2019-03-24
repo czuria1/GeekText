@@ -1,11 +1,10 @@
-import React, {Component, PureComponent} from "react";
+import React, {Component} from "react";
 import "./ModalImage.css"
 import "./BookList.css"
 import ajaxme from "ajaxme";
 import SearchArea from "../SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
-import FilterSearch from "./FilterSearch";
 
 class BookList extends Component {
     constructor(props) {
@@ -18,14 +17,14 @@ class BookList extends Component {
         this.showNoResults = this.showNoResults.bind(this);
     }
 
-    componentDidMount() {
-        this.retriveResults();
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.match.params.term !== prevProps.match.params.term)
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.match.params.term === this.props.match.params.term && this.state.books.length === nextState.books.length)
         {
-            this.retriveResults();
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
@@ -61,7 +60,7 @@ class BookList extends Component {
     }
 
     returnList() {
-        
+        //todo put coverContainer before detailContainer to fox styling issue
         if (this.state.books.length !== 0)
         {
             var bookList = this.state.books.map(function(book, index){
@@ -86,11 +85,12 @@ class BookList extends Component {
         }
     }
 
-    render() {
+    render() { 
+        
+        this.retriveResults();
         return ( 
             <div>
                 <SearchArea></SearchArea>
-                <FilterSearch></FilterSearch>
                 {this.showNoResults()}
                 <div id="list">
                     <ModalCover></ModalCover>
