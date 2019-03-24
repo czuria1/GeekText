@@ -69,14 +69,11 @@ class Header extends Component {
     handleLogout = () => {
         this.logoutCurrentUser();
         alert("You have been logged out");
+        
     };
 
     logoutCurrentUser() {
-        // this.props.logoutCurrentUser("null", false);
-        this.setState({
-            currentUser: "null", 
-            isUserLoggedIn: false
-        });
+        this.props.logoutUser("null", false);
     }
 
     loggedInUser () {
@@ -85,7 +82,7 @@ class Header extends Component {
 
         if (this.state.isUserLoggedIn) {
             return (
-                <div>
+                <HashRouter>
                     <div>
                         <Button
                             aria-owns={anchorEl ? 'simple-menu' : undefined}
@@ -102,12 +99,35 @@ class Header extends Component {
                                 <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                  to="/profilesettings"
                                  onClick={this.handleClose}
-                                 >My account</NavLink>
+                                 >Your Account</NavLink>
                                 </MenuItem>
-                            <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/loginSettings"
+                                 onClick={this.handleClose}
+                                 >Your Login Settings</NavLink>
+                                </MenuItem>
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/addressSettings"
+                                 onClick={this.handleClose}
+                                 >Your Addresses</NavLink>
+                                </MenuItem>
+                            <MenuItem onClick={this.handleClose}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/paymentSettings"
+                                 onClick={this.handleClose}
+                                 >Your Payment Methods</NavLink>
+                                </MenuItem>
+                            <MenuItem onClick={this.handleLogout}>
+                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                    to="/"
+                                    onClick={this.handleClose}
+                                    >Sign Out</NavLink>
+                            </MenuItem>
                         </Menu>
                     </div>
-                </div>
+                </HashRouter>
             )
         } else {
             return (
