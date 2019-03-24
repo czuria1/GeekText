@@ -3,18 +3,28 @@ import "./ModalImage.css"
 import "./BookList.css"
 import ajaxme from "ajaxme";
 import SearchArea from "./SearchArea";
-
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
+const size = 9;
 class BookList extends Component{
 
     constructor(props){
         super(props);
         this.state = {
-            books: []
+            books: [],
+            onPage: 1,
+            size:9
         };
 
         this.retriveResults = this.retriveResults.bind(this);
     }
 
+    //Copy and pasted from old files
+    componentDidMount(){
+        if(this.props.size){
+          this.setState({size: this.props.size});
+        }
+    }
     shouldComponentUpdate(nextProps, nextState) {
         if (this.props.match.params.term === nextProps.match.params.term)
         {
@@ -273,6 +283,7 @@ class BookList extends Component{
             caption.innerHTML = bookInfoArray[index].split('`')[0];
         };
     }
+
 
     createModalImage() {
         var modalDiv = document.createElement('div');
