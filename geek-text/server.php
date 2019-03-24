@@ -25,6 +25,7 @@
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
 	{
+		
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
@@ -44,7 +45,7 @@
 		}
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
+			  		    books.DESCRIPTION, books.RATING
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
@@ -72,74 +73,11 @@
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
-					"bio" => $row["BIO"],
-					"isbn" => $row["ISBN"]
+					"rating" => $row["RATING"]
 				);
 
 				array_push($json, $bus);
 				
-			}
-
-			$jsonstring = json_encode($json);
-			echo $jsonstring;
-		}
-		else
-		{
-		    echo "0 results";
-		}
-
-
-		$conn->close();
-	}
-
-	function getBookReview()
-	{
-		//Global allows variables outside the function scope to be used here
-		global $conn;
-		global $myObj;
-
-		$bookTitle = urldecode($_POST['searchParam']);
-
-		$sql = "SET @BOOK_TITLE = '$bookTitle';";
-
-		if ($conn->query($sql) === TRUE) 
-		{
-			//echo "New record created successfully";
-		} 
-		else 
-		{
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
-
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
-				FROM   reviews
-				JOIN   books ON books.ID = reviews.book_id
-				JOIN   users ON reviews.user_id = users.id
-				JOIN   
-						(SELECT sum(rating) AS total
-						FROM   reviews
-						JOIN   books ON books.ID = reviews.book_id
-						JOIN   users ON reviews.user_id = users.id
-						WHERE  books.TITLE = @BOOK_TITLE) AS TOTAL_RATINGS
-				WHERE  books.TITLE = @BOOK_TITLE;";
-
-		//Executes query string
-		$result = $conn->query($sql);
-
-		if ($result->num_rows > 0) 
-		{
-			$json = array();
-	    	// convert the data into json object
-	    	while($row = $result->fetch_assoc()) 
-	    	{
-				$bus = array(
-					"rating" => $row["rating"],
-					"comment" => $row["comment"],
-					"username" => $row["username"],
-					"total" => $row["total"]
-				);
-
-				array_push($json, $bus);
 			}
 
 			$jsonstring = json_encode($json);
@@ -173,8 +111,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION,
-					   authors.FIRST_NAME, authors.LAST_NAME, authors.BIO, books.ISBN
+		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING
 				FROM   books
 				JOIN   authors ON books.AUTHOR = authors.ID
 				WHERE  concat(AUTHORS.FIRST_NAME, ' ', AUTHORS.LAST_NAME) = @AUTHOR_NAME;";
@@ -196,8 +133,7 @@
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
-					"bio" => $row["BIO"],
-					"isbn" => $row["ISBN"]
+					"rating" => $row["RATING"]
 				);
 
 				array_push($json, $bus);
@@ -360,9 +296,15 @@
     else if ($method == 'loginUser')
     {
         loginUser();
-	}
-	else if ($method == 'getBookReview')
-    {
-        getBookReview();
     }
+	
+
+/** 
+	$page = 1;
+	$items_page = 10;
+	$offset = ($items_page * ($page - 1));
+		$sql = "SELECT *
+				FROM books
+				LIMIT".$offset.",". $items_page;
+*/
 ?>

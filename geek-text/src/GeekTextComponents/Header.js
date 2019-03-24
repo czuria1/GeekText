@@ -1,8 +1,13 @@
 import React, {Component} from "react";
-import { Button, Menu, MenuItem } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import Image from 'react-bootstrap/Image';
 import image from './Images/shoppingCartIcon.png';
-import { NavLink, HashRouter } from "react-router-dom";
+import {
+    NavLink,
+    HashRouter
+  } from "react-router-dom";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 class Header extends Component {
 
