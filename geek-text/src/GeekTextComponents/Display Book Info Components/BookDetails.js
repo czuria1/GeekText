@@ -17,6 +17,11 @@ class BookDetails extends Component {
         this.getBookReview();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        console.log(prevProps);
+        console.log(prevState);
+    }
+
     getBookReview() {
         
         //Used to connect to the server
@@ -52,6 +57,11 @@ class BookDetails extends Component {
                 return <div key={index} id="reviewContainer">
                             <StarsRating count={5} value={review.rating} size={30} edit={false}></StarsRating>
                             <span>{review.comment}</span>
+<<<<<<< HEAD
+=======
+                            <p></p>
+                            <span>By: {review.username}</span>
+>>>>>>> parent of a8e6d16... Able to display total reviews as a star rated system
                        </div>
               })
         }
@@ -60,7 +70,10 @@ class BookDetails extends Component {
             return <span>No reviews for this book</span>
         }
         return reviewList;
+<<<<<<< HEAD
 >>>>>>> parent of 13dd16c... Fixed bug
+=======
+>>>>>>> parent of a8e6d16... Able to display total reviews as a star rated system
     }
 
     render() { 
@@ -90,9 +103,13 @@ class BookDetails extends Component {
                 <span>{bookInfo.bio}</span>
                 <h3>Ratings and Comments</h3>
                 <hr></hr>
+<<<<<<< HEAD
                 <StarsRating count={5} value={bookInfo.rating} size={30} edit={false}></StarsRating>
                 <span>{bookInfo.comment}</span>
 >>>>>>> parent of f91a7b2... Able to see reviews
+=======
+                {this.displayReviews()}
+>>>>>>> parent of a8e6d16... Able to display total reviews as a star rated system
             </div> 
         );
     }
