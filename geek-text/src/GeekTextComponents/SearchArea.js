@@ -54,8 +54,6 @@ class SearchArea extends Component
        
     }
 
-    
-
     render() {
         
         return(
