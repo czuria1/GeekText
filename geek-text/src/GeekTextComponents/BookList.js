@@ -49,6 +49,8 @@ class BookList extends Component{
                 document.getElementById("noResultsContainer").remove();
             }
 
+            console.log("success", XMLHttpRequest.responseText);
+
             this.setState({
                 books: JSON.parse(XMLHttpRequest.responseText)
             });

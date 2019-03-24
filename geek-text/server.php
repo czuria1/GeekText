@@ -4,7 +4,7 @@
     //Info to connect to DB
 	$servername = "localhost";
 	$dbusername = "root";
-	$dbpassword = "password";
+	$dbpassword = "May1993!";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -325,12 +325,5 @@
     }
 	
 
-/** 
-	$page = 1;
-	$items_page = 10;
-	$offset = ($items_page * ($page - 1));
-		$sql = "SELECT *
-				FROM books
-				LIMIT".$offset.",". $items_page;
-*/
+
 ?>
