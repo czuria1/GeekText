@@ -28,8 +28,16 @@ class BookDetails extends Component {
                 <p></p>
                 <h3>About the author</h3>
                 <hr></hr>
+<<<<<<< HEAD
                 <p></p>
                 <h3>Reviews</h3>
+=======
+                <span>{bookInfo.bio}</span>
+                <h3>Ratings and Comments</h3>
+                <hr></hr>
+                <StarsRating count={5} value={bookInfo.rating} size={30} edit={false}></StarsRating>
+                <span>{bookInfo.comment}</span>
+>>>>>>> parent of f91a7b2... Able to see reviews
             </div> 
         );
     }
