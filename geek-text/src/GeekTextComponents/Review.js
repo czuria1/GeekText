@@ -39,7 +39,7 @@ class Review extends Component {
         "&rating=" +
         `${this.state.rating}`,
 
-      success: function(XMLHttpRequest) {
+      success: function (XMLHttpRequest) {
         console.log("success", XMLHttpRequest);
         if (XMLHttpRequest.responseText == null) {
           console.log("null");
@@ -47,14 +47,14 @@ class Review extends Component {
           console.log(XMLHttpRequest.responseText);
         }
       },
-      error: function(XMLHttpRequest) {
+      error: function (XMLHttpRequest) {
         console.log("error", XMLHttpRequest);
       },
-      abort: function(XMLHttpRequest) {
+      abort: function (XMLHttpRequest) {
         console.log("abort", XMLHttpRequest);
       },
-      loadstart: function(XMLHttpRequest) {},
-      progress: function(XMLHttpRequest) {}
+      loadstart: function (XMLHttpRequest) { },
+      progress: function (XMLHttpRequest) { }
     });
   }
 
@@ -71,6 +71,10 @@ class Review extends Component {
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
+          <br />
+          <label>
+            <input type="checkbox" name="anon" value="true"> I would like to remain anonymous</input>
+          </label>
           <br />
           <textarea name="review" onChange={this.handleReview} />
           <br />
