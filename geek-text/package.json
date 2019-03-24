@@ -17,6 +17,7 @@
     "react-native-masked-text": "^1.11.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.5",
+    "stars-rating": "^1.1.0",
     "superagent": "^4.1.0",
     "xmlhttprequest": "^1.8.0"
   },
