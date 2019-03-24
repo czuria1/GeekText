@@ -8,9 +8,12 @@ import AuthorPage from './AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
 import BookList from './BookList';
 import SearchArea from './SearchArea';
+<<<<<<< HEAD
 import LoginSettings from './ProfileManagement/LoginSettings';
 import AddressSettings from './ProfileManagement/AddressSettings';
 import PaymentSettings from './ProfileManagement/PaymentSettings';
+=======
+>>>>>>> parent of 61ff2d0... Merge pull request #29 from czuria1/Julian
 
 class App extends Component {
 
@@ -66,9 +69,12 @@ class App extends Component {
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>
+<<<<<<< HEAD
                         <Route path="/loginSettings" component={LoginSettings}/>
                         <Route path="/addressSettings" component={AddressSettings}/>
                         <Route path="/paymentSettings" component={PaymentSettings}/>
+=======
+>>>>>>> parent of 61ff2d0... Merge pull request #29 from czuria1/Julian
                      </div>
                     </div>
                 </div>
