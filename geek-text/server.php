@@ -45,9 +45,14 @@
 		}
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
+<<<<<<< HEAD
 			  		    books.DESCRIPTION, books.RATING
+=======
+			  		    books.DESCRIPTION, books.RATING, authors.BIO, books.ISBN, reviews.rating, reviews.comment
+>>>>>>> parent of 18b3819... Server updates
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
+				 JOIN	reviews ON books.id = reviews.book_id
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
 			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
 						books.TITLE LIKE @SEARCH_TERM OR
@@ -73,7 +78,15 @@
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
+<<<<<<< HEAD
 					"rating" => $row["RATING"]
+=======
+					"rating" => $row["RATING"],
+					"bio" => $row["BIO"],
+					"isbn" => $row["ISBN"],
+					"rating" => $row["rating"],
+					"comment" => $row["comment"]
+>>>>>>> parent of 18b3819... Server updates
 				);
 
 				array_push($json, $bus);
@@ -112,9 +125,14 @@
 		}
 
 		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, books.PUB_DATE, books.DESCRIPTION, books.RATING,
+<<<<<<< HEAD
 					   authors.FIRST_NAME, authors.LAST_NAME
+=======
+					   authors.FIRST_NAME, authors.LAST_NAME, authors.BIO, books.ISBN, reviews.rating, reviews.comment
+>>>>>>> parent of 18b3819... Server updates
 				FROM   books
 				JOIN   authors ON books.AUTHOR = authors.ID
+				JOIN   reviews ON books.id = reviews.book_id
 				WHERE  concat(AUTHORS.FIRST_NAME, ' ', AUTHORS.LAST_NAME) = @AUTHOR_NAME;";
 
 
@@ -135,7 +153,15 @@
 					"publisher" => $row["PUBLISHER"],
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
+<<<<<<< HEAD
 					"rating" => $row["RATING"]
+=======
+					"rating" => $row["RATING"],
+					"bio" => $row["BIO"],
+					"isbn" => $row["ISBN"],
+					"rating" => $row["rating"],
+					"comment" => $row["comment"]
+>>>>>>> parent of 18b3819... Server updates
 				);
 
 				array_push($json, $bus);
