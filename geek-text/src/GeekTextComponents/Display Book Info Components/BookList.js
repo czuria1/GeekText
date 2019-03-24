@@ -19,11 +19,19 @@ class BookList extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.match.params.term === this.props.match.params.term && this.state.books.length === nextState.books.length)
+<<<<<<< HEAD
         {
             return false;
         }
         else
         {
+=======
+        {
+            return false;
+        }
+        else
+        {
+>>>>>>> parent of 13dd16c... Fixed bug
             return true;
         }
     }
