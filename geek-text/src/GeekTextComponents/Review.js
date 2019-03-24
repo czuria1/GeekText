@@ -72,7 +72,7 @@ class Review extends Component {
             <option value="5">5</option>
           </select>
           <br />
-          <label>
+          <label class="switch">
             <input type="checkbox" name="anon" value="true"> I would like to remain anonymous</input>
           </label>
           <br />
