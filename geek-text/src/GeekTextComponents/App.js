@@ -8,20 +8,10 @@ import AuthorPage from './Display Book Info Components/AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
 import BookList from './Display Book Info Components/BookList';
 import SearchArea from './SearchArea';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import LoginSettings from './ProfileManagement/LoginSettings';
 import AddressSettings from './ProfileManagement/AddressSettings';
 import PaymentSettings from './ProfileManagement/PaymentSettings';
-=======
->>>>>>> parent of 61ff2d0... Merge pull request #29 from czuria1/Julian
-=======
 import BookDetails from './Display Book Info Components/BookDetails';
->>>>>>> parent of b80a799... Revert "Julian"
-=======
-import BookDetails from './Display Book Info Components/BookDetails';
->>>>>>> parent of 1d0bc2e... Merge pull request #31 from czuria1/revert-29-Julian
 
 class App extends Component {
 
@@ -77,20 +67,11 @@ class App extends Component {
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                         <Route path="/loginSettings" component={LoginSettings}/>
                         <Route path="/addressSettings" component={AddressSettings}/>
                         <Route path="/paymentSettings" component={PaymentSettings}/>
-=======
->>>>>>> parent of 61ff2d0... Merge pull request #29 from czuria1/Julian
-=======
                         <Route path="/bookDetails" component={BookDetails}/>
->>>>>>> parent of b80a799... Revert "Julian"
-=======
                         <Route path="/bookDetails" component={BookDetails}/>
->>>>>>> parent of 1d0bc2e... Merge pull request #31 from czuria1/revert-29-Julian
                      </div>
                     </div>
                 </div>
