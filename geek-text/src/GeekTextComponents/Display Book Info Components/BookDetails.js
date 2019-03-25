@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import ajaxme from "ajaxme";
-import { List, ListItem } from '@material-ui/core';
+import { List, ListItem, Link } from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating'
@@ -8,11 +14,15 @@ import StarsRating from 'stars-rating'
 class BookDetails extends Component {
     constructor(props) {
         super(props);
-
+        console.log(props.currentUser);
+        
         this.state = {
-            reviews: []
+            reviews: [],
+            openAlert: false,
+            currentUser: props.currentUser
         }
-
+        console.log(this.state.currentUser);
+        
         this.getBookReview = this.getBookReview.bind(this);
         
     }
@@ -82,11 +92,47 @@ class BookDetails extends Component {
         }
     }
 
+    checkIfUserOwnsBook() {
+        if (this.state.currentUser === "")
+        {
+            this.setState({
+                openAlert: true
+            })
+        }
+    }
+
+    handleClose() {
+        this.setState({
+            openAlert: false
+        })
+    }
+
+    createAlert() {
+        return <Dialog open={this.state.openAlert} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                    <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText >
+                                    Let Google help apps determine location.This means sending anonymous location data to
+                            Google, even when no apps are running.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Disagree
+                        </Button>
+                        <Button onClick={this.handleClose} color="primary" autoFocus>
+                            Agree
+                        </Button>
+                    </DialogActions>
+        </Dialog>;
+    }
+
     render() { 
         var bookInfo = this.props.location.state.book.bookInfo;
         
         return ( 
             <div id="bookDetailContainer">
+                {this.createAlert()}
                 <List id="listInfo">
                     <ListItem>Format: Book</ListItem>
                     <ListItem>Title: {bookInfo.title}</ListItem>
@@ -94,6 +140,9 @@ class BookDetails extends Component {
                     <ListItem>Publisher: {bookInfo.publisher}</ListItem>
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
+                    <ListItem>
+                        <Link component="button" variant="title" onClick={this.checkIfUserOwnsBook}>Rate this book</Link>
+                    </ListItem>
                 </List>
                 <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
                 <h3>Summary</h3>

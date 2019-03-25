@@ -70,7 +70,7 @@ class App extends Component {
                         <Route path="/loginSettings" component={LoginSettings}/>
                         <Route path="/addressSettings" component={AddressSettings}/>
                         <Route path="/paymentSettings" component={PaymentSettings}/>
-                        <Route path="/bookDetails" component={BookDetails}/>
+                        <Route path="/bookDetails" render={(props) => <BookDetails {...props} currentUser={this.state.currentUser}/>}/>
                      </div>
                     </div>
                 </div>
