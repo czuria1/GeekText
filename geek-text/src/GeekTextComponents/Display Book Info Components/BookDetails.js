@@ -9,22 +9,22 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
-import StarsRating from 'stars-rating'
+import StarsRating from 'stars-rating';
+import {NavLink} from 'react-router-dom';
 
 class BookDetails extends Component {
     constructor(props) {
         super(props);
-        console.log(props.currentUser);
         
         this.state = {
             reviews: [],
             openAlert: false,
             currentUser: props.currentUser
         }
-        console.log(this.state.currentUser);
         
         this.getBookReview = this.getBookReview.bind(this);
-        
+        this.checkIfUserOwnsBook = this.checkIfUserOwnsBook.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
     
     componentDidMount() {
@@ -109,19 +109,20 @@ class BookDetails extends Component {
 
     createAlert() {
         return <Dialog open={this.state.openAlert} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-                    <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+                    <DialogTitle>You're not logged in</DialogTitle>
                     <DialogContent>
                         <DialogContentText >
-                                    Let Google help apps determine location.This means sending anonymous location data to
-                            Google, even when no apps are running.
+                            Would you like to login to rate this book?
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
-                            Disagree
+                            <NavLink style={{ textDecoration: 'none', color: 'black'}}
+                                 to="/login"
+                                 >Yes</NavLink>
                         </Button>
                         <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Agree
+                            No
                         </Button>
                     </DialogActions>
         </Dialog>;
