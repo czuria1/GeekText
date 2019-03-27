@@ -3,9 +3,76 @@ import "./ModalImage.css"
 import "./BookList.css"
 import ajaxme from "ajaxme";
 import SearchArea from "./SearchArea";
-import Pagination from 'rc-pagination';
-import 'rc-pagination/assets/index.css';
+// import Pagination from 'rc-pagination';
+// import 'rc-pagination/assets/index.css';
 const size = 9;
+const i = 0;
+var list = new Array();
+var pagesOnList = new Array();
+var currentPage = 1;
+var perPage = 10;
+var pages = 1;
+
+
+function exampleList(){
+    for (i = 0; i < 100; i++)
+    list.push(i);
+    pages = getPages();
+}
+
+// function htmlList(){
+//     document.addElementById("list").innerHTML = "";
+//     for(i = 0; i < pagesOnList.length; i++){
+//         document.addElementById("list").innerHTML += pagesOnList[i] + "";
+//     }
+// }
+
+function getPages(){
+    return Math.ceil(list.length/perPage);
+}
+
+
+function lPage(){
+    currentPage -= 1;
+    store();
+}
+function rPage(){
+    currentPage += 1;
+    store();
+}
+
+function startPage(){
+    currentPage = 1;
+    store();
+}
+function lasttPage(){
+    currentPage = pages;
+    store();
+}
+//Ref. react paginati
+// function check() {
+//     document.getElementById("next").disabled = currentPage == pages ? true : false;
+//     document.getElementById("previous").disabled = currentPage == 1 ? true : false;
+//     document.getElementById("first").disabled = currentPage == 1 ? true : false;
+//     document.getElementById("last").disabled = currentPage == pages ? true : false;
+// }
+
+function store(){
+    var start = ((currentPage - 1) * perPage);
+    var last = start + perPage;
+    pagesOnList = list.slice(start, last);
+    //htmlList();
+   // check();
+
+}
+function finalStore(){
+exampleList();
+store();
+}
+
+window.onload = store;
+
+
 class BookList extends Component{
 
     constructor(props){
@@ -13,18 +80,26 @@ class BookList extends Component{
         this.state = {
             books: [],
             onPage: 1,
-            size:9
+            size:9,
+            prices: [],
+            search: ''
         };
 
         this.retriveResults = this.retriveResults.bind(this);
     }
 
+ updateSearch(event) {
+     this.setState({search: event.target.value.substring(0,20)});
+ }
+
+
+
     //Copy and pasted from old files
-    componentDidMount(){
-        if(this.props.size){
-          this.setState({size: this.props.size});
-        }
-    }
+    // componentDidMount(){
+    //     if(this.props.size){
+    //       this.setState({size: this.props.size});
+    //     }
+    // }
     shouldComponentUpdate(nextProps, nextState) {
         if (this.props.match.params.term === nextProps.match.params.term)
         {
@@ -304,11 +379,32 @@ class BookList extends Component{
     }
 
     render() {
-
+        let filterGenres = this.props.books.filterGenres(
+            (books) => {
+                return books.genre.indexOf(this.state.search) != -1;
+            }
+        );
         this.retriveResults();
         return (
+
+//             <body>
+//                 finalStore();
+//     <div style="text-align:center;">
+//     <input type="button" id="first" onclick="firstPage()" value="first" />
+//     <input type="button" id="next" onclick="nextPage()" value="next" />
+//     <input type="button" id="previous" onclick="previousPage()" value="previous" />
+//     <input type="button" id="last" onclick="lastPage()" value="last" />
+
+//     <div id="list"></div>
+//     </div>
+// </body>
             
             <div >
+                <ul>{filterGenres.map((books)=>
+                    {return <BookList books = {books}
+                    key = {books.id}/>
+                })}
+                </ul>
                 <SearchArea></SearchArea>
                 <div id="listContainer">
                 </div>
