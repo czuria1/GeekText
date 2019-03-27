@@ -69,10 +69,12 @@ class SearchArea extends Component
         
         return(
             
-            
+          
             <div id="search-info-container" align="center">
        
-            
+       <input type = "submit" name="ASC" value= "ASC"></input><br></br>
+           <input type = "submit" name="DESC" value= "DESC"></input><br></br>
+           
             <div id="dropFunc" align="center" style = {styles.sortedDivStyle}>
                 <p style = {styles.selectLabelStyle}>Genre</p>
 <select style = {styles.selectStyle} defaultValue={this.state.genre} onChange = {this.GenreChange}>
@@ -97,7 +99,7 @@ class SearchArea extends Component
 
             
                 <button id="searchButton" >
-<                    NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                < NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                 to={"/bookList/" + this.state.searchTerm}
                                 onClick={this.searchButtonClicked}
                                 >Search</NavLink>

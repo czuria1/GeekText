@@ -14,11 +14,11 @@ var perPage = 10;
 var pages = 1;
 
 
-function exampleList(){
-    for (i = 0; i < 100; i++)
-    list.push(i);
-    pages = getPages();
-}
+// function exampleList(){
+//     for (i = 0; i < 100; i++)
+//     list.push(i);
+//     pages = getPages();
+// }
 
 // function htmlList(){
 //     document.addElementById("list").innerHTML = "";
@@ -27,28 +27,28 @@ function exampleList(){
 //     }
 // }
 
-function getPages(){
-    return Math.ceil(list.length/perPage);
-}
+// function getPages(){
+//     return Math.ceil(list.length/perPage);
+// }
 
 
-function lPage(){
-    currentPage -= 1;
-    store();
-}
-function rPage(){
-    currentPage += 1;
-    store();
-}
+// function lPage(){
+//     currentPage -= 1;
+//     store();
+// }
+// function rPage(){
+//     currentPage += 1;
+//     store();
+// }
 
-function startPage(){
-    currentPage = 1;
-    store();
-}
-function lasttPage(){
-    currentPage = pages;
-    store();
-}
+// function startPage(){
+//     currentPage = 1;
+//     store();
+// }
+// function lasttPage(){
+//     currentPage = pages;
+//     store();
+// }
 //Ref. react paginati
 // function check() {
 //     document.getElementById("next").disabled = currentPage == pages ? true : false;
@@ -57,20 +57,20 @@ function lasttPage(){
 //     document.getElementById("last").disabled = currentPage == pages ? true : false;
 // }
 
-function store(){
-    var start = ((currentPage - 1) * perPage);
-    var last = start + perPage;
-    pagesOnList = list.slice(start, last);
-    //htmlList();
-   // check();
+// function store(){
+//     var start = ((currentPage - 1) * perPage);
+//     var last = start + perPage;
+//     pagesOnList = list.slice(start, last);
+//     //htmlList();
+//    // check();
 
-}
-function finalStore(){
-exampleList();
-store();
-}
+// }
+// function finalStore(){
+// exampleList();
+// store();
+// }
 
-window.onload = store;
+// window.onload = store;
 
 
 class BookList extends Component{
@@ -80,17 +80,16 @@ class BookList extends Component{
         this.state = {
             books: [],
             onPage: 1,
-            size:9,
-            prices: [],
-            search: ''
+            size:9
+         
         };
 
         this.retriveResults = this.retriveResults.bind(this);
     }
 
- updateSearch(event) {
-     this.setState({search: event.target.value.substring(0,20)});
- }
+//  updateSearch(event) {
+//      this.setState({search: event.target.value.substring(0,20)});
+//  }
 
 
 
@@ -379,11 +378,7 @@ class BookList extends Component{
     }
 
     render() {
-        let filterGenres = this.props.books.filterGenres(
-            (books) => {
-                return books.genre.indexOf(this.state.search) != -1;
-            }
-        );
+      
         this.retriveResults();
         return (
 
@@ -400,11 +395,7 @@ class BookList extends Component{
 // </body>
             
             <div >
-                <ul>{filterGenres.map((books)=>
-                    {return <BookList books = {books}
-                    key = {books.id}/>
-                })}
-                </ul>
+                
                 <SearchArea></SearchArea>
                 <div id="listContainer">
                 </div>
