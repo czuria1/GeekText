@@ -9,6 +9,10 @@
 
 	//what method to execute
 	$method = urldecode($_POST['method']);
+
+	//Parameters passed
+	 $params = urldecode($_POST['params']);
+	 $params_arr = explode(";", $params);
 	
 	//used to create json objects
 	$myObj = new \stdClass();
@@ -28,9 +32,10 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 		
 		
-		$keyword = urldecode($_POST['searchParam']);
+		$keyword = $params_arr[0];
 		
 		$sql = "SET @SEARCH_TERM = '%$keyword%';";
 		
@@ -97,8 +102,9 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 
-		$bookTitle = urldecode($_POST['searchParam']);
+		$bookTitle = $params_arr[0];
 
 		$sql = "SET @BOOK_TITLE = '$bookTitle';";
 

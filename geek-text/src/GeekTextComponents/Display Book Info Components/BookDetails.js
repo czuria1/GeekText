@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ajaxme from "ajaxme";
 import { List, ListItem, Link } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,6 +10,7 @@ import './BookDetails.css'
 import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating';
 import {NavLink} from 'react-router-dom';
+import ServerCall from "../ServerCall";
 
 class BookDetails extends Component {
     constructor(props) {
@@ -32,29 +32,10 @@ class BookDetails extends Component {
     }
 
     getBookReview() {
-        
-        //Used to connect to the server
-        ajaxme.post({
-            url: 'http://localhost/server.php/post',
-            data: 'method=getBookReview&searchParam=' + `${this.props.location.state.book.bookInfo.title}`,
-            success: function(XMLHttpRequest) {
-                if (XMLHttpRequest.responseText !== "0 results")
-                {
-                    this.setState({
-                        reviews: JSON.parse(XMLHttpRequest.responseText)
-                    })
-                }
-            }.bind(this),
-            error: function(XMLHttpRequest) {
-                console.log('error', XMLHttpRequest);
-            },
-            abort: function(XMLHttpRequest) {
-                console.log('abort', XMLHttpRequest);
-            },
-            loadstart: function(XMLHttpRequest) {
-            },
-            progress: function(XMLHttpRequest) {
-            }
+        var response = ServerCall("getBookReview", this.props.location.state.book.bookInfo.title);
+
+        this.setState({
+            reviews: response
         });
     }
 
@@ -76,8 +57,6 @@ class BookDetails extends Component {
             return <span>No reviews for this book</span>
         }
 
-        
-        
         return reviewList;
     }
 
@@ -98,6 +77,10 @@ class BookDetails extends Component {
             this.setState({
                 openAlert: true
             })
+        }
+        else
+        {
+            var response = ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title);
         }
     }
 

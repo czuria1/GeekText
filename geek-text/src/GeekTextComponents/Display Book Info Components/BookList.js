@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import "./ModalImage.css"
 import "./BookList.css"
-import ajaxme from "ajaxme";
 import SearchArea from "../SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
 import FilterSearch from "./FilterSearch";
+import ServerCall from "../ServerCall";
 
 class BookList extends Component {
     constructor(props) {
@@ -18,50 +18,19 @@ class BookList extends Component {
         this.showNoResults = this.showNoResults.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.match.params.term === this.props.match.params.term && this.state.books.length === nextState.books.length)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+    componentDidMount() {
+        this.retriveResults();
     }
 
     retriveResults() {
-        //Used to connect to the server
-        ajaxme.post({
-          url: "http://localhost/server.php/post",
-          data: "method=getSearchInfo&searchParam=" + `${this.props.match.params.term}`,
-          success: function(XMLHttpRequest) {
-            //If the search returns no result from the db
-            if (XMLHttpRequest.responseText !== "0 results") 
-            {
-                this.setState({
-                    books: JSON.parse(XMLHttpRequest.responseText)
-                });
-            }
-            else
-            {
-                this.setState({
-                    books: []
-                });
-            }
-          }.bind(this),
-          error: function(XMLHttpRequest) {
-            console.log("error", XMLHttpRequest);
-          },
-          abort: function(XMLHttpRequest) {
-            console.log("abort", XMLHttpRequest);
-          },
-          loadstart: function(XMLHttpRequest) {},
-          progress: function(XMLHttpRequest) {}
+        var response = ServerCall("getSearchInfo", this.props.match.params.term);
+
+        this.setState({
+            books: response
         });
     }
 
     returnList() {
-        //todo put coverContainer before detailContainer to fox styling issue
         if (this.state.books.length !== 0)
         {
             var bookList = this.state.books.map(function(book, index){
@@ -87,8 +56,6 @@ class BookList extends Component {
     }
 
     render() { 
-        
-        this.retriveResults();
         return ( 
             <div>
                 <SearchArea></SearchArea>
