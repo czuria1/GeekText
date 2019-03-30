@@ -27,7 +27,8 @@ export default class LoginScreen extends Component {
             formErrors: {username: '', password: ''},
             usernameValid: false, 
             passwordValid: false, 
-            formValid: false
+            formValid: false,
+            userID: props.userID
         }
 
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
@@ -35,7 +36,7 @@ export default class LoginScreen extends Component {
     }
 
     updateCurrentUser() {
-        this.props.setCurrentUser(this.state.username, true);
+        this.props.setCurrentUser(this.state.username, this.state.userID, true);
     }
 
     // validateEmail(email) {
@@ -124,9 +125,12 @@ export default class LoginScreen extends Component {
                     alert("Username or password is invalid");
                     return;
                 } else {
+                    this.setState({
+                        userID: JSON.parse(XMLHttpRequest.responseText)[0].id
+                    })
                     this.updateCurrentUser();
                     this.props.history.push('/');
-                    console.log('success', XMLHttpRequest);
+                    console.log('success', JSON.parse(XMLHttpRequest.responseText)[0].id);
                 }
             }.bind(this),
             error: function(XMLHttpRequest) {

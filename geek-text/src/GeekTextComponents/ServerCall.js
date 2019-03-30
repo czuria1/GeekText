@@ -6,7 +6,14 @@ const alertContents = () => {
     {
         if (httpRequest.status === 200) 
         {
-            response = JSON.parse(httpRequest.responseText);
+            if (httpRequest.responseText !== "0 results")
+            {
+                response = JSON.parse(httpRequest.responseText);
+            }
+            else
+            {
+                response = "0 results";
+            }
         } 
         else 
         {

@@ -264,19 +264,24 @@
         global $myObj;
         
         $username = urldecode($_POST['username']);
-        $password = urldecode($_POST['password']);
+		$password = urldecode($_POST['password']);
+
+		$password = md5($password);
+
+		$sql = "SET @USERNAME = '$username', @PASSWORD = '$password'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+			
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
         
-        $sql = "SELECT (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD)
-                VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')
+        $sql = "SELECT USERS.username, USERS.password, USERS.id
                 FROM USERS
-                WHERE USERS.username = username AND USERS.password = password";
-        
-        if (empty($username)) { array_push($errors, "Username is required"); }
-        if (empty(password)) { array_push($errors, "Password is required"); }
-        
-        if (count($errors) == 0) {
-            $password = md5($password);
-        }
+                WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
         
         $result = $conn->query($sql);
         
@@ -288,11 +293,8 @@
             {
                 $bus = array(
                              "username" => $row["USERNAME"],
-                             "fname" => $row["FNAME"],
-                             "lname" => $row["LNAME"],
-                             "nickname" => $row["NICKNAME"],
-                             "EMAIL" => $row["EMAIL"],
-                             "PASSWORD" => $row["PASSWORD"],
+							 "password" => $row["PASSWORD"],
+							 "id" => $row["ID"]
                              );
                 
                 array_push($json, $bus);

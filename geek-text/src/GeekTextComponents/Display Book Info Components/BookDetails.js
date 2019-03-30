@@ -19,7 +19,8 @@ class BookDetails extends Component {
         this.state = {
             reviews: [],
             openAlert: false,
-            currentUser: props.currentUser
+            currentUser: props.currentUser,
+            userID: props.userID
         }
         
         this.getBookReview = this.getBookReview.bind(this);
@@ -71,16 +72,22 @@ class BookDetails extends Component {
         }
     }
 
-    checkIfUserOwnsBook() {
+    checkIfUserOwnsBook(e) {
         if (this.state.currentUser === "")
         {
+            e.preventDefault();
             this.setState({
                 openAlert: true
             })
         }
         else
         {
-            var response = ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title);
+            var response = ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title + ";" + this.state.userID);
+
+            if (response[0].title !== this.props.location.state.book.bookInfo.title)
+            {
+                e.preventDefault();
+            }
         }
     }
 
@@ -125,7 +132,11 @@ class BookDetails extends Component {
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
                     <ListItem>
-                        <Link component="button" variant="title" onClick={this.checkIfUserOwnsBook}>Rate this book</Link>
+                        <Link component="button" variant="title" onClick={this.checkIfUserOwnsBook}>
+                                <NavLink style={{ textDecoration: 'none', color: 'blue'}}
+                                 to="/reviews"
+                                 >Rate this book</NavLink>
+                        </Link>
                     </ListItem>
                 </List>
                 <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
