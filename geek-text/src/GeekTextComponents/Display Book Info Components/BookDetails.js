@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating';
-import {NavLink} from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
 import ServerCall from "../ServerCall";
 
 class BookDetails extends Component {
@@ -41,7 +41,9 @@ class BookDetails extends Component {
     }
 
     displayReviews() {
-        if (this.state.reviews.length !== 0)
+        console.log(this.state.reviews);
+        
+        if (this.state.reviews.length !== 0 && this.state.reviews !== "0 results")
         {
             var reviewList = this.state.reviews.map(function(review, index){
                 return <div key={index} id="reviewContainer">
@@ -73,12 +75,13 @@ class BookDetails extends Component {
     }
 
     checkIfUserOwnsBook(e) {
+        
         if (this.state.currentUser === "")
         {
-            e.preventDefault();
             this.setState({
                 openAlert: true
             })
+            e.preventDefault();
         }
         else
         {
@@ -87,6 +90,7 @@ class BookDetails extends Component {
             if (response[0].title !== this.props.location.state.book.bookInfo.title)
             {
                 e.preventDefault();
+                alert("you dont own it")
             }
         }
     }
@@ -107,9 +111,7 @@ class BookDetails extends Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
-                            <NavLink style={{ textDecoration: 'none', color: 'black'}}
-                                 to="/login"
-                                 >Yes</NavLink>
+                            <Link component={RouterLink} to="/login" variant="title">Yes</Link>
                         </Button>
                         <Button onClick={this.handleClose} color="primary" autoFocus>
                             No
@@ -132,11 +134,7 @@ class BookDetails extends Component {
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
                     <ListItem>
-                        <Link component="button" variant="title" onClick={this.checkIfUserOwnsBook}>
-                                <NavLink style={{ textDecoration: 'none', color: 'blue'}}
-                                 to="/reviews"
-                                 >Rate this book</NavLink>
-                        </Link>
+                        <Link component={RouterLink} to="/reviews" variant="title" onClick={this.checkIfUserOwnsBook}>Rate this book</Link>
                     </ListItem>
                 </List>
                 <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
