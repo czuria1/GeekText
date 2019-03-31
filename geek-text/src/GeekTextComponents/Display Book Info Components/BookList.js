@@ -16,18 +16,38 @@ class BookList extends Component {
         this.retriveResults = this.retriveResults.bind(this);
         this.returnList = this.returnList.bind(this);
         this.showNoResults = this.showNoResults.bind(this);
+        this.changeState = this.changeState.bind(this);
     }
 
     componentDidMount() {
-        this.retriveResults();
+        this.retriveResults(this.props.match.params.term);
     }
 
-    retriveResults() {
-        var response = ServerCall("getSearchInfo", this.props.match.params.term);
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log("shouldComponentUpdate");
+        console.log("currProps",this.props.match.params.term);
+        console.log("nextProps", nextProps.match.params.term);
+        console.log("this.state.books.length", this.state);
+        console.log("nextState.books.length", nextState);
+        if (nextProps.match.params.term === this.props.match.params.term && this.state.books.length === nextState.books.length)
+        {
+            return false;
+        }
+        else
+        {
+            this.retriveResults(nextProps.match.params.term);
+            return true;
+        }
+    }
 
+    changeState(response) {
         this.setState({
             books: response
         });
+    }
+
+    retriveResults(term) {
+        ServerCall("getSearchInfo", term, this.changeState);
     }
 
     returnList() {
@@ -42,7 +62,6 @@ class BookList extends Component {
     }
 
     showNoResults() {
-
         if (this.state.books.length === 0)
         {
             return <div id="noResultsContainer">
@@ -56,6 +75,8 @@ class BookList extends Component {
     }
 
     render() { 
+        console.log("render");
+        
         return ( 
             <div>
                 <SearchArea></SearchArea>

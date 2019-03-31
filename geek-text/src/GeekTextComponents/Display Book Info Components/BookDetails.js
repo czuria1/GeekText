@@ -26,23 +26,24 @@ class BookDetails extends Component {
         this.getBookReview = this.getBookReview.bind(this);
         this.checkIfUserOwnsBook = this.checkIfUserOwnsBook.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.changeState = this.changeState.bind(this);
     }
     
     componentDidMount() {
         this.getBookReview();
     }
 
-    getBookReview() {
-        var response = ServerCall("getBookReview", this.props.location.state.book.bookInfo.title);
-
+    changeState(response) {
         this.setState({
             reviews: response
         });
     }
 
+    getBookReview() {
+        ServerCall("getBookReview", this.props.location.state.book.bookInfo.title, this.changeState);
+    }
+
     displayReviews() {
-        console.log(this.state.reviews);
-        
         if (this.state.reviews.length !== 0 && this.state.reviews !== "0 results")
         {
             var reviewList = this.state.reviews.map(function(review, index){

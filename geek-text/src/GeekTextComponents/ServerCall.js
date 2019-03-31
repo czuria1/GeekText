@@ -1,4 +1,5 @@
 var httpRequest;
+var changeState;
 var response;
 
 const alertContents = () => {
@@ -9,10 +10,12 @@ const alertContents = () => {
             if (httpRequest.responseText !== "0 results")
             {
                 response = JSON.parse(httpRequest.responseText);
+                changeState(response);
             }
             else
             {
                 response = "0 results";
+                changeState(response);
             }
         } 
         else 
@@ -22,8 +25,9 @@ const alertContents = () => {
     }
 }
 
-const ServerCall = (method, params) => {
+const ServerCall = (method, params, changeStateFunctionCall) => {
     httpRequest = new XMLHttpRequest();
+    changeState = changeStateFunctionCall;
 
     if (!httpRequest) {
       alert('Giving up :( Cannot create an XMLHTTP instance');
@@ -31,10 +35,9 @@ const ServerCall = (method, params) => {
     }
 
     httpRequest.onreadystatechange = alertContents;
-    httpRequest.open('POST', 'http://localhost/server.php/', false);
+    httpRequest.open('POST', 'http://localhost/server.php/');
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send('method=' + encodeURIComponent(method) + '&params=' + encodeURIComponent(params));
-    return response;
 }
 
 export default ServerCall
