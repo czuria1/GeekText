@@ -7,7 +7,7 @@ import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './Display Book Info Components/AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
 import BookList from './Display Book Info Components/BookList';
-import SearchArea from './SearchArea';
+import SearchArea from './Display Book Info Components/SearchArea';
 import LoginSettings from './ProfileManagement/LoginSettings';
 import AddressSettings from './ProfileManagement/AddressSettings';
 import PaymentSettings from './ProfileManagement/PaymentSettings';
