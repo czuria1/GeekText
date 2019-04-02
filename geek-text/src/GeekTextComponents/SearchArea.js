@@ -57,12 +57,30 @@ class SearchArea extends Component
         }
        
     }
+    //Dropdown list
+    dropFunction(){
+document.getElementById("myDrop").classList.toggle("show");
+    }
+    //Being able to close
+    onClick(e){
+        var i = 0;
+        if(!e.target.matches(".opdown")){
+            var dropdowns = document.getElementsByClassName("items");
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDrops = dropdowns[i];
+                if(openDrops.classList.contains("show")){
+                    openDrops.classList.remove("show");
+                }
+        }
+    }
+}
+
   
   
 
-    searchASCClicked() {   
-        this.props.updateList();
-    }
+    // searchASCClicked() {   
+    //     document.getElementById("searchText").reverse();
+    // }
     
 
     render() {
@@ -75,13 +93,14 @@ class SearchArea extends Component
        <input type = "submit" name="ASC" value= "ASC"></input><br></br>
            <input type = "submit" name="DESC" value= "DESC"></input><br></br>
            
-            <div id="dropFunc" align="center" style = {styles.sortedDivStyle}>
-                <p style = {styles.selectLabelStyle}>Genre</p>
-<select style = {styles.selectStyle} defaultValue={this.state.genre} onChange = {this.GenreChange}>
+            <div id="dropFunc" align="left" to={"/bookList/" + this.state.searchTerm}
+                                onClick={this.searchButtonClicked} style = {styles.sortedDivStyle}>
+                {/* <p style = {styles.selectLabelStyle}>Genre</p>
+<select style = {styles.selectStyle} onChange = "location = this.value;" defaultValue={this.state.genre} onChange = {this.GenreChange}>
  <option disabled selected value> -- select an Genre -- </option> 
-<option value="Horror">Horror</option>
+<option value="#/bookList/Horror">Horror</option>
 <option value="Science Fiction">Science Fiction</option>
-<option value="Fiction">Fiction</option>
+<option  value="Fiction">Fiction</option>
 <option value="Mystery">Mystery</option>
 <option value="Art">Art</option>
 <option value="Poetry">Poetry</option>
@@ -92,7 +111,38 @@ class SearchArea extends Component
 <option value="Computing">Computing</option>
 <option value="PSY">PSY</option>
 <option value="PHI">PHI</option>
-</select>
+</select> */}
+
+
+{/* Until I can fix drop down this will suffice */}
+{/* <div class="dropdown">
+  <button onclick="dropFunction()" classs = "opdown" >Select Genre</button>
+  <div id="myDrop" class = "items" > */}
+  <br></br>
+  <section align ="left" float = "left">
+      <nav>
+      <p >Select any Genre of your choosing</p>
+    <a href="#/bookList/Horror">    |Horror|  </a>
+    <a href="#/bookList/Tra">   |Travel| </a>
+<a href="#/bookList/Fiction">   |Fiction|    </a>
+<a href="#/bookList/Mystery">   |Mystery|    </a><br></br>
+<a href="#/bookList/Art">   |Art|    </a>
+<a href="#/bookList/Poetry">    |Poetry|  </a>
+<a href="#/bookList/Science">   |Science|    </a>
+<a href="#/bookList/PHI">   |Health|    </a><br></br>
+<a href="#/bookList/Science Fiction">   |Science Fiction|    </a>
+
+{/* <a href="#/bookList/History">   History    </a><br></br>
+<a href="#/bookList/Computing"> Computing    </a> */}
+<a href="#/bookList/PSY">   |Psychological|    </a>
+
+</nav>
+</section>
+
+  {/* </div>
+</div> */}
+
+
 
 
                 </div>
@@ -105,14 +155,45 @@ class SearchArea extends Component
                                 >Search</NavLink>
                 </button>
 
+
+
+                
+                <button type="submit" name="sort" class="button" value="<?php echo $value; ?>">ASCENDING/DESCENDING </button>
+
+
+
+
+
                 <input onFocus={this.setTextBoxListner} 
                     id="searchText" 
                     type="text" 
                     placeholder = "Author, Title, Genre ... " 
                     onChange={this.handleSearch}/>
 
+
                 <button id="topSearch">Top Sellers</button>
+
+
                 <button id="searchButton">
+
+{/* 
+                <input id = "DESC" type = "button" value = "DESC">DESCEND</input>
+ */}
+
+                {/* <form action = 'server.php' method = 'get'>
+                <input type = "submit" class = "sort" name = "DESC" value= "DESC"
+                id= 'id' href="?order=id&sort=DESC=<?php echo $DESC; ?>"
+                />
+                </form> */}
+                {/* <th>
+                    <a class = 'button' id= 'id' href="?order=id&DESC=<?php echo $DESC; ?>">
+                   
+                    </a>
+                </th> */}
+
+
+
+
                 <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                 to={"/bookList/" + this.state.searchTerm}
                                 onClick={this.searchASCClicked}
@@ -151,7 +232,4 @@ var styles={
     }
 }
 
-function dropFunc(){
-   document.getElementById.searchASCClicked.toggle("Show");
 
-}
