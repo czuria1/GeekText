@@ -10,9 +10,15 @@
 	//what method to execute
 	$method = urldecode($_POST['method']);
 
+	$params = null;
+	$params_arr = null;
 	//Parameters passed
-	 $params = urldecode($_POST['params']);
-	 $params_arr = explode(";", $params);
+	 if( isset($_POST['params']) )
+	 {
+		$params = urldecode($_POST['params']);
+	 	$params_arr = explode(";", $params);
+	 }
+	 
 	
 	//used to create json objects
 	$myObj = new \stdClass();
@@ -223,6 +229,59 @@
 		$conn->close();
 	}
 
+	function doesUserOwnBook()
+	{
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+		global $params_arr;
+
+		$bookTitle = $params_arr[0];
+		$userID = $params_arr[1];
+
+		$sql = "SET @BOOK_TITLE = '$bookTitle', @USED_ID = '$userID'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+			
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "SELECT TITLE
+				FROM books JOIN booksowned ON booksowned.book_id = books.id
+				WHERE booksowned.user_id = @USED_ID AND books.title = @BOOK_TITLE";
+
+		//Executes query string
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0) 
+		{
+			$json = array();
+	    	// convert the data into json object
+	    	while($row = $result->fetch_assoc()) 
+	    	{
+				$bus = array(
+					"title" => $row["TITLE"]
+				);
+
+				array_push($json, $bus);
+			}
+
+			$jsonstring = json_encode($json);
+			echo $jsonstring;
+		}
+		else
+		{
+		    echo "0 results";
+		}
+
+
+		$conn->close();
+	}
+
 	function submitReview()
 	{
 		
@@ -292,9 +351,9 @@
             while($row = $result->fetch_assoc())
             {
                 $bus = array(
-                             "username" => $row["USERNAME"],
-							 "password" => $row["PASSWORD"],
-							 "id" => $row["ID"]
+                             "username" => $row["username"],
+							 "password" => $row["password"],
+							 "id" => $row["id"]
                              );
                 
                 array_push($json, $bus);
@@ -372,5 +431,9 @@
 	else if ($method == 'getBookReview')
     {
         getBookReview();
+	}
+	else if ($method == 'doesUserOwnBook')
+    {
+        doesUserOwnBook();
     }
 ?>

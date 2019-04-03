@@ -6,6 +6,7 @@ import List from "./List";
 import ModalCover from "./ModalCover";
 import FilterSearch from "./FilterSearch";
 import ServerCall from "../ServerCall";
+import styled from "styled-components";
 
 class BookList extends Component {
     constructor(props) {
@@ -51,7 +52,7 @@ class BookList extends Component {
     }
 
     returnList() {
-        if (this.state.books.length !== 0)
+        if (this.state.books.length !== 0 && this.state.books !== "0 results")
         {
             var bookList = this.state.books.map(function(book, index){
                 return <List bookInfo={book} key={index} bookIndex={index}></List>;
@@ -62,7 +63,7 @@ class BookList extends Component {
     }
 
     showNoResults() {
-        if (this.state.books.length === 0)
+        if (this.state.books === "0 results")
         {
             return <div id="noResultsContainer">
                     <p>No titles found (0 hits) - Try these tips:</p>
@@ -76,19 +77,24 @@ class BookList extends Component {
 
     render() { 
         console.log("render");
-        
         return ( 
             <div>
                 <SearchArea></SearchArea>
                 <FilterSearch></FilterSearch>
                 {this.showNoResults()}
-                <div id="list">
+                <ListContainer>
                     <ModalCover></ModalCover>
                     {this.returnList()}
-                </div>
+                </ListContainer>
             </div>
          );
     }
 }
+
+const ListContainer = styled.div`
+    width: 60%;
+    padding-top: 100px;
+    float: right;
+`;
  
 export default BookList;

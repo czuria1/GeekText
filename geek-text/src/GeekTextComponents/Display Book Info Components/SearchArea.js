@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
-import {NavLink} from "react-router-dom";
+import {Link as RouterLink} from 'react-router-dom';
+import { Link } from '@material-ui/core';
+import SearchBar from './SearchBar';
 
-class SearchArea extends Component
+export default class SearchArea extends Component
 {
     constructor(props) {
         super(props);
 
         this.state = {
             books: [],  //Contains all the book returned by the search
-            searchTerm: '',
-            searchButtonClick: false
+            searchTerm: ''
         };
 
         //Bind the methods to the component
         this.handleSearch = this.handleSearch.bind(this);
         this.searchButtonClicked = this.searchButtonClicked.bind(this);
-
-        document.title = "Geek Text Search";
     }
 
     setTextBoxListner()
     {
         var input = document.getElementById("searchText");
-
+        
         input.addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
-                document.getElementById("searchButton").click();
+                
+                document.getElementById("linkToList").click();
             }
         });
     }
@@ -36,43 +36,29 @@ class SearchArea extends Component
         });
     }
 
-    componentDidMount() {
-        
-    }
-
     searchButtonClicked(e) {
-        
         if (this.state.searchTerm === "")
         {
             alert("Please enter a search term in the textbox");
             e.preventDefault();
         }
-       
     }
 
     render() {
-        
         return(
-            <div id="search-info-container" align="center">
-            
-                <button id="searchButton" >
-                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                to={"/bookList/" + this.state.searchTerm}
-                                onClick={this.searchButtonClicked}
-                                >Search</NavLink>
-                </button>
-
-                <input onFocus={this.setTextBoxListner} 
-                    id="searchText" 
-                    type="text" 
-                    placeholder = "Author, Title, Genre ... " 
-                    onChange={this.handleSearch}/>
-
-                <button id="topSearch">Top Sellers</button>
-                
+            <div id="search-info-container">
+                <SearchBar setTextBoxListner={this.setTextBoxListner}
+                           handleSearch={this.handleSearch}
+                ></SearchBar>
+                <Link id="linkToList"
+                      component={RouterLink} 
+                      to={"/bookList/" + this.state.searchTerm} 
+                      variant="title" 
+                      onClick={this.searchButtonClicked}
+                      style={{ display: 'none'}} 
+                      >Search
+                </Link>
             </div>
         )
     }
 }
-
-export default SearchArea;
