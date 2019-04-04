@@ -8,7 +8,7 @@ import image from './Images/shoppingCartIcon.png';
 import Fees from './shoppingcartcomponents/Fees/Fees'
 import Total from './shoppingcartcomponents/Total/Total';
 import ItemDetails from './shoppingcartcomponents/ItemDetails/ItemDetails';
-import BookList from "./BookList";
+import BookList from "./Display Book Info Components/BookList";
 
 class ShoppingCartPage extends Component {
     constructor(props){

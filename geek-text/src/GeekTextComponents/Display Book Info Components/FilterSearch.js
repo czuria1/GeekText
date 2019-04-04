@@ -2,8 +2,7 @@ import React from 'react';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Checkbox, FormControlLabel} from '@material-ui/core';
 
 const FilterSearch = (props) => {
-    return ( 
-        <div id="expansionPanelContainer" style={{float: "left"}}>
+    return  <div id="expansionPanelContainer" style={{float: "left"}}>
             <ExpansionPanel>
                 <ExpansionPanelSummary >Authors</ExpansionPanelSummary>
                 <ExpansionPanelDetails>
@@ -35,7 +34,7 @@ const FilterSearch = (props) => {
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         </div>
-     );
+     
 }
  
 export default FilterSearch;

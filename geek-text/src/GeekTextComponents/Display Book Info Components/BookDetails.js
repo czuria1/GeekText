@@ -1,55 +1,50 @@
 import React, { Component } from 'react';
-import ajaxme from "ajaxme";
-import { List, ListItem } from '@material-ui/core';
+import { List, ListItem, Link } from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
-import StarsRating from 'stars-rating'
+import StarsRating from 'stars-rating';
+import {Link as RouterLink} from 'react-router-dom';
+import ServerCall from "../ServerCall";
 
 class BookDetails extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            reviews: []
-        }
-
-        this.getBookReview = this.getBookReview.bind(this);
         
+        this.state = {
+            reviews: [],
+            openAlert: false,
+            currentUser: props.currentUser,
+            userID: props.userID
+        }
+        
+        this.getBookReview = this.getBookReview.bind(this);
+        this.checkIfUserOwnsBook = this.checkIfUserOwnsBook.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.changeState = this.changeState.bind(this);
     }
     
     componentDidMount() {
         this.getBookReview();
     }
 
-    getBookReview() {
-        
-        //Used to connect to the server
-        ajaxme.post({
-            url: 'http://localhost/server.php/post',
-            data: 'method=getBookReview&searchParam=' + `${this.props.location.state.book.bookInfo.title}`,
-            success: function(XMLHttpRequest) {
-                if (XMLHttpRequest.responseText !== "0 results")
-                {
-                    this.setState({
-                        reviews: JSON.parse(XMLHttpRequest.responseText)
-                    })
-                }
-            }.bind(this),
-            error: function(XMLHttpRequest) {
-                console.log('error', XMLHttpRequest);
-            },
-            abort: function(XMLHttpRequest) {
-                console.log('abort', XMLHttpRequest);
-            },
-            loadstart: function(XMLHttpRequest) {
-            },
-            progress: function(XMLHttpRequest) {
-            }
+    changeState(response) {
+        this.setState({
+            reviews: response
         });
     }
 
+    getBookReview() {
+        ServerCall("getBookReview", this.props.location.state.book.bookInfo.title, this.changeState);
+    }
+
     displayReviews() {
-        if (this.state.reviews.length !== 0)
+        if (this.state.reviews.length !== 0 && this.state.reviews !== "0 results")
         {
             var reviewList = this.state.reviews.map(function(review, index){
                 return <div key={index} id="reviewContainer">
@@ -66,8 +61,6 @@ class BookDetails extends Component {
             return <span>No reviews for this book</span>
         }
 
-        
-        
         return reviewList;
     }
 
@@ -82,11 +75,58 @@ class BookDetails extends Component {
         }
     }
 
+    checkIfUserOwnsBook(e) {
+        
+        if (this.state.currentUser === "")
+        {
+            this.setState({
+                openAlert: true
+            })
+            e.preventDefault();
+        }
+        else
+        {
+            var response = ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title + ";" + this.state.userID);
+
+            if (response[0].title !== this.props.location.state.book.bookInfo.title)
+            {
+                e.preventDefault();
+                alert("you dont own it")
+            }
+        }
+    }
+
+    handleClose() {
+        this.setState({
+            openAlert: false
+        })
+    }
+
+    createAlert() {
+        return <Dialog open={this.state.openAlert} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                    <DialogTitle>You're not logged in</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText >
+                            Would you like to login to rate this book?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            <Link component={RouterLink} to="/login" variant="title">Yes</Link>
+                        </Button>
+                        <Button onClick={this.handleClose} color="primary" autoFocus>
+                            No
+                        </Button>
+                    </DialogActions>
+        </Dialog>;
+    }
+
     render() { 
         var bookInfo = this.props.location.state.book.bookInfo;
         
         return ( 
             <div id="bookDetailContainer">
+                {this.createAlert()}
                 <List id="listInfo">
                     <ListItem>Format: Book</ListItem>
                     <ListItem>Title: {bookInfo.title}</ListItem>
@@ -94,6 +134,9 @@ class BookDetails extends Component {
                     <ListItem>Publisher: {bookInfo.publisher}</ListItem>
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
+                    <ListItem>
+                        <Link component={RouterLink} to="/reviews" variant="title" onClick={this.checkIfUserOwnsBook}>Rate this book</Link>
+                    </ListItem>
                 </List>
                 <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
                 <h3>Summary</h3>
