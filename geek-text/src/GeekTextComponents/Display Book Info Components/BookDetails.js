@@ -3,7 +3,7 @@ import { List, ListItem } from '@material-ui/core';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
 import ajaxme from "ajaxme";
-import StarsRating from 'stars-rating'
+// import StarsRating from 'stars-rating'
 
 class BookDetails extends Component {
     constructor(props) {
@@ -55,7 +55,7 @@ class BookDetails extends Component {
         {
             var reviewList = this.state.reviews.map(function(review, index){
                 return <div key={index} id="reviewContainer">
-                            <StarsRating count={5} value={review.rating} size={30} edit={false}></StarsRating>
+                            {/* <StarsRating count={5} value={review.rating} size={30} edit={false}></StarsRating> */}
                             <span>{review.comment}</span>
                             <p></p>
                             <span>By: {review.username}</span>
