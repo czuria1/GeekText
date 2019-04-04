@@ -1,12 +1,21 @@
 import React, {Component} from "react";
 import "./ModalImage.css"
-import "./BookList.css"
 import SearchArea from "./SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
 import FilterSearch from "./FilterSearch";
 import ServerCall from "../ServerCall";
 import styled from "styled-components";
+
+const ListContainer = styled.div`
+    width: 60%;
+    padding-top: 100px;
+    float: right;
+`;
+
+const NoResultsContainer = styled.div`
+    text-align: center;
+`;
 
 class BookList extends Component {
     constructor(props) {
@@ -65,13 +74,13 @@ class BookList extends Component {
     showNoResults() {
         if (this.state.books === "0 results")
         {
-            return <div id="noResultsContainer">
+            return <NoResultsContainer>
                     <p>No titles found (0 hits) - Try these tips:</p>
                     <p>Try a different kind of search:</p>
                     <p>Do a browse search by title, typing just the first few letters of the title.</p>
                     <p>Do a browse search by author, typing just the first few letters of the author's first or last name.</p>
                     <p>Do a browse search by genre, typing just the first few letters of the genre</p>
-                </div>;
+                </NoResultsContainer>;
         }
     }
 
@@ -90,11 +99,5 @@ class BookList extends Component {
          );
     }
 }
-
-const ListContainer = styled.div`
-    width: 60%;
-    padding-top: 100px;
-    float: right;
-`;
  
 export default BookList;

@@ -11,6 +11,15 @@ import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating';
 import {Link as RouterLink} from 'react-router-dom';
 import ServerCall from "../ServerCall";
+import styled from "styled-components";
+
+const BookCover = styled(Image)`
+    padding-left: 200px;
+`;
+
+const Heading = styled.h3`
+    padding-top: 100px; 
+`;
 
 class BookDetails extends Component {
     constructor(props) {
@@ -127,7 +136,7 @@ class BookDetails extends Component {
         return ( 
             <div id="bookDetailContainer">
                 {this.createAlert()}
-                <List id="listInfo">
+                <List style={{ float: 'right', paddingRight: '500px'}}>
                     <ListItem>Format: Book</ListItem>
                     <ListItem>Title: {bookInfo.title}</ListItem>
                     <ListItem>Author: {bookInfo.author}</ListItem>
@@ -138,14 +147,14 @@ class BookDetails extends Component {
                         <Link component={RouterLink} to="/reviews" variant="title" onClick={this.checkIfUserOwnsBook}>Rate this book</Link>
                     </ListItem>
                 </List>
-                <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
-                <h3>Summary</h3>
+                <BookCover src={bookInfo.cover} alt="Image not available" rounded fluid></BookCover>
+                <Heading>Summary</Heading>
                 <hr></hr>
                 <span>{bookInfo.description}</span>
-                <h3>About the author</h3>
+                <Heading>About the author</Heading>
                 <hr></hr>
                 <span>{bookInfo.bio}</span>
-                <h3>Ratings and Comments</h3>
+                <Heading>Ratings and Comments</Heading>
                 <hr></hr>
                 <div id="reviewsContainer">
                     <span>Total reviews</span>

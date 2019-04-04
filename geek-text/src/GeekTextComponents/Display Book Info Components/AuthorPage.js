@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import ajaxme from "ajaxme";
 import "./ModalImage.css"
-import "./BookList.css"
 import SearchArea from "./SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
