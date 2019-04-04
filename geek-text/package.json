@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.1",
     "@material-ui/icons": "^3.0.2",
+    "@material-ui/styles": "^3.0.0-alpha.10",
     "ajaxme": "^1.0.0",
     "axios": "^0.18.0",
     "material-ui-icons": "^1.0.0-beta.36",
@@ -17,6 +18,8 @@
     "react-native-masked-text": "^1.11.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.5",
+    "stars-rating": "^1.1.0",
+    "styled-components": "^4.2.0",
     "superagent": "^4.1.0",
     "xmlhttprequest": "^1.8.0"
   },
