@@ -153,6 +153,43 @@ class BookList extends Component{
         });
     }
 
+    descResults() {
+        //Used to connect to the server
+        ajaxme.post({
+          url: "http://localhost/server.php/post",
+          data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
+          success: function(XMLHttpRequest) {
+            //If the search returns no result from the db
+            if (XMLHttpRequest.responseText === "0 results") 
+            {
+                this.showResultsNotFound();
+                return;
+            }
+            else if (document.getElementById("noResultsContainer") !== null)
+            {
+                document.getElementById("noResultsContainer").remove();
+            }
+
+            console.log("success", XMLHttpRequest.responseText);
+
+            this.setState({
+                books: JSON.parse(XMLHttpRequest.responseText)
+            });
+
+            this.newMethod();
+    
+          }.bind(this),
+          error: function(XMLHttpRequest) {
+            console.log("error", XMLHttpRequest);
+          },
+          abort: function(XMLHttpRequest) {
+            console.log("abort", XMLHttpRequest);
+          },
+          loadstart: function(XMLHttpRequest) {},
+          progress: function(XMLHttpRequest) {}
+        });
+    }
+
     newMethod() {
         var bookInfoArray = this.ConvertToStringArray();
         var list = this.appendHTMLElements(bookInfoArray, this.props);
@@ -380,6 +417,7 @@ class BookList extends Component{
     render() {
       
         this.retriveResults();
+        this.descResults();
         return (
 
 //             <body>

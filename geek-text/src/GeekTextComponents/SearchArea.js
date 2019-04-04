@@ -155,6 +155,13 @@ document.getElementById("myDrop").classList.toggle("show");
                                 >Search</NavLink>
                 </button>
 
+                <button id="DESCButton" >
+                < NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                to={"/bookList/" + this.state.searchTerm}
+                                onClick={this.searchButtonClicked}
+                                >Search</NavLink>
+                </button>
+
 
 
                 
