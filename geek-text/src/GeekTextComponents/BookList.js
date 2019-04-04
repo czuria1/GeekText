@@ -6,70 +6,8 @@ import SearchArea from "./SearchArea";
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
 const size = 9;
-const i = 0;
-var list = new Array();
-var pagesOnList = new Array();
-var currentPage = 1;
-var perPage = 10;
-var pages = 1;
-var bool = true;
 
 
-// function exampleList(){
-//     for (i = 0; i < 100; i++)
-//     list.push(i);
-//     pages = getPages();
-// }
-
-// function htmlList(){
-//     document.addElementById("list").innerHTML = "";
-//     for(i = 0; i < pagesOnList.length; i++){
-//         document.addElementById("list").innerHTML += pagesOnList[i] + "";
-//     }
-// }
-
-// function getPages(){
-//     return Math.ceil(list.length/perPage);
-// }
-
-
-// function lPage(){
-//     currentPage -= 1;
-//     store();
-// }
-// function rPage(){
-//     currentPage += 1;
-//     store();
-// }
-
-// function startPage(){
-//     currentPage = 1;
-//     store();
-// }
-// function lasttPage(){
-//     currentPage = pages;
-//     store();
-// }
-//Ref. react paginati
-// function check() {
-//     document.getElementById("next").disabled = currentPage == pages ? true : false;
-//     document.getElementById("previous").disabled = currentPage == 1 ? true : false;
-//     document.getElementById("first").disabled = currentPage == 1 ? true : false;
-//     document.getElementById("last").disabled = currentPage == pages ? true : false;
-// }
-
-// function store(){
-//     var start = ((currentPage - 1) * perPage);
-//     var last = start + perPage;
-//     pagesOnList = list.slice(start, last);
-//     //htmlList();
-//    // check();
-
-// }
-// function finalStore(){
-// exampleList();
-// store();
-// }
 
 // window.onload = store;
 
@@ -83,7 +21,7 @@ class BookList extends Component{
             fi:[],
             onPage: 1,
             order: "ASC",
-            size:9,
+            pageSize:10,
             sort: "title"
          
         };
@@ -103,19 +41,26 @@ class BookList extends Component{
 
     //Copy and pasted from old files
     componentDidMount(){
-        if(this.props.size){
-          this.setState({size: this.props.size});
+        if(this.props.pageSize){
+          this.setState({size: this.props.pageSize});
         }
     }
 
-    componentWillReceiveProps(p){
-        if(p.size){
-            this.setState({size: p.size});
-        }
+    
+    // componentWillReceiveProps(p){
+    //     if(p.size){
+    //         this.setState({size: p.size});
+    //     }
+    //     console.log(p);
+    //     if(props.author){
+    //         //get
+            
+    //     }
+    //     this.setState({books:})
 
-    }
+    // }
 
-    switchPage = (page) =>{
+    onChangePage = (page) =>{
         console.log(Math.ceil(this.state.fi.length/size));
         this.setState({
             onPage: page,
@@ -489,11 +434,14 @@ class BookList extends Component{
                 <SearchArea></SearchArea>
                 <div id="listContainer">
                 </div>
-                <Pagination onChange = {this.switchPage}
-                            current = {this.state.currentPage}
-                            total = {this.state.fi.length}
-                            size = {this.state.size}
-                            showTitle = {false}/> 
+                <Pagination onChangePage = {this.onChangePage}
+                            showSizeChanger
+                            onPage = {this.state.onPage}
+                            total = {this.state.books.length}
+                            pageSize = {this.state.pageSize}
+                            pageSizeOptions = {'10,20'}
+                            
+                            /> 
             </div>
         )
     }
