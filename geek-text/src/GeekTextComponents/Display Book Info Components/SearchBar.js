@@ -17,7 +17,7 @@ const styles = theme => ({
     paddingTop: "50px"
   },
   grow: {
-    flexGrow: 1,
+    //flexGrow: 1,
   },
   menuButton: {
     marginLeft: -12,
@@ -64,10 +64,7 @@ const styles = theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: 120,
-      '&:focus': {
-        width: 200,
-      },
+      width: 520,
     },
   },
 });
@@ -80,11 +77,8 @@ function SearchAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-            <MenuIcon />
-          </IconButton>
           <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-            Material-UI
+            Keyword Search:
           </Typography>
           <div className={classes.grow} />
           <div className={classes.search}>

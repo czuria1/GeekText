@@ -6,7 +6,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import './BookDetails.css'
 import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating';
 import {Link as RouterLink} from 'react-router-dom';
