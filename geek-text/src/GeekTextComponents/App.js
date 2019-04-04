@@ -4,13 +4,15 @@ import LoginScreen from "./ProfileManagement/LoginScreen";
 import RegistrationScreen from './ProfileManagement/RegistrationScreen';
 import ShoppingCartPage from "./ShoppingCartPage";
 import {Route, HashRouter} from "react-router-dom";
-import AuthorPage from './AuthorPage';
+import AuthorPage from './Display Book Info Components/AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
-import BookList from './BookList';
-import SearchArea from './SearchArea';
+import BookList from './Display Book Info Components/BookList';
+import SearchArea from './Display Book Info Components/SearchArea';
 import LoginSettings from './ProfileManagement/LoginSettings';
 import AddressSettings from './ProfileManagement/AddressSettings';
 import PaymentSettings from './ProfileManagement/PaymentSettings';
+import BookDetails from './Display Book Info Components/BookDetails';
+import Reviews from './Review';
 
 class App extends Component {
 
@@ -18,18 +20,20 @@ class App extends Component {
         super (props);
         this.state = {
             currentUser: '',
-            isUserLoggedIn: false
+            isUserLoggedIn: false,
+            userID: ''
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
         this.logoutUser = this.logoutUser.bind(this);
 
-        document.title = "Geek Text";
+        document.title = "Geek Text Home";
     }
 
-    setCurrentUser(newUser, loggedIn) {
+    setCurrentUser(newUser, userID, loggedIn) {
         this.setState({
             currentUser: newUser,
+            userID: userID,
             isUserLoggedIn: loggedIn
         });
         
@@ -44,7 +48,6 @@ class App extends Component {
     }
 
     render() {
-      
         return (
             <HashRouter>
                 <div>
@@ -59,6 +62,7 @@ class App extends Component {
                         <Route path="/login" render={(props) => <LoginScreen {...props}
                                                                             username={this.state.currentUser}
                                                                             isLoggedIn={this.state.isUserLoggedIn}
+                                                                            userID={this.state.userID}
                                                                             setCurrentUser={this.setCurrentUser}/>}/>
                         <Route path="/profilesettings" render={(props) => <ProfileSettings {...props}
                                                                             currentUser={this.state.currentUser}/>}/>
@@ -69,6 +73,10 @@ class App extends Component {
                         <Route path="/loginSettings" component={LoginSettings}/>
                         <Route path="/addressSettings" component={AddressSettings}/>
                         <Route path="/paymentSettings" component={PaymentSettings}/>
+                        <Route path="/bookDetails" render={(props) => <BookDetails {...props} 
+                                                                            currentUser={this.state.currentUser}
+                                                                            userID={this.state.userID}/>}/>
+                        <Route path="/reviews" component={Reviews}></Route>
                      </div>
                     </div>
                 </div>

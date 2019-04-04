@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ajaxme from "ajaxme";
-import BookList from "./BookList";
+
 
 class Review extends Component {
   //Used to connect to the server
