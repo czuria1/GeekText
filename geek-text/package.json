@@ -6,7 +6,7 @@
     "@material-ui/core": "^3.9.1",
     "ajaxme": "^1.0.0",
     "axios": "^0.18.0",
-    "rc-pagination": "^1.17.10",
+    "rc-pagination": "^1.17.13",
     "react": "^16.7.0",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.7.0",

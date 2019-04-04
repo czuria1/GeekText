@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {NavLink} from "react-router-dom";
 //import { reverse } from 'dns';
+import ajaxme from "ajaxme";
 
 class SearchArea extends Component
 {
@@ -19,6 +20,9 @@ class SearchArea extends Component
         //this.updateList = this.updateList.bind(this);
     }
 
+     reverse(s){
+          return s.split("").reverse().join("");
+        }
     
 
     setTextBoxListner()
@@ -74,6 +78,35 @@ document.getElementById("myDrop").classList.toggle("show");
         }
     }
 }
+
+descResults() {
+    //Used to connect to the server
+    ajaxme.post({
+      url: "http://localhost/server.php/post",
+      data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
+      success: function(XMLHttpRequest) {
+        //If the search returns no result from the db
+
+        console.log("success", XMLHttpRequest.responseText);
+
+        this.setState({
+            books: JSON.parse(XMLHttpRequest.responseText)
+        });
+
+        this.newMethod();
+
+      }.bind(this),
+      error: function(XMLHttpRequest) {
+        console.log("error", XMLHttpRequest);
+      },
+      abort: function(XMLHttpRequest) {
+        console.log("abort", XMLHttpRequest);
+      },
+      loadstart: function(XMLHttpRequest) {},
+      progress: function(XMLHttpRequest) {}
+    });
+}
+
 
   
   
@@ -155,18 +188,18 @@ document.getElementById("myDrop").classList.toggle("show");
                                 >Search</NavLink>
                 </button>
 
-                <button id="DESCButton" >
+                {/* <button id="DESCButton" >
                 < NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                 to={"/bookList/" + this.state.searchTerm}
                                 onClick={this.searchButtonClicked}
-                                >Search</NavLink>
-                </button>
+                                >PLEASE</NavLink>
+                </button> */}
 
 
-
+{/* 
                 
                 <button type="submit" name="sort" class="button" value="<?php echo $value; ?>">ASCENDING/DESCENDING </button>
-
+ */}
 
 
 

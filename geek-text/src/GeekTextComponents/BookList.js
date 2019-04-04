@@ -3,8 +3,8 @@ import "./ModalImage.css"
 import "./BookList.css"
 import ajaxme from "ajaxme";
 import SearchArea from "./SearchArea";
-// import Pagination from 'rc-pagination';
-// import 'rc-pagination/assets/index.css';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
 const size = 9;
 const i = 0;
 var list = new Array();
@@ -12,6 +12,7 @@ var pagesOnList = new Array();
 var currentPage = 1;
 var perPage = 10;
 var pages = 1;
+var bool = true;
 
 
 // function exampleList(){
@@ -79,13 +80,20 @@ class BookList extends Component{
         super(props);
         this.state = {
             books: [],
+            fi:[],
             onPage: 1,
-            size:9
+            order: "ASC",
+            size:9,
+            sort: "title"
          
         };
-
-        this.retriveResults = this.retriveResults.bind(this);
-    }
+      this.retriveResults = this.retriveResults.bind(this);
+     // this.DESCResults = this.DESCResults.bind(this);
+      this.orderResults = this.orderResults.bind(this);
+      this.sortResults = this.sortResults.bind(this);
+      this.ASC = this.ASC.bind(this);
+      this.DESC = this.DESC.bind(this);
+        }
 
 //  updateSearch(event) {
 //      this.setState({search: event.target.value.substring(0,20)});
@@ -94,14 +102,39 @@ class BookList extends Component{
 
 
     //Copy and pasted from old files
-    // componentDidMount(){
-    //     if(this.props.size){
-    //       this.setState({size: this.props.size});
-    //     }
-    // }
+    componentDidMount(){
+        if(this.props.size){
+          this.setState({size: this.props.size});
+        }
+    }
+
+    componentWillReceiveProps(p){
+        if(p.size){
+            this.setState({size: p.size});
+        }
+
+    }
+
+    switchPage = (page) =>{
+        console.log(Math.ceil(this.state.fi.length/size));
+        this.setState({
+            onPage: page,
+        });
+
+    }
+        orderResults(event){
+            this.setState({order:event.target, fi: sortKeys(this.state.fi, this.state.sort,event.target.value)});
+        }
+        sortResults(event){
+            this.setState({sort: event.target.value, fi: sortKeys(this.state.fi,event.target.value, this.state.order)});
+        }
+
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.match.params.term === nextProps.match.params.term)
+        console.log(nextState);
+        console.log(this.state);
+        if (this.props.match.params.term === nextProps.match.params.term && nextState.order == this.state.order)
         {
+            
             return false;
         }
         else
@@ -114,13 +147,25 @@ class BookList extends Component{
             parent.appendChild(listContainer);
             return true;
         }
+       
+        
+    }
+
+    DESC(event){
+        console.log(event.target.value);
+        this.setState({order: event.target.value});
+    }
+    
+    ASC(event){
+        console.log(event.target.value);
+        this.setState({order: event.target.value});
     }
 
     retriveResults() {
         //Used to connect to the server
         ajaxme.post({
           url: "http://localhost/server.php/post",
-          data: "method=getSearchInfo&searchParam=" + `${this.props.match.params.term}`,
+          data: "method=getSearchInfo&searchParam=" + `${this.props.match.params.term}` + `&sortParam=` + `${this.state.order}`,
           success: function(XMLHttpRequest) {
             //If the search returns no result from the db
             if (XMLHttpRequest.responseText === "0 results") 
@@ -160,15 +205,6 @@ class BookList extends Component{
           data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
           success: function(XMLHttpRequest) {
             //If the search returns no result from the db
-            if (XMLHttpRequest.responseText === "0 results") 
-            {
-                this.showResultsNotFound();
-                return;
-            }
-            else if (document.getElementById("noResultsContainer") !== null)
-            {
-                document.getElementById("noResultsContainer").remove();
-            }
 
             console.log("success", XMLHttpRequest.responseText);
 
@@ -416,8 +452,18 @@ class BookList extends Component{
 
     render() {
       
+
+        // if(bool = true){
+        // this.retriveResults();
+        // bool = false;
+        // }
+        // else{
+        // this.descResults();
+        // bool = true;
+        // }
+        console.log("FEJEKMEFSSEGERWGRRGRSGRG");
         this.retriveResults();
-        this.descResults();
+
         return (
 
 //             <body>
@@ -434,12 +480,42 @@ class BookList extends Component{
             
             <div >
                 
+                <p>ORDER THE BOOKS</p>
+                <select defaultValue = {this.state.order} onChange = {this.ASC}>
+                <option value ={"ASC"} onClick = {this.ASC} >ASCENDING!!!</option>
+                <option value ={"DESC"}onClick = {this.DESC} >DESCENDING!!!</option>
+                </select>
+                
                 <SearchArea></SearchArea>
                 <div id="listContainer">
                 </div>
+                <Pagination onChange = {this.switchPage}
+                            current = {this.state.currentPage}
+                            total = {this.state.fi.length}
+                            size = {this.state.size}
+                            showTitle = {false}/> 
             </div>
         )
     }
 }
 
 export default BookList;
+
+
+function sortKeys(array, key, order) {
+return array.sort(function(i,j){
+    var a = i[key];
+    var b = j[key];
+    if(a < b){
+        return order * (-1);
+
+    }
+    else if(a > b){
+        return order * 1;
+    }
+    else{
+        return 0
+    }
+})
+
+}
