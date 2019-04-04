@@ -23,7 +23,6 @@ class Header extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        console.log("Header will update", nextProps, nextState);
         if (nextProps !== this.props) {
             this.setState({
                 currentUser: nextProps.username, 
