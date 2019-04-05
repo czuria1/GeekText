@@ -8,6 +8,7 @@ import {
   } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Cart from 'react-icons/lib/ti/shopping-cart';
 
 class Header extends Component {
 
@@ -36,26 +37,25 @@ class Header extends Component {
             <HashRouter>
             <div className="topnav">
                 <div className="logo">
-                    <h1 align = "center">Geek Text</h1>
+                    <h1 align = "left">Geek Text</h1>
                 </div>
-                <div className="loginButton">
-                    {this.loggedInUser()}
-                </div>
-                <div className="shoppingCartButton">
-                    <Button variant="outlined">
-                        <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/shoppingCart"
-                                 ><Image src={image} width={128}
-                                 height={128} roundedCircle fluid/>
-                        </NavLink>
-                    </Button>
-                </div>
-                <div>
-                    <Button variant="outlined">
-                        <NavLink style={{ textDecoration: 'none', color: 'black'}}
-                                 to="/search"
-                                 >Search</NavLink>
-                    </Button>
+                <div className="rightIcons">
+                    <div className="loginButton">
+                        {this.loggedInUser()}
+                    </div>
+                    <div className="shoppingCartButton">
+                            <Cart size={30}></Cart>
+                            <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                    to="/shoppingCart"
+                                    ></NavLink>
+                    </div>
+                    <div className="search">
+                        <Button variant="outlined">
+                            <NavLink style={{ textDecoration: 'none', color: 'black'}}
+                                    to="/search"
+                                    >Search</NavLink>
+                        </Button>
+                    </div>
                 </div>
             </div>
             </HashRouter>
@@ -136,11 +136,9 @@ class Header extends Component {
         } else {
             return (
                 <div>
-                    <Button variant="outlined">
-                        <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/login"
-                                 >Login</NavLink>
-                    </Button>
+                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                to="/login"
+                                >Login / Register</NavLink>
                 </div>
             )
         }

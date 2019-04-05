@@ -16,7 +16,7 @@ code {
 .topnav {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   background-color: lightskyblue;
   overflow: hidden;
@@ -27,14 +27,25 @@ code {
 .topnav .loginButton {
   float: right;
   margin-right: 2%;
+  margin-left: 4%;
 }
 
 .topnav .logo {
   flex-basis: 100%;
-  margin-left: 15%;
+  margin-left: 10%;
+}
+
+.topnav .rightIcons {
+  flex-basis: 100%;
+  margin-right: 10%;
 }
 
 .topnav .shoppingCartButton {
+  float: right;
+  margin-left: 4%;
+}
+
+.topnav .search {
   float: right;
   margin-right: 2%;
 }
