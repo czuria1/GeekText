@@ -9,26 +9,26 @@ import Button from '@material-ui/core/Button';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import ServerCall from "../ServerCall";
 
 class BookDetails extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             reviews: [],
             openAlert: false,
             currentUser: props.currentUser,
             userID: props.userID
         }
-        
+
         this.getBookReview = this.getBookReview.bind(this);
         this.checkIfUserOwnsBook = this.checkIfUserOwnsBook.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.changeState = this.changeState.bind(this);
     }
-    
+
     componentDidMount() {
         this.getBookReview();
     }
@@ -44,20 +44,33 @@ class BookDetails extends Component {
     }
 
     displayReviews() {
-        if (this.state.reviews.length !== 0 && this.state.reviews !== "0 results")
-        {
-            var reviewList = this.state.reviews.map(function(review, index){
-                return <div key={index} id="reviewContainer">
-                            <StarsRating count={5} value={parseInt(review.rating, 10)} size={30} edit={false}></StarsRating>
-                            <span>{review.comment}</span>
-                            <p></p>
-                            <span>By: {review.username}</span>
-                            <hr></hr>
-                       </div>
-              })
+        if (this.state.reviews.length !== 0 && this.state.reviews !== "0 results") {
+
+            var reviewList = this.state.reviews.map(function (review, index) {
+                console.log("anon = " + review.anon);
+                // If the user chose to display their nickname
+                if (review.anon == 0) {
+                    return <div key={index} id="reviewContainer">
+                        <StarsRating count={5} value={parseInt(review.rating)} size={30} edit={false}></StarsRating>
+                        <span>{review.comment}</span>
+                        <p></p>
+                        <span>By: {review.nickname}</span>
+                        <hr></hr>
+                    </div>
+                }
+                // If the user chose to remain anonymous
+                else {
+                    return <div key={index} id="reviewContainer">
+                        <StarsRating count={5} value={parseInt(review.rating)} size={30} edit={false}></StarsRating>
+                        <span>{review.comment}</span>
+                        <p></p>
+                        <span>By: Anonymous User</span>
+                        <hr></hr>
+                    </div>
+                }
+            });
         }
-        else
-        {
+        else {
             return <span>No reviews for this book</span>
         }
 
@@ -65,31 +78,28 @@ class BookDetails extends Component {
     }
 
     getTotalReviews() {
-        if (this.state.reviews.length !== 0) 
-        {
-            return parseInt(this.state.reviews[0].total , 10) / this.state.reviews.length;
+        if (this.state.reviews.length !== 0) {
+            console.log(this.state.reviews[0]);
+            console.log(parseInt(this.state.reviews[0].total) / this.state.reviews.length);
+            return parseInt(this.state.reviews[0].total) / this.state.reviews.length;
         }
-        else
-        {
+        else {
             return 0;
         }
     }
 
     checkIfUserOwnsBook(e) {
-        
-        if (this.state.currentUser === "")
-        {
+
+        if (this.state.currentUser === "") {
             this.setState({
                 openAlert: true
             })
             e.preventDefault();
         }
-        else
-        {
+        else {
             var response = ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title + ";" + this.state.userID);
-
-            if (response[0].title !== this.props.location.state.book.bookInfo.title)
-            {
+            console.log("response : " + response);
+            if (response == 'NO') {
                 e.preventDefault();
                 alert("you dont own it")
             }
@@ -104,27 +114,27 @@ class BookDetails extends Component {
 
     createAlert() {
         return <Dialog open={this.state.openAlert} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-                    <DialogTitle>You're not logged in</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText >
-                            Would you like to login to rate this book?
+            <DialogTitle>You're not logged in</DialogTitle>
+            <DialogContent>
+                <DialogContentText >
+                    Would you like to login to rate this book?
                         </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            <Link component={RouterLink} to="/login" variant="title">Yes</Link>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                    <Link component={RouterLink} to="/login" variant="title">Yes</Link>
+                </Button>
+                <Button onClick={this.handleClose} color="primary" autoFocus>
+                    No
                         </Button>
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
-                            No
-                        </Button>
-                    </DialogActions>
+            </DialogActions>
         </Dialog>;
     }
 
-    render() { 
+    render() {
         var bookInfo = this.props.location.state.book.bookInfo;
-        
-        return ( 
+
+        return (
             <div id="bookDetailContainer">
                 {this.createAlert()}
                 <List id="listInfo">
@@ -153,9 +163,9 @@ class BookDetails extends Component {
                     <hr></hr>
                     {this.displayReviews()}
                 </div>
-            </div> 
+            </div>
         );
     }
 }
- 
+
 export default BookDetails;

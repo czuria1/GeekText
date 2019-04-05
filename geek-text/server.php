@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "jyepe";
-	$dbpassword = "9373yepe";
+	$dbusername = "root";
+	$dbpassword = "W&tson$2018";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -123,7 +123,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
+		$sql = "SELECT reviews.rating, reviews.comment, reviews.anon, users.nickname,  TOTAL_RATINGS.total
 				FROM   reviews
 				JOIN   books ON books.ID = reviews.book_id
 				JOIN   users ON reviews.user_id = users.id
@@ -147,7 +147,8 @@
 				$bus = array(
 					"rating" => $row["rating"],
 					"comment" => $row["comment"],
-					"username" => $row["username"],
+					"nickname" => $row["nickname"],
+					"anon" => $row["anon"],
 					"total" => $row["total"]
 				);
 
@@ -256,8 +257,18 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
+		echo "SQL RESULT" + $result;
 
-		if ($result->num_rows > 0) 
+		
+		if ($result->num_rows == 1){
+			echo "true";
+		}
+		else{
+			echo "false";
+		}
+		
+		/* Julian backup
+		if ($result->num_rows == 0) 
 		{
 			$json = array();
 	    	// convert the data into json object
@@ -273,10 +284,13 @@
 			$jsonstring = json_encode($json);
 			echo $jsonstring;
 		}
+
 		else
 		{
 		    echo "0 results";
 		}
+		*/
+
 
 
 		$conn->close();
