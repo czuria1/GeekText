@@ -9,6 +9,9 @@ import {
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Cart from 'react-icons/lib/ti/shopping-cart';
+import SearchIcon from 'react-icons/lib/fa/search';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 class Header extends Component {
 
@@ -39,22 +42,30 @@ class Header extends Component {
                 <div className="logo">
                     <h1 align = "left">Geek Text</h1>
                 </div>
+                <div className="search">
+                <InputGroup style={{display: 'flex', alignItems: 'center'}}>
+                    <FormControl
+                        style={{borderRadius: '1.2rem'}}
+                        placeholder="Search"
+                        aria-label="Search"
+                        aria-describedby="basic-addon1"
+                        />
+                    <InputGroup.Append style={{paddingLeft: '3%'}}>
+                    <Button style={{color: 'white'}}>
+                        <SearchIcon size={20}></SearchIcon>
+                    </Button>
+                    </InputGroup.Append>
+                </InputGroup>
+                </div>
                 <div className="rightIcons">
                     <div className="loginButton">
                         {this.loggedInUser()}
                     </div>
                     <div className="shoppingCartButton">
-                            <Cart size={30}></Cart>
-                            <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                    to="/shoppingCart"
-                                    ></NavLink>
-                    </div>
-                    <div className="search">
-                        <Button variant="outlined">
-                            <NavLink style={{ textDecoration: 'none', color: 'black'}}
-                                    to="/search"
-                                    >Search</NavLink>
-                        </Button>
+                        <NavLink style={{ textDecoration: 'none',  color: 'white'}} 
+                                    to="/shoppingCart">
+                                    <Cart size={35}></Cart>
+                                    </NavLink>
                     </div>
                 </div>
             </div>
@@ -136,7 +147,7 @@ class Header extends Component {
         } else {
             return (
                 <div>
-                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                    <NavLink style={{ textDecoration: 'none',  color: 'white'}} 
                                 to="/login"
                                 >Login / Register</NavLink>
                 </div>
