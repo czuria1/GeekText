@@ -62,10 +62,10 @@ class Header extends Component {
                         {this.loggedInUser()}
                     </div>
                     <div className="shoppingCartButton">
-                            <Cart size={35}></Cart>
-                            <NavLink style={{ textDecoration: 'none',  color: 'white'}} 
-                                    to="/shoppingCart"
-                                    ></NavLink>
+                        <NavLink style={{ textDecoration: 'none',  color: 'white'}} 
+                                    to="/shoppingCart">
+                                    <Cart size={35}></Cart>
+                                    </NavLink>
                     </div>
                 </div>
             </div>
