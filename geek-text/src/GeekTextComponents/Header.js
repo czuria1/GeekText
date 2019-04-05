@@ -40,7 +40,10 @@ class Header extends Component {
             <HashRouter>
             <div className="topnav">
                 <div className="logo">
+                <NavLink style={{ textDecoration: 'none',  color: 'white'}} 
+                                    to="/">
                     <h1 align = "left">Geek Text</h1>
+                    </NavLink>
                 </div>
                 <div className="search">
                 <InputGroup style={{display: 'flex', alignItems: 'center'}}>
