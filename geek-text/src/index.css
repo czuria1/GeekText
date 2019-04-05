@@ -9,16 +9,17 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Montserrat",
     monospace;
 }
 
 .topnav {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  background-color: lightskyblue;
+  background-color: #383a47;
+  color: white;
   overflow: hidden;
   min-height: 100px;
   height: auto;
@@ -26,26 +27,32 @@ code {
 
 .topnav .loginButton {
   float: right;
-  margin-right: 2%;
-  margin-left: 4%;
+  margin-left: 15%;
+  order: 2;
 }
 
 .topnav .logo {
-  flex-basis: 100%;
+  order: 1;
   margin-left: 10%;
 }
 
 .topnav .rightIcons {
-  flex-basis: 100%;
+  order: 3;
   margin-right: 10%;
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .topnav .shoppingCartButton {
-  float: right;
-  margin-left: 4%;
+  order: 1;
 }
 
 .topnav .search {
-  float: right;
-  margin-right: 2%;
+  margin-left: 5%;
+  margin-right: 5%;
+  flex: 3 0px;
+  order: 2;
+  width: 50%;
 }
