@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, ListItem, Link } from '@material-ui/core';
+import { List, ListItem, Link, Typography } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -11,6 +11,7 @@ import StarsRating from 'stars-rating';
 import {Link as RouterLink} from 'react-router-dom';
 import ServerCall from "../ServerCall";
 import styled from "styled-components";
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Checkbox, FormControlLabel} from '@material-ui/core';
 
 const BookCover = styled(Image)`
     padding-left: 200px;
@@ -84,6 +85,7 @@ class BookDetails extends Component {
     }
 
     checkIfUserOwnsBook(e) {
+        console.log("here");
         
         if (this.state.currentUser === "")
         {
@@ -147,20 +149,24 @@ class BookDetails extends Component {
                     </ListItem>
                 </List>
                 <BookCover src={bookInfo.cover} alt="Image not available" rounded fluid></BookCover>
-                <Heading>Summary</Heading>
-                <hr></hr>
-                <span>{bookInfo.description}</span>
-                <Heading>About the author</Heading>
-                <hr></hr>
-                <span>{bookInfo.bio}</span>
-                <Heading>Ratings and Comments</Heading>
-                <hr></hr>
-                <div id="reviewsContainer">
-                    <span>Total reviews</span>
-                    <StarsRating count={5} value={this.getTotalReviews()} size={30} edit={false}></StarsRating>
-                    <hr></hr>
-                    {this.displayReviews()}
-                </div>
+                <ExpansionPanel style={{marginTop: '100px'}}>
+                    <ExpansionPanelSummary>Summary</ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Typography>{bookInfo.description}</Typography>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel>
+                    <ExpansionPanelSummary >About The Author</ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Typography>{bookInfo.bio}</Typography>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel>
+                    <ExpansionPanelSummary >Ratings And Comments</ExpansionPanelSummary>
+                    <ExpansionPanelDetails style={{display: 'block'}}>
+                        {this.displayReviews()}
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
             </div> 
         );
     }
