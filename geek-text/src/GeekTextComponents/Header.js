@@ -107,7 +107,7 @@ class Header extends Component {
                         <Dropdown>
                             <Button
                             disabled
-                            style={{textDecoration: 'none', color: 'white'}}
+                            style={{textDecoration: 'none', color: 'white', textTransform: 'none'}}
                             aria-owns={anchorEl ? 'simple-menu' : undefined}
                             aria-haspopup="true"
                             onClick={this.handleClick}>

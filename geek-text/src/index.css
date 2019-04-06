@@ -21,7 +21,7 @@ code {
   align-items: center;
   background-color: #383a47;
   color: white;
-  overflow: hidden;
+  overflow: visible;
   min-height: 100px;
   height: auto;
 }
@@ -40,7 +40,7 @@ code {
 .topnav .rightIcons {
   order: 3;
   margin-right: 10%;
-  min-width: 250px;
+  min-width: 200px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -51,8 +51,7 @@ code {
 }
 
 .topnav .search {
-  margin-left: 5%;
-  margin-right: 5%;
+  padding-left: 2%;
   flex: 3 0px;
   order: 2;
   width: 50%;
