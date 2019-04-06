@@ -12,6 +12,8 @@ import Cart from 'react-icons/lib/ti/shopping-cart';
 import SearchIcon from 'react-icons/lib/fa/search';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Dropdown from 'react-bootstrap/Dropdown';
+import SplitButton from 'react-bootstrap/SplitButton';
 
 class Header extends Component {
 
@@ -102,12 +104,28 @@ class Header extends Component {
             return (
                 <HashRouter>
                     <div>
-                        <Button
+                        <Dropdown>
+                            <Button
+                            disabled
+                            style={{textDecoration: 'none', color: 'white'}}
                             aria-owns={anchorEl ? 'simple-menu' : undefined}
                             aria-haspopup="true"
-                            onClick={this.handleClick}
-                            >{this.props.currentUser}</Button>
-                        <Menu
+                            onClick={this.handleClick}>
+                            {this.props.currentUser}
+                            </Button>
+                            <Dropdown.Toggle split className="menuToggle"></Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item>My Account</Dropdown.Item>
+                                <Dropdown.Item>My Account</Dropdown.Item>
+                                <Dropdown.Item>My Account</Dropdown.Item>
+                                <Dropdown.Item>My Account</Dropdown.Item>
+                                <Dropdown.Item>My Account</Dropdown.Item>
+                            </Dropdown.Menu>
+
+                            </Dropdown>
+
+                        {/* <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
@@ -143,7 +161,7 @@ class Header extends Component {
                                     onClick={this.handleClose}
                                     >Sign Out</NavLink>
                             </MenuItem>
-                        </Menu>
+                        </Menu> */}
                     </div>
                 </HashRouter>
             )
