@@ -116,52 +116,34 @@ class Header extends Component {
                             <Dropdown.Toggle split className="menuToggle"></Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                <Dropdown.Item>My Account</Dropdown.Item>
-                                <Dropdown.Item>My Account</Dropdown.Item>
-                                <Dropdown.Item>My Account</Dropdown.Item>
-                                <Dropdown.Item>My Account</Dropdown.Item>
-                                <Dropdown.Item>My Account</Dropdown.Item>
+                                <Dropdown.Item>
+                                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                        to="/profilesettings"
+                                        >Your Account</NavLink>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                        to="/loginSettings"
+                                        >Your Login Settings</NavLink>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                        to="/addressSettings"
+                                        >Your Addresses</NavLink>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                    to="/paymentSettings"
+                                    >Your Payment Methods</NavLink>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                        to="/"
+                                        onClick={this.handleLogout}
+                                        >Sign Out</NavLink>
+                                </Dropdown.Item>
                             </Dropdown.Menu>
-
                             </Dropdown>
-
-                        {/* <Menu
-                            id="simple-menu"
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={this.handleClose}
-                            >
-                            <MenuItem onClick={this.handleClose}>
-                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/profilesettings"
-                                 onClick={this.handleClose}
-                                 >Your Account</NavLink>
-                                </MenuItem>
-                            <MenuItem onClick={this.handleClose}>
-                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/loginSettings"
-                                 onClick={this.handleClose}
-                                 >Your Login Settings</NavLink>
-                                </MenuItem>
-                            <MenuItem onClick={this.handleClose}>
-                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/addressSettings"
-                                 onClick={this.handleClose}
-                                 >Your Addresses</NavLink>
-                                </MenuItem>
-                            <MenuItem onClick={this.handleClose}>
-                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/paymentSettings"
-                                 onClick={this.handleClose}
-                                 >Your Payment Methods</NavLink>
-                                </MenuItem>
-                            <MenuItem onClick={this.handleLogout}>
-                                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                    to="/"
-                                    onClick={this.handleClose}
-                                    >Sign Out</NavLink>
-                            </MenuItem>
-                        </Menu> */}
                     </div>
                 </HashRouter>
             )
