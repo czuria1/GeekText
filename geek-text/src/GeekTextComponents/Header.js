@@ -48,7 +48,7 @@ class Header extends Component {
                     </NavLink>
                 </div>
                 <div className="search">
-                <InputGroup style={{display: 'flex', alignItems: 'center', width: '90%'}}>
+                <InputGroup style={{display: 'flex', alignItems: 'center'}}>
                     <FormControl
                         style={{borderRadius: '1.2rem'}}
                         placeholder="Search"
