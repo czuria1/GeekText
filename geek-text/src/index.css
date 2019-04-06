@@ -17,7 +17,7 @@ code {
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #383a47;
   color: white;
@@ -29,35 +29,45 @@ code {
 .topnav .loginButton {
   float: right;
   margin-left: 15%;
-  order: 2;
+  order: 3;
+  min-width: 100px;
 }
 
 .topnav .logo {
   order: 1;
-  margin-left: 10%;
+  margin-left: 8%;
 }
 
 .topnav .rightIcons {
   order: 3;
-  margin-right: 10%;
+  /* margin-right: 8%; */
+  padding-right: 8%;
   min-width: 200px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .topnav .shoppingCartButton {
-  order: 1;
+  order: 2;
+  padding-left: 15%;
 }
 
 .topnav .search {
   padding-left: 2%;
-  flex: 3 0px;
+  flex: 1 0px;
   order: 2;
-  width: 50%;
 }
 
 .topnav .menuToggle {
   background-color: transparent;
   border-color: transparent;
+}
+
+.divider{
+  order: 1;
+  position:absolute;
+  top:20%;
+  bottom:20%;
+  border-left:0.5px solid white;
 }

@@ -48,14 +48,14 @@ class Header extends Component {
                     </NavLink>
                 </div>
                 <div className="search">
-                <InputGroup style={{display: 'flex', alignItems: 'center'}}>
+                <InputGroup style={{display: 'flex', alignItems: 'center', width: '90%'}}>
                     <FormControl
                         style={{borderRadius: '1.2rem'}}
                         placeholder="Search"
                         aria-label="Search"
                         aria-describedby="basic-addon1"
                         />
-                    <InputGroup.Append style={{paddingLeft: '3%'}}>
+                    <InputGroup.Append style={{paddingLeft: '1%'}}>
                     <Button style={{color: 'white'}}>
                         <SearchIcon size={20}></SearchIcon>
                     </Button>
@@ -63,6 +63,7 @@ class Header extends Component {
                 </InputGroup>
                 </div>
                 <div className="rightIcons">
+                    <div className="divider"></div>
                     <div className="loginButton">
                         {this.loggedInUser()}
                     </div>
