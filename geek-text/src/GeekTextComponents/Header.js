@@ -42,7 +42,15 @@ class Header extends Component {
             <HashRouter>
             <div className="topnav">
                 <div className="logo">
+<<<<<<< Updated upstream
                     <h1 align = "left">Geek Text</h1>
+=======
+                <Button>
+                <NavLink style={{ textDecoration: 'none', color: 'black'}}
+                                 to="/HomePage"
+                                 ><h1 align = "center">Geek Text</h1></NavLink>
+                    </Button>
+>>>>>>> Stashed changes
                 </div>
                 <div id="search-info-container" className="search">
                 <SearchArea></SearchArea>

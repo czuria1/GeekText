@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import Header from './Header'
 import LoginScreen from "./ProfileManagement/LoginScreen";
 import RegistrationScreen from './ProfileManagement/RegistrationScreen';
-import ShoppingCartPage from "./ShoppingCartPage";
+import Cart from "./Cart"
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './Display Book Info Components/AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
+<<<<<<< Updated upstream
 import BookList from './Display Book Info Components/BookList';
 import SearchArea from './Display Book Info Components/SearchArea';
 import LoginSettings from './ProfileManagement/LoginSettings';
@@ -17,15 +18,26 @@ import Reviews from './Review';
 //import AuthorPage from './AuthorPage';
 
 //import ProfileSettings from './ProfileManagement/ProfileSettings';
+=======
+import BookList from './BookList';
+import SearchArea from './SearchArea';
+import HomePage from './HomePage';
+>>>>>>> Stashed changes
 
 class App extends Component {
 
     constructor (props) {
         super (props);
         this.state = {
+<<<<<<< Updated upstream
             currentUser: '',
             isUserLoggedIn: false,
             userID: ''
+=======
+            currentUser: 'test',
+            isUserLoggedIn: false,
+            isOnHomePage: false
+>>>>>>> Stashed changes
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
@@ -60,10 +72,16 @@ class App extends Component {
                     <Header 
                         currentUser={this.state.currentUser}
                         isUserLoggedIn={this.state.isUserLoggedIn}
+<<<<<<< Updated upstream
                         logoutUser={this.logoutUser}></Header>
 
+=======
+                        logoutUser={this.state.logoutUser}></Header>
+                       
+>>>>>>> Stashed changes
                     <div>
                       <div id="route-container">
+                      <Route path= "/homePage" component={HomePage}/>
                         <Route path="/search" component={SearchArea}/>
                         <Route path="/login" render={(props) => <LoginScreen {...props}
                                                                             username={this.state.currentUser}
@@ -72,7 +90,7 @@ class App extends Component {
                                                                             setCurrentUser={this.setCurrentUser}/>}/>
                         <Route path="/profilesettings" render={(props) => <ProfileSettings {...props}
                                                                             currentUser={this.state.currentUser}/>}/>
-                        <Route path="/shoppingCart" component={ShoppingCartPage}/>
+                        <Route path="/shoppingCart" component={Cart}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>

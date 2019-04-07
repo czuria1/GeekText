@@ -11,16 +11,11 @@ export default class ItemDetails extends Component {
     render(){
         return (
             <div>
-                <Button className="item-details-button" variant="outline-primary" onClick={() => this.setState({ open: !this.state.open})}>
-                {this.state.open === false ? `See` : `Hide ` } items in cart
-                {this.state.open === false ? `+` : `-` }
-                </Button>
                 <br/>
                 <br/>
-                <Collapse in={this.state.open}>
                 <div>
                 <Card border="primary" style={{ width: '18rem' , backgroundColor: 'whitesmoke'}}>
-                    <Card.Img width={171} height={180} variant="top" src={`${this.props.bookImage}`} fluid/>
+                    <Card.Img variant="top" src={`${this.props.bookImage}`} fluid/>
                         <Card.Body>
                         <Card.Title>{`${this.props.bookTitle}`}</Card.Title>
                             <Card.Text>
@@ -30,14 +25,14 @@ export default class ItemDetails extends Component {
                                         <br/>
                                         <p> {`Author: ${this.props.author}`}</p>
                                     </Col>
-                                    <Col md={5}> QTY: 1</Col>
+                                    <Col md={5}> {`QTY: ${this.props.quantity}`}</Col>
                                 </Row>
+                                <Row><p>{`Description: ${this.props.desc}`}</p></Row>
                             </Card.Text>
                             <Button variant="link">Go to book page</Button>
                         </Card.Body>
                     </Card>
                 </div>
-                </Collapse>
             </div>
         )
     }

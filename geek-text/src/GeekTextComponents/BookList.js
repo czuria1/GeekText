@@ -140,9 +140,14 @@ class BookList extends Component{
             {
                 document.getElementById("noResultsContainer").remove();
             }
+<<<<<<< Updated upstream
 
             console.log("success", XMLHttpRequest.responseText);
 
+=======
+            console.log(XMLHttpRequest.responseText);
+            
+>>>>>>> Stashed changes
             this.setState({
                 books: JSON.parse(XMLHttpRequest.responseText)
             });
