@@ -141,9 +141,19 @@ class BookList extends Component{
                 document.getElementById("noResultsContainer").remove();
             }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
             console.log("success", XMLHttpRequest.responseText);
 
+=======
+            console.log(XMLHttpRequest.responseText);
+            
+>>>>>>> Stashed changes
+=======
+            console.log(XMLHttpRequest.responseText);
+            
+>>>>>>> Stashed changes
 =======
             console.log(XMLHttpRequest.responseText);
             

@@ -22,6 +22,12 @@ import Reviews from './Review';
 import BookList from './BookList';
 import SearchArea from './SearchArea';
 import HomePage from './HomePage';
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 class App extends Component {
@@ -37,6 +43,12 @@ class App extends Component {
             currentUser: 'test',
             isUserLoggedIn: false,
             isOnHomePage: false
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         }
 
@@ -73,8 +85,18 @@ class App extends Component {
                         currentUser={this.state.currentUser}
                         isUserLoggedIn={this.state.isUserLoggedIn}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         logoutUser={this.logoutUser}></Header>
 
+=======
+                        logoutUser={this.state.logoutUser}></Header>
+                       
+>>>>>>> Stashed changes
+=======
+                        logoutUser={this.state.logoutUser}></Header>
+                       
+>>>>>>> Stashed changes
 =======
                         logoutUser={this.state.logoutUser}></Header>
                        

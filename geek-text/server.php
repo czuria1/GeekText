@@ -5,7 +5,15 @@
 	$servername = "localhost";
 	$dbusername = "root";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	$dbpassword = "password";
+=======
+	$dbpassword = "1995";
+>>>>>>> Stashed changes
+=======
+	$dbpassword = "1995";
+>>>>>>> Stashed changes
 =======
 	$dbpassword = "1995";
 >>>>>>> Stashed changes
@@ -60,7 +68,15 @@
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
+=======
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN
+>>>>>>> Stashed changes
+=======
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN
+>>>>>>> Stashed changes
 =======
 			  		    books.DESCRIPTION, authors.BIO, books.ISBN
 >>>>>>> Stashed changes
@@ -109,8 +125,16 @@
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 					"isbn" => $row["ISBN"],
 					"id" => $row["ID"]
+=======
+					"isbn" => $row["ISBN"]
+>>>>>>> Stashed changes
+=======
+					"isbn" => $row["ISBN"]
+>>>>>>> Stashed changes
 =======
 					"isbn" => $row["ISBN"]
 >>>>>>> Stashed changes
@@ -138,9 +162,19 @@
 		global $conn;
 		global $myObj;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		global $params_arr;
 
 		$bookTitle = $params_arr[0];
+=======
+
+		$bookTitle = urldecode($_POST['searchParam']);
+>>>>>>> Stashed changes
+=======
+
+		$bookTitle = urldecode($_POST['searchParam']);
+>>>>>>> Stashed changes
 =======
 
 		$bookTitle = urldecode($_POST['searchParam']);
@@ -158,7 +192,15 @@
 		}
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		$sql = "SELECT reviews.rating, reviews.comment, reviews.anon, users.nickname,  TOTAL_RATINGS.total
+=======
+		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
+>>>>>>> Stashed changes
+=======
+		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
+>>>>>>> Stashed changes
 =======
 		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
 >>>>>>> Stashed changes
@@ -186,8 +228,16 @@
 					"rating" => $row["rating"],
 					"comment" => $row["comment"],
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 					"nickname" => $row["nickname"],
 					"anon" => $row["anon"],
+=======
+					"username" => $row["username"],
+>>>>>>> Stashed changes
+=======
+					"username" => $row["username"],
+>>>>>>> Stashed changes
 =======
 					"username" => $row["username"],
 >>>>>>> Stashed changes
@@ -493,6 +543,8 @@
     {
         getBookReview();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	}
 	else if ($method == 'doesUserOwnBook')
     {
@@ -501,6 +553,12 @@
 	
 
 
+=======
+    }
+>>>>>>> Stashed changes
+=======
+    }
+>>>>>>> Stashed changes
 =======
     }
 >>>>>>> Stashed changes

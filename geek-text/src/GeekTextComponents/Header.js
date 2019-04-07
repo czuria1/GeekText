@@ -43,12 +43,36 @@ class Header extends Component {
             <div className="topnav">
                 <div className="logo">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     <h1 align = "left">Geek Text</h1>
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                 <Button>
                 <NavLink style={{ textDecoration: 'none', color: 'black'}}
                                  to="/HomePage"
                                  ><h1 align = "center">Geek Text</h1></NavLink>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+                    </Button>
+                </div>
+                <div className="loginButton">
+                    {this.loggedInUser()}
+                </div>
+                <div className="shoppingCartButton">
+                    <Button variant="outlined">
+                        <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
+                                 to="/shoppingCart"
+                                 ><Image src={image} width={128}
+                                 height={128} roundedCircle fluid/>
+                        </NavLink>
+>>>>>>> Stashed changes
                     </Button>
 >>>>>>> Stashed changes
                 </div>

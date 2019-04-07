@@ -8,10 +8,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating';
+import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
 import ServerCall from "../ServerCall";
 import styled from "styled-components";
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Checkbox, FormControlLabel} from '@material-ui/core';
+import ajaxme from "ajaxme";
 
 const BookCover = styled(Image)`
     padding-left: 200px;
@@ -38,7 +40,7 @@ class BookDetails extends Component {
 
         this.getBookReview = this.getBookReview.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.changeState = this.changeState.bind(this);
+        //this.changeState = this.changeState.bind(this);
         // Jimmy Review methods binding
         this.changeReviewState = this.changeReviewState.bind(this);
         this.handleRating = this.handleRating.bind(this);
@@ -274,15 +276,7 @@ class BookDetails extends Component {
                     <ListItem>Publisher: {bookInfo.publisher}</ListItem>
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
-                    <ListItem>
-                        <Link id="linkToReview" 
-                              component={RouterLink} 
-                              to="/reviews" 
-                              variant="title" 
-                              onClick={this.checkIfUserOwnsBook}>
-                              Rate this book
-                        </Link>
-                    </ListItem>
+                    <ListItem><Button onClick={this.handleOpen}>Write a review</Button></ListItem>
                 </List>
                 <BookCover src={bookInfo.cover} alt="Image not available" rounded fluid></BookCover>
                 <ExpansionPanel style={{marginTop: '100px'}}>
