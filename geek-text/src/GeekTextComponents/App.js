@@ -19,9 +19,9 @@ class App extends Component {
     constructor (props) {
         super (props);
         this.state = {
-            currentUser: 'testUser',
-            isUserLoggedIn: true,
-            userID: '1'
+            currentUser: '',
+            isUserLoggedIn: false,
+            userID: ''
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
