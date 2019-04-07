@@ -124,15 +124,6 @@ export default class PaymentSettings extends Component {
         this.setState({ [target.name]: target.value });
       };
 
-    componentWillUpdate(nextProps, nextState) {
-        console.log("PaymentSettings will update", nextProps, nextState);
-        if (nextProps !== this.props) {
-            this.setState({
-                payments: nextProps.payments
-            })
-        }
-    }
-
     removePayment(index) {
         delete this.state.currPayMethods[index];
         this.setState({payments: this.state.currPayMethods});
