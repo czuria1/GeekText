@@ -31,7 +31,16 @@ function MediaCard(props) {
             {props.address}
           </Typography>
           <Typography component="p">
+            {props.address_2}
+          </Typography>
+          <Typography component="p">
             {props.city}
+          </Typography>
+          <Typography component="p">
+            {props.state}
+          </Typography>
+          <Typography component="p">
+            {props.zip_code}
           </Typography>
           <Typography component="p">
             {props.country}

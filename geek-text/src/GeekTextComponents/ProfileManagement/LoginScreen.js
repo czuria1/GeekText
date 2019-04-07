@@ -1,16 +1,11 @@
-import React, {Component} from "react";
-import './login.css';
-import ajaxme from "ajaxme";
-import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import {Route, NavLink, HashRouter} from "react-router-dom";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
+import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
+import ajaxme from "ajaxme";
+import React, { Component } from "react";
+import { HashRouter, NavLink } from "react-router-dom";
+import './login.css';
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -27,7 +22,8 @@ export default class LoginScreen extends Component {
             formErrors: {username: '', password: ''},
             usernameValid: false, 
             passwordValid: false, 
-            formValid: false
+            formValid: false,
+            userID: props.userID
         }
 
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
@@ -35,7 +31,7 @@ export default class LoginScreen extends Component {
     }
 
     updateCurrentUser() {
-        this.props.setCurrentUser(this.state.username, true);
+        this.props.setCurrentUser(this.state.username, this.state.userID, true);
     }
 
     // validateEmail(email) {
@@ -124,9 +120,12 @@ export default class LoginScreen extends Component {
                     alert("Username or password is invalid");
                     return;
                 } else {
+                    this.setState({
+                        userID: JSON.parse(XMLHttpRequest.responseText)[0].user_id
+                    })
                     this.updateCurrentUser();
                     this.props.history.push('/');
-                    console.log('success', XMLHttpRequest);
+                    console.log('success', XMLHttpRequest.responseText);
                 }
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -181,7 +180,7 @@ export default class LoginScreen extends Component {
                                             className="submitButton"
                                             variant="outlined"
                                             disabled={!this.state.formValid}
-                                            onClick={this.loginButtonClicked}>Login
+                                             onClick={this.loginButtonClicked}>Login
                                         </Button>
                                         <br></br>
                                         <br></br>

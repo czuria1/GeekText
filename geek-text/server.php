@@ -3,12 +3,22 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "jyepe";
-	$dbpassword = "9373yepe";
+	$dbusername = "root";
+	$dbpassword = "password";
 	$dbname = "geektext_db";
 
 	//what method to execute
 	$method = urldecode($_POST['method']);
+
+	$params = null;
+	$params_arr = null;
+	//Parameters passed
+	 if( isset($_POST['params']) )
+	 {
+		$params = urldecode($_POST['params']);
+	 	$params_arr = explode(";", $params);
+	 }
+	 
 	
 	//used to create json objects
 	$myObj = new \stdClass();
@@ -28,9 +38,10 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 		
 		
-		$keyword = urldecode($_POST['searchParam']);
+		$keyword = $params_arr[0];
 		
 		$sql = "SET @SEARCH_TERM = '%$keyword%';";
 		
@@ -97,8 +108,9 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 
-		$bookTitle = urldecode($_POST['searchParam']);
+		$bookTitle = $params_arr[0];
 
 		$sql = "SET @BOOK_TITLE = '$bookTitle';";
 
@@ -217,6 +229,59 @@
 		$conn->close();
 	}
 
+	function doesUserOwnBook()
+	{
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+		global $params_arr;
+
+		$bookTitle = $params_arr[0];
+		$userID = $params_arr[1];
+
+		$sql = "SET @BOOK_TITLE = '$bookTitle', @USED_ID = '$userID'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+			
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "SELECT TITLE
+				FROM books JOIN booksowned ON booksowned.book_id = books.id
+				WHERE booksowned.user_id = @USED_ID AND books.title = @BOOK_TITLE";
+
+		//Executes query string
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0) 
+		{
+			$json = array();
+	    	// convert the data into json object
+	    	while($row = $result->fetch_assoc()) 
+	    	{
+				$bus = array(
+					"title" => $row["TITLE"]
+				);
+
+				array_push($json, $bus);
+			}
+
+			$jsonstring = json_encode($json);
+			echo $jsonstring;
+		}
+		else
+		{
+		    echo "0 results";
+		}
+
+
+		$conn->close();
+	}
+
 	function submitReview()
 	{
 		
@@ -258,21 +323,26 @@
         global $myObj;
         
         $username = urldecode($_POST['username']);
-        $password = urldecode($_POST['password']);
+		$password = urldecode($_POST['password']);
+
+		$password = md5($password);
+
+		$sql = "SET @USERNAME = '$username', @PASSWORD = '$password'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
         
-        $sql = "SELECT (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD)
-                VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')
+        $sql = "SELECT USERS.username, USERS.password, USERS.user_id
                 FROM USERS
-                WHERE USERS.username = username AND USERS.password = password";
+				WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
         
-        if (empty($username)) { array_push($errors, "Username is required"); }
-        if (empty(password)) { array_push($errors, "Password is required"); }
-        
-        if (count($errors) == 0) {
-            $password = md5($password);
-        }
-        
-        $result = $conn->query($sql);
+		$result = $conn->query($sql);
         
         if ($result->num_rows > 0)
         {
@@ -281,12 +351,9 @@
             while($row = $result->fetch_assoc())
             {
                 $bus = array(
-                             "username" => $row["USERNAME"],
-                             "fname" => $row["FNAME"],
-                             "lname" => $row["LNAME"],
-                             "nickname" => $row["NICKNAME"],
-                             "EMAIL" => $row["EMAIL"],
-                             "PASSWORD" => $row["PASSWORD"],
+                             "username" => $row["username"],
+							 "password" => $row["password"],
+							 "user_id" => $row["user_id"]
                              );
                 
                 array_push($json, $bus);
@@ -339,7 +406,161 @@
 		$conn->close();
 	}
     
-    
+    function getAddresses() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
+                FROM USERS, ADDRESS
+				WHERE USERS.user_id = @CURRENT_USER AND USERS.user_id = ADDRESS.user_id";
+        
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "name" => $row["name"],
+                             "address" => $row["address"],
+							 "address_2" => $row["address_2"],
+							 "city" => $row["city"],
+							 "state" => $row["state"],
+							 "zip_code" => $row["zip_code"],
+							 "country" => $row["country"],
+							 "phone" => $row["phone"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing addresses for user";
+        }
+        
+        $conn->close();
+	}
+
+	function addAddress() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$name = urldecode($_POST['name']);
+		$address = urldecode($_POST['address']);
+		$address_2 = urldecode($_POST['address_2']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$country = urldecode($_POST['country']);
+		$phone = urldecode($_POST['phone']);
+
+		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE) 
+				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone')";
+		
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+    }
+	
+	function getPaymentMethods() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_month, PAYMENT.exp_year, PAYMENT.zip_code
+                FROM USERS, PAYMENT
+				WHERE USERS.user_id = @CURRENT_USER AND USERS.user_id = PAYMENT.user_id";
+        
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "card_type" => $row["card_type"],
+                             "card_name" => $row["card_name"],
+							 "exp_month" => $row["exp_month"],
+							 "exp_year" => $row["exp_year"],
+							 "zip_code" => $row["zip_code"]
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing payment methods for user";
+        }
+        
+        $conn->close();
+	}
+
+	function addPaymentMethods() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$card_type = urldecode($_POST['card_type']);
+		$card_name = urldecode($_POST['card_name']);
+		$security_code = urldecode($_POST['security_code']);
+		$exp_month = urldecode($_POST['exp_month']);
+		$exp_year = urldecode($_POST['exp_year']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$zip_code = urldecode($_POST['zip_code']);
+
+		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, SECURITY_CODE, EXP_MONTH, EXP_YEAR, ZIP_CODE) 
+				VALUES($currentUserId, '$card_type', '$card_name', '$security_code', '$exp_month', '$exp_year', '$zip_code')";
+		
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+    }
 
 	if ($method == 'getSearchInfo')
 	{
@@ -364,5 +585,27 @@
 	else if ($method == 'getBookReview')
     {
         getBookReview();
-    }
+	}
+	else if ($method == 'doesUserOwnBook')
+    {
+        doesUserOwnBook();
+	} 
+	else if ($method == 'getAddresses') 
+	{
+		getAddresses();
+	}
+	else if ($method == 'addAddress') 
+	{
+		addAddress();
+	}
+	else if ($method == 'getPaymentMethods') 
+	{
+		getAddresses();
+	}
+	else if ($method == 'addPaymentMethods') 
+	{
+		addAddress();
+	}
+	
+
 ?>

@@ -16,6 +16,7 @@ import {
     formatExpirationDate,
     formatFormData,
   } from './utils';
+  import ajaxme from "ajaxme";
 
 function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, country, phoneNum) {
     this.cardType = cardType;
@@ -33,7 +34,7 @@ export default class PaymentSettings extends Component {
     constructor (props) {
         super (props);
         this.state = { 
-            currentUser: props.isUserLoggedIn,
+            currentUserId: props.currentUserId,
             dialogOpen: false, 
             currPayMethods: [], 
             number: '',
@@ -46,6 +47,42 @@ export default class PaymentSettings extends Component {
 
         this.addPayment = this.addPayment.bind(this);
         // this.removePayment = this.removePayment.bind(this);
+    }
+
+    componentWillMount() {
+        console.log("AddressSettings will mount");
+        this.getUserPaymentMethods();
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps !== this.props) {
+            this.setState({
+                currPayMethods: nextState.currPayMethods
+            })
+        }
+    }
+
+    getUserPaymentMethods() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=getPaymentMethods&currentUserId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                this.setState({
+                    currPayMethods: JSON.parse(XMLHttpRequest.responseText)
+                })
+                console.log('success', JSON.parse(XMLHttpRequest.responseText));
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
     }
 
     addPayment() {
@@ -74,6 +111,18 @@ export default class PaymentSettings extends Component {
     handleClose = () => {
         this.setState({ dialogOpen: false });
     }
+
+    handleInputChange = ({ target }) => {
+        if (target.name === 'number') {
+          target.value = formatCreditCardNumber(target.value);
+        } else if (target.name === 'expiry') {
+          target.value = formatExpirationDate(target.value);
+        } else if (target.name === 'cvc') {
+          target.value = formatCVC(target.value);
+        }
+    
+        this.setState({ [target.name]: target.value });
+      };
 
     componentWillUpdate(nextProps, nextState) {
         console.log("PaymentSettings will update", nextProps, nextState);
@@ -135,28 +184,29 @@ export default class PaymentSettings extends Component {
                             autoFocus
                             required
                             margin="dense"
-                            id="number"
+                            name="number"
                             label="Card Number"
                             fullWidth
                             inputProps={{maxLength: 22}}
-                            onChange={event => this.setState({number: formatCreditCardNumber(event.target.value)})}
-                            onFocus={event => this.setState({number: formatCreditCardNumber(event.target.value), focused: 'number'})}/>
+                            // TODO
+                            onChange={event => this.handleInputChange}
+                            onFocus={event => this.handleInputChange}/>
                         <TextField
                             margin="dense"
-                            id="name"
+                            name="name"
                             label="Name"
                             fullWidth
                             onChange={event => this.setState({name: event.target.value})}
                             onFocus={event => this.setState({name: event.target.value, focused: 'name'})}/>
                         <TextField
                             margin="dense"
-                            id="expiry"
+                            name="expiry"
                             label="Valid Thru"
                             onChange={event => this.setState({expiry: event.target.value})}
                             onFocus={event => this.setState({expiry: event.target.value, focused: 'expiry'})}/>
                         <TextField
                             margin="dense"
-                            id="cvc"
+                            name="cvc"
                             label="CVC"
                             onChange={event => this.setState({cvc: event.target.value})}
                             onFocus={event => this.setState({cvc: event.target.value, focused: 'cvc'})}/>
