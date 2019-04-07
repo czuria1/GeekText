@@ -19,7 +19,7 @@ class App extends Component {
     constructor (props) {
         super (props);
         this.state = {
-            currentUser: 'testUser',
+            currentUser: '',
             isUserLoggedIn: false,
             userID: ''
         }
@@ -71,7 +71,8 @@ class App extends Component {
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>
                         <Route path="/loginSettings" component={LoginSettings}/>
-                        <Route path="/addressSettings" component={AddressSettings}/>
+                        <Route path="/addressSettings" render={(props) => <AddressSettings {...props} 
+                                                                            currentUserId={this.state.userID}/>}/>
                         <Route path="/paymentSettings" component={PaymentSettings}/>
                         <Route path="/bookDetails" render={(props) => <BookDetails {...props} 
                                                                             currentUser={this.state.currentUser}

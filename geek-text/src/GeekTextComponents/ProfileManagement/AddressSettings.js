@@ -15,10 +15,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {TextInputMask}  from 'react-masked-text';
 import ajaxme from "ajaxme";
 
-function Address(name, address, city, country, phoneNum) {
+function Address(name, address, address_2, city, state, zip_code, country, phoneNum) {
     this.name = name;
     this.address = address;
+    this.address_2 = address_2;
     this.city = city;
+    this.state = state;
+    this.zip_code = zip_code;
     this.country = country;
     this.phoneNum = phoneNum;
 }
@@ -33,7 +36,10 @@ export default class AddressSettings extends Component {
             addresses: [], 
             name: '',
             address: '',
+            address_2: '',
             city: '',
+            state: '',
+            zip_code: '',
             country: '',
             phoneNum: ''
         }
@@ -41,10 +47,17 @@ export default class AddressSettings extends Component {
         this.addAddress = this.addAddress.bind(this);
     }
 
+    handleInput = (e) => {
+        const fieldName = e.target.name;
+        const fieldValue = e.target.value;
+        
+        this.setState({[fieldName] : fieldValue});
+    }
+
     getUserAddresses() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=getAddress&userId=' + `${this.state.currentUserId}`,
+            data: 'method=getAddresses&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
                 console.log('success', XMLHttpRequest);
             }.bind(this),
@@ -62,12 +75,16 @@ export default class AddressSettings extends Component {
     }
 
     addAddress() {
-        this.state.addresses.push(new Address(this.state.name, this.state.address, this.state.city, this.state.country, this.state.phoneNum));
+        this.state.addresses.push(new Address(this.state.name, this.state.address, this.state.address_2, this.state.city, this.state.state, this.state.zip_code, this.state.country, this.state.phoneNum));
         this.setState({addresses: this.state.addresses, dialogOpen: false});
+        this.addAddressButtonClicked();
         this.setState({
                         name: '',
                         address: '',
+                        address_2: '',
                         city: '',
+                        state: '',
+                        zip_code: '',
                         country: '',
                         phoneNum: ''});
     }
@@ -75,7 +92,10 @@ export default class AddressSettings extends Component {
     addAddressButtonClicked() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=addAddress&address=' + `${this.state.address}` + '&password=' + `${this.state.password}`,
+            data: 'method=addAddress&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.name}`
+                                               + '&address=' + `${this.state.address}` + '&address_2=' + `${this.state.address_2}` + '&city=' + `${this.state.city}` 
+                                               + '&state=' + `${this.state.state}` + '&zip_code=' + `${this.state.zip_code}` + '&country=' + `${this.state.country}` 
+                                               + '&phone=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
                 console.log('success', XMLHttpRequest);
             }.bind(this),
@@ -115,7 +135,10 @@ export default class AddressSettings extends Component {
             <Card
                  nameOnCard={item.name}
                  address={item.address}
+                 address_2={item.address_2}
                  city={item.city}
+                 state={item.state}
+                 zip_code={item.zip_code}
                  country={item.country}
                  phoneNum={item.phoneNum}
                  removeAddress={event => that.removeAddress(index)}
@@ -139,28 +162,60 @@ export default class AddressSettings extends Component {
                             required
                             margin="dense"
                             id="name"
+                            name="name"
                             label="Full Name"
                             fullWidth
-                            onChange={event => this.setState({name: event.target.value})}
-                            onFocus={event => this.setState({name: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
                             autoFocus
                             required
                             margin="dense"
                             id="address"
+                            name="address"
                             label="Address"
                             fullWidth
-                            onChange={event => this.setState({address: event.target.value})}
-                            onFocus={event => this.setState({address: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="address"
+                            name="address_2"
+                            fullWidth
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
                             autoFocus
                             required
                             margin="dense"
                             id="city"
+                            name="city"
                             label="City"
                             fullWidth
-                            onChange={event => this.setState({city: event.target.value})}
-                            onFocus={event => this.setState({city: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="state"
+                            name="state"
+                            label="State"
+                            fullWidth
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="zip_code"
+                            name="zip_code"
+                            label="Zip Code"
+                            fullWidth
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
                             autoFocus
                             required
@@ -168,17 +223,18 @@ export default class AddressSettings extends Component {
                             id="country"
                             label="Country"
                             fullWidth
-                            onChange={event => this.setState({country: event.target.value})}
-                            onFocus={event => this.setState({country: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
                             autoFocus
                             required
                             margin="dense"
                             id="phoneNum"
+                            id="phoneNum"
                             label="Phone Number"
                             fullWidth
-                            onChange={event => this.setState({phoneNum: event.target.value})}
-                            onFocus={event => this.setState({phoneNum: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">

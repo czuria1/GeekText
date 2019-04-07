@@ -406,7 +406,87 @@
 		$conn->close();
 	}
     
-    
+    function getAddresses() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
+                FROM USERS, ADDRESS
+				WHERE USERS.user_id = @CURRENT_USER AND USERS.user_id = ADDRESS.user_id";
+        
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "address" => $row["address"],
+							 "address_2" => $row["address_2"],
+							 "city" => $row["city"],
+							 "state" => $row["state"],
+							 "zip_code" => $row["zip_code"],
+							 "country" => $row["country"],
+							 "phone" => $row["phone"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing addresses for user";
+        }
+        
+        $conn->close();
+	}
+
+	function addAddress() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$name = urldecode($_POST['name']);
+		$address = urldecode($_POST['address']);
+		$address_2 = urldecode($_POST['address_2']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$country = urldecode($_POST['country']);
+		$phone = urldecode($_POST['phone']);
+
+		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE) 
+				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone')";
+		
+		// echo $sql;
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+    }
+	
 
 	if ($method == 'getSearchInfo')
 	{
@@ -435,5 +515,15 @@
 	else if ($method == 'doesUserOwnBook')
     {
         doesUserOwnBook();
-    }
+	} 
+	else if ($method == 'getAddresses') 
+	{
+		getAddresses();
+	}
+	else if ($method == 'addAddress') 
+	{
+		addAddress();
+	}
+	
+
 ?>

@@ -1,16 +1,11 @@
-import React, {Component} from "react";
-import './login.css';
-import ajaxme from "ajaxme";
-import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import {Route, NavLink, HashRouter} from "react-router-dom";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
+import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
+import ajaxme from "ajaxme";
+import React, { Component } from "react";
+import { HashRouter, NavLink } from "react-router-dom";
+import './login.css';
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
