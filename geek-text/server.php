@@ -4,11 +4,21 @@
     //Info to connect to DB
 	$servername = "localhost";
 	$dbusername = "root";
-	$dbpassword = "May1993!";
+	$dbpassword = "W&tson$2018";
 	$dbname = "geektext_db";
 
 	//what method to execute
 	$method = urldecode($_POST['method']);
+
+	$params = null;
+	$params_arr = null;
+	//Parameters passed
+	 if( isset($_POST['params']) )
+	 {
+		$params = urldecode($_POST['params']);
+	 	$params_arr = explode(";", $params);
+	 }
+	 
 	
 	//used to create json objects
 	$myObj = new \stdClass();
@@ -28,9 +38,10 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 		
 		
-		$keyword = urldecode($_POST['searchParam']);
+		$keyword = $params_arr[0];
 		
 		$sql = "SET @SEARCH_TERM = '%$keyword%';";
 		
@@ -44,7 +55,7 @@
 		}
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
@@ -89,7 +100,8 @@
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
-					"isbn" => $row["ISBN"]
+					"isbn" => $row["ISBN"],
+					"id" => $row["ID"]
 				);
 
 				array_push($json, $bus);
@@ -113,8 +125,9 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 
-		$bookTitle = urldecode($_POST['searchParam']);
+		$bookTitle = $params_arr[0];
 
 		$sql = "SET @BOOK_TITLE = '$bookTitle';";
 
@@ -127,7 +140,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
+		$sql = "SELECT reviews.rating, reviews.comment, reviews.anon, users.nickname,  TOTAL_RATINGS.total
 				FROM   reviews
 				JOIN   books ON books.ID = reviews.book_id
 				JOIN   users ON reviews.user_id = users.id
@@ -151,7 +164,8 @@
 				$bus = array(
 					"rating" => $row["rating"],
 					"comment" => $row["comment"],
-					"username" => $row["username"],
+					"nickname" => $row["nickname"],
+					"anon" => $row["anon"],
 					"total" => $row["total"]
 				);
 
@@ -233,6 +247,71 @@
 		$conn->close();
 	}
 
+	function doesUserOwnBook()
+	{
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+		global $params_arr;
+
+		$bookTitle = urldecode($_POST['title']);
+		$userID = intval(urldecode($_POST['userid']));
+
+		$sql = "SET @BOOK_TITLE = '$bookTitle', @USED_ID = '$userID'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+			
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "SELECT TITLE
+				FROM books JOIN booksowned ON booksowned.book_id = books.id
+				WHERE booksowned.user_id = @USED_ID AND books.title = @BOOK_TITLE";
+
+		//Executes query string
+		$result = $conn->query($sql);
+
+		
+		if ($result->num_rows == 1){
+			echo "true";
+		}
+		else{
+			echo "false";
+		}
+		
+		/* Julian backup
+		if ($result->num_rows == 0) 
+		{
+			$json = array();
+	    	// convert the data into json object
+	    	while($row = $result->fetch_assoc()) 
+	    	{
+				$bus = array(
+					"title" => $row["TITLE"]
+				);
+
+				array_push($json, $bus);
+			}
+
+			$jsonstring = json_encode($json);
+			echo $jsonstring;
+		}
+
+		else
+		{
+		    echo "0 results";
+		}
+		*/
+
+
+
+		$conn->close();
+	}
+
 	function submitReview()
 	{
 		
@@ -240,23 +319,29 @@
 		global $conn;
 		global $myObj;
 
-		$review =  urldecode($_POST['review']); 
+		$comment =  urldecode($_POST['comment']); 
 		$rating =  intval(urldecode($_POST['rating'])); 
+		$book_id =  intval(urldecode($_POST['book_id'])); 
+		$user_id =  intval(urldecode($_POST['user_id'])); 
+		$anon =  urldecode($_POST['anon']); 
 		
-		// Rating is -1 by default
-		//echo ("Review = " + $review + " Rating = " + $rating);
-		//if ($rating == -1) { array_push($errors, "Please select a rating"); }
-
-		if (empty($review)){
-			$sql = "INSERT INTO reviews (comment,rating)
-					VALUES 
-					(NULL,'$rating')";
+		if (empty($comment)){
+			$comment = NULL;
+		}
+		if ($anon == 'true'){
+			$anon = 1;
+		}
+		else if ($anon == 'false'){
+			$anon = 0;
 		}
 		else {
-			$sql = "INSERT INTO reviews (comment,rating)
-					VALUES 
-					('$review','$rating')";
+			echo "anon not read";
 		}
+
+		$sql = "INSERT INTO `reviews` (`comment`, `rating`, `book_id`, `user_id`,`anon`)
+					VALUES 
+					('$comment','$rating','$book_id','$user_id','$anon')";
+
 
 		//Executes query string
 		if ($conn->query($sql) === TRUE) {
@@ -274,19 +359,24 @@
         global $myObj;
         
         $username = urldecode($_POST['username']);
-        $password = urldecode($_POST['password']);
+		$password = urldecode($_POST['password']);
+
+		$password = md5($password);
+
+		$sql = "SET @USERNAME = '$username', @PASSWORD = '$password'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+			
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
         
-        $sql = "SELECT (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD)
-                VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')
+        $sql = "SELECT USERS.username, USERS.password, USERS.id
                 FROM USERS
-                WHERE USERS.username = username AND USERS.password = password";
-        
-        if (empty($username)) { array_push($errors, "Username is required"); }
-        if (empty(password)) { array_push($errors, "Password is required"); }
-        
-        if (count($errors) == 0) {
-            $password = md5($password);
-        }
+                WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
         
         $result = $conn->query($sql);
         
@@ -297,12 +387,9 @@
             while($row = $result->fetch_assoc())
             {
                 $bus = array(
-                             "username" => $row["USERNAME"],
-                             "fname" => $row["FNAME"],
-                             "lname" => $row["LNAME"],
-                             "nickname" => $row["NICKNAME"],
-                             "EMAIL" => $row["EMAIL"],
-                             "PASSWORD" => $row["PASSWORD"],
+                             "username" => $row["username"],
+							 "password" => $row["password"],
+							 "id" => $row["id"]
                              );
                 
                 array_push($json, $bus);
@@ -380,6 +467,10 @@
 	else if ($method == 'getBookReview')
     {
         getBookReview();
+	}
+	else if ($method == 'doesUserOwnBook')
+    {
+        doesUserOwnBook();
     }
 	
 
