@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "jyepe";
-	$dbpassword = "9373yepe";
+	$dbusername = "root";
+	$dbpassword = "May1993!";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -50,7 +50,23 @@
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
 			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
 						books.TITLE LIKE @SEARCH_TERM OR
-			            books.GENRE LIKE @SEARCH_TERM";
+						books.GENRE LIKE @SEARCH_TERM";
+		
+					//This is for posting in ASC order and then having the function to DESC
+		$queryorder = array('ASC', 'DESC');
+		if(!in_array($_POST['queryorder'], $queryorder)){
+			print "error 60";
+		$_POST['queryorder'] = 'ASC';
+		$sql . "ORDER BY books	DESC";
+		print "error 62";
+		}
+		else{
+			print "error 65";
+			$_POST['queryorder'] = 'DESC';
+		$sql += "ORDER BY books ASC";
+		print "error 68";
+		}		
+
 
 		
 		
@@ -180,9 +196,9 @@
 				WHERE  concat(AUTHORS.FIRST_NAME, ' ', AUTHORS.LAST_NAME) = @AUTHOR_NAME;";
 
 
+
 		//Executes query string
 		$result = $conn->query($sql);
-
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -365,4 +381,7 @@
     {
         getBookReview();
     }
+	
+
+
 ?>
