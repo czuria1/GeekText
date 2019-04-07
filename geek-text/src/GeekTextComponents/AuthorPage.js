@@ -64,13 +64,7 @@ class AuthorPage extends Component{
                 {}
                 Books By : {
                     
-                            // for (let index = 0; index < 3; index++) 
-                            // {
-                            //     const element = array[index];
-                    
-                            // } 
-                            // this.retrieveList()
-                
+                            
                 
                 
                 

@@ -3,9 +3,12 @@ import "./ModalImage.css"
 import "./BookList.css"
 import ajaxme from "ajaxme";
 import SearchArea from "./SearchArea";
-import Pagination from 'rc-pagination';
+//import Pagination from 'rc-pagination';
+import Pagination from "react-js-pagination";
+
 import 'rc-pagination/assets/index.css';
-const size = 9;
+
+const pageSize = 10;
 
 
 
@@ -22,12 +25,12 @@ class BookList extends Component{
             onPage: 1,
             order: "ASC",
             pageSize:10,
+            apageSize:10,
             sort: "title"
          
         };
       this.retriveResults = this.retriveResults.bind(this);
-     // this.DESCResults = this.DESCResults.bind(this);
-      this.orderResults = this.orderResults.bind(this);
+     
       this.sortResults = this.sortResults.bind(this);
       this.ASC = this.ASC.bind(this);
       this.DESC = this.DESC.bind(this);
@@ -44,7 +47,20 @@ class BookList extends Component{
         if(this.props.pageSize){
           this.setState({size: this.props.pageSize});
         }
+        
     }
+
+   ////////////////////////////////////////////////////////////////////////
+//    handlePageChange(pageNumber) {
+//     console.log(`active page: ${pageNumber}`);
+//     this.setState({activePage: pageNumber});
+//   }
+
+
+
+   /////////////////////////////////////////////////////////////////////////////////////
+
+
 
     
     // componentWillReceiveProps(p){
@@ -52,16 +68,18 @@ class BookList extends Component{
     //         this.setState({size: p.size});
     //     }
     //     console.log(p);
-    //     if(props.author){
-    //         //get
+    //     // if(props.author){
+    //     //     //Retrieve
             
-    //     }
-    //     this.setState({books:})
+    //     // }
+      
 
     // }
 
+  
+
     onChangePage = (page) =>{
-        console.log(Math.ceil(this.state.fi.length/size));
+        console.log(Math.ceil(this.state.books.length/pageSize));
         this.setState({
             onPage: page,
         });
@@ -143,34 +161,7 @@ class BookList extends Component{
         });
     }
 
-    descResults() {
-        //Used to connect to the server
-        ajaxme.post({
-          url: "http://localhost/server.php/post",
-          data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
-          success: function(XMLHttpRequest) {
-            //If the search returns no result from the db
-
-            console.log("success", XMLHttpRequest.responseText);
-
-            this.setState({
-                books: JSON.parse(XMLHttpRequest.responseText)
-            });
-
-            this.newMethod();
     
-          }.bind(this),
-          error: function(XMLHttpRequest) {
-            console.log("error", XMLHttpRequest);
-          },
-          abort: function(XMLHttpRequest) {
-            console.log("abort", XMLHttpRequest);
-          },
-          loadstart: function(XMLHttpRequest) {},
-          progress: function(XMLHttpRequest) {}
-        });
-    }
-
     newMethod() {
         var bookInfoArray = this.ConvertToStringArray();
         var list = this.appendHTMLElements(bookInfoArray, this.props);
@@ -398,50 +389,44 @@ class BookList extends Component{
     render() {
       
 
-        // if(bool = true){
-        // this.retriveResults();
-        // bool = false;
-        // }
-        // else{
-        // this.descResults();
-        // bool = true;
-        // }
         console.log("FEJEKMEFSSEGERWGRRGRSGRG");
         this.retriveResults();
 
         return (
 
-//             <body>
-//                 finalStore();
-//     <div style="text-align:center;">
-//     <input type="button" id="first" onclick="firstPage()" value="first" />
-//     <input type="button" id="next" onclick="nextPage()" value="next" />
-//     <input type="button" id="previous" onclick="previousPage()" value="previous" />
-//     <input type="button" id="last" onclick="lastPage()" value="last" />
-
-//     <div id="list"></div>
-//     </div>
-// </body>
-            
+ 
             <div >
-                
+                 <SearchArea></SearchArea>
+                <div id="listContainer">
                 <p>ORDER THE BOOKS</p>
                 <select defaultValue = {this.state.order} onChange = {this.ASC}>
-                <option value ={"ASC"} onClick = {this.ASC} >ASCENDING!!!</option>
-                <option value ={"DESC"}onClick = {this.DESC} >DESCENDING!!!</option>
+                <option value ={"ASC"} onClick = {this.ASC} >DESCENDING</option>
+                <option value ={"DESC"}onClick = {this.DESC} >ASCENDING</option>
                 </select>
                 
-                <SearchArea></SearchArea>
-                <div id="listContainer">
+               
                 </div>
-                <Pagination onChangePage = {this.onChangePage}
-                            showSizeChanger
-                            onPage = {this.state.onPage}
-                            total = {this.state.books.length}
-                            pageSize = {this.state.pageSize}
-                            pageSizeOptions = {'10,20'}
+            
+                {/* <Pagination
+// activePage={this.state.activePage}
+// itemsCountPerPage={10}
+// totalItemsCount={450}
+// pageRangeDisplayed={5}
+// onChange={onChange}
+
+                //  onChangePage = {this.onChangePage}
                             
-                            /> 
+                //             onChange={onChange}
+                            
+                //             onPage = {this.state.onPage}
+                //             pageSize = {this.state.pageSize}
+                //             pageSizeOptions = {'10,20'}
+                //             showQuickJumper
+                //             showSizeChanger
+                //             total = {this.state.books.length}
+                            
+
+                            />  */}
             </div>
         )
     }
@@ -449,6 +434,15 @@ class BookList extends Component{
 
 export default BookList;
 
+function  onChange(onPage, pageSize) {
+    console.log("onChange: onPage=", onPage);
+    console.log("onChange: pageSize=", pageSize);
+}
+
+function onShowSizeChange(onPage, pageSize) {
+    console.log(onPage);
+    console.log(pageSize);
+}
 
 function sortKeys(array, key, order) {
 return array.sort(function(i,j){

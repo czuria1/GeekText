@@ -79,42 +79,7 @@ document.getElementById("myDrop").classList.toggle("show");
     }
 }
 
-descResults() {
-    //Used to connect to the server
-    ajaxme.post({
-      url: "http://localhost/server.php/post",
-      data: "method=getDESCInfo&searchParam=" + `${this.props.match.params.term}`,
-      success: function(XMLHttpRequest) {
-        //If the search returns no result from the db
 
-        console.log("success", XMLHttpRequest.responseText);
-
-        this.setState({
-            books: JSON.parse(XMLHttpRequest.responseText)
-        });
-
-        this.newMethod();
-
-      }.bind(this),
-      error: function(XMLHttpRequest) {
-        console.log("error", XMLHttpRequest);
-      },
-      abort: function(XMLHttpRequest) {
-        console.log("abort", XMLHttpRequest);
-      },
-      loadstart: function(XMLHttpRequest) {},
-      progress: function(XMLHttpRequest) {}
-    });
-}
-
-
-  
-  
-
-    // searchASCClicked() {   
-    //     document.getElementById("searchText").reverse();
-    // }
-    
 
     render() {
         
@@ -123,9 +88,7 @@ descResults() {
           
             <div id="search-info-container" align="center">
        
-       <input type = "submit" name="ASC" value= "ASC"></input><br></br>
-           <input type = "submit" name="DESC" value= "DESC"></input><br></br>
-           
+      
             <div id="dropFunc" align="left" to={"/bookList/" + this.state.searchTerm}
                                 onClick={this.searchButtonClicked} style = {styles.sortedDivStyle}>
                 {/* <p style = {styles.selectLabelStyle}>Genre</p>
@@ -188,21 +151,6 @@ descResults() {
                                 >Search</NavLink>
                 </button>
 
-                {/* <button id="DESCButton" >
-                < NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                to={"/bookList/" + this.state.searchTerm}
-                                onClick={this.searchButtonClicked}
-                                >PLEASE</NavLink>
-                </button> */}
-
-
-{/* 
-                
-                <button type="submit" name="sort" class="button" value="<?php echo $value; ?>">ASCENDING/DESCENDING </button>
- */}
-
-
-
 
                 <input onFocus={this.setTextBoxListner} 
                     id="searchText" 
@@ -214,30 +162,6 @@ descResults() {
                 <button id="topSearch">Top Sellers</button>
 
 
-                <button id="searchButton">
-
-{/* 
-                <input id = "DESC" type = "button" value = "DESC">DESCEND</input>
- */}
-
-                {/* <form action = 'server.php' method = 'get'>
-                <input type = "submit" class = "sort" name = "DESC" value= "DESC"
-                id= 'id' href="?order=id&sort=DESC=<?php echo $DESC; ?>"
-                />
-                </form> */}
-                {/* <th>
-                    <a class = 'button' id= 'id' href="?order=id&DESC=<?php echo $DESC; ?>">
-                   
-                    </a>
-                </th> */}
-
-
-
-
-                <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                to={"/bookList/" + this.state.searchTerm}
-                                onClick={this.searchASCClicked}
-                                >ASC/DESC</NavLink></button>
                 
                 
             </div>
