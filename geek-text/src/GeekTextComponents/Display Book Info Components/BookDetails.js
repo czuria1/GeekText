@@ -6,11 +6,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
 import StarsRating from 'stars-rating';
 import { Link as RouterLink } from 'react-router-dom';
 import ServerCall from "../ServerCall";
+import ajaxme from "ajaxme";
+
 
 class BookDetails extends Component {
     constructor(props) {
@@ -20,13 +26,22 @@ class BookDetails extends Component {
             reviews: [],
             openAlert: false,
             currentUser: props.currentUser,
-            userID: props.userID
+            userID: props.userID,
+            // Jimmy variables
+            reviewComment: " ",
+            reviewRating: -1,
+            reviewAnon: false,
         }
 
         this.getBookReview = this.getBookReview.bind(this);
-        this.checkIfUserOwnsBook = this.checkIfUserOwnsBook.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.changeState = this.changeState.bind(this);
+        // Jimmy Review methods binding
+        this.handleRating = this.handleRating.bind(this);
+        this.handleComment = this.handleComment.bind(this);
+        this.handleAnon = this.handleAnon.bind(this);
+        this.submitReview = this.submitReview.bind(this);
+        this.canUserReviewBook = this.canUserReviewBook.bind(this);
     }
 
     componentDidMount() {
@@ -47,7 +62,6 @@ class BookDetails extends Component {
         if (this.state.reviews.length !== 0 && this.state.reviews !== "0 results") {
 
             var reviewList = this.state.reviews.map(function (review, index) {
-                console.log("anon = " + review.anon);
                 // If the user chose to display their nickname
                 if (review.anon == 0) {
                     return <div key={index} id="reviewContainer">
@@ -79,8 +93,6 @@ class BookDetails extends Component {
 
     getTotalReviews() {
         if (this.state.reviews.length !== 0) {
-            console.log(this.state.reviews[0]);
-            console.log(parseInt(this.state.reviews[0].total) / this.state.reviews.length);
             return parseInt(this.state.reviews[0].total) / this.state.reviews.length;
         }
         else {
@@ -88,48 +100,145 @@ class BookDetails extends Component {
         }
     }
 
-    checkIfUserOwnsBook(e) {
 
-        if (this.state.currentUser === "") {
-            this.setState({
-                openAlert: true
-            })
-            e.preventDefault();
-        }
-        else {
-            var response = ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title + ";" + this.state.userID);
-            console.log("response : " + response);
-            if (response == 'NO') {
-                e.preventDefault();
-                alert("you dont own it")
-            }
-        }
+
+
+
+
+    handleOpen = () => {
+        this.setState({
+            openAlert: true
+        })
     }
-
-    handleClose() {
+    handleClose = () => {
         this.setState({
             openAlert: false
         })
     }
+    handleComment = (event) => {
+        this.setState({
+            reviewComment: event.target.value
+        });
+    }
+    handleRating = (newRating) => {
+        this.setState({
+            reviewRating: newRating
+        });
+    }
+
+    handleAnon = (event) => {
+        this.setState({
+            reviewAnon: event.target.checked
+        });
+    }
+
+
 
     createAlert() {
-        return <Dialog open={this.state.openAlert} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-            <DialogTitle>You're not logged in</DialogTitle>
+        return <Dialog open={this.state.openAlert} onClose={this.handleClose}>
+            <DialogTitle id="form-dialog-title">Write a review</DialogTitle>
             <DialogContent>
-                <DialogContentText >
-                    Would you like to login to rate this book?
-                        </DialogContentText>
+                <DialogContentText>
+                    Share your thoughts on the book below
+                </DialogContentText>
+                <TextField fullWidth onChange={this.handleComment} />
+                <StarsRating value={this.state.reviewRating} count={5} color2="blue" size={30} edit={true} onChange={this.handleRating} name="rating" />
+                <FormControlLabel control={
+                    <Checkbox checked={this.state.reviewAnon} onChange={this.handleAnon} label="I want to remain anonymous" />}
+                    label="I want to remain anonymous" />
             </DialogContent>
             <DialogActions>
+
                 <Button onClick={this.handleClose} color="primary">
-                    <Link component={RouterLink} to="/login" variant="title">Yes</Link>
-                </Button>
-                <Button onClick={this.handleClose} color="primary" autoFocus>
-                    No
-                        </Button>
+                    Cancel
+          </Button>
+                <Button onClick={this.submitReview} color="primary">
+                    Submit
+          </Button>
             </DialogActions>
-        </Dialog>;
+        </Dialog>
     }
+
+
+    // Jimmy - Review Functions
+    submitReview() {
+        ajaxme.post({
+            url: "http://localhost:82/server.php/post",
+            data:
+                "method=submitReview" +
+                "&comment=" +
+                this.state.reviewComment +
+                "&rating=" +
+                `${this.state.reviewRating}` +
+                "&book_id=" +
+                `${this.state.bookInfo.id}` +
+                "&user_id=" +
+                `${this.state.userID}` +
+                "&anon=" +
+                `${this.state.reviewAnon}`,
+
+            success: function (XMLHttpRequest) {
+                console.log("success", XMLHttpRequest);
+                if (XMLHttpRequest.responseText == null) {
+                    console.log("null");
+                } else {
+                    console.log(XMLHttpRequest.responseText);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                console.log("error", XMLHttpRequest);
+            },
+            abort: function (XMLHttpRequest) {
+                console.log("abort", XMLHttpRequest);
+            },
+            loadstart: function (XMLHttpRequest) { },
+            progress: function (XMLHttpRequest) { }
+        });
+    }
+
+
+    canUserReviewBook() {
+        if (this.state.currentUser === "") {
+            alert("Please log in to review a book");
+        }
+        else {
+            ajaxme.post({
+                url: "http://localhost:82/server.php/post",
+                data:
+                    "method=doesUserOwnBook" +
+                    "&title=" +
+                    this.props.location.state.book.bookInfo.title +
+                    "&userid=" +
+                    this.state.userID,
+
+                success: function (XMLHttpRequest) {
+                    console.log("success", XMLHttpRequest);
+                    if (XMLHttpRequest.responseText == 'false') {
+                        alert("You cannot review this book since you do not own it.");
+                    }
+                    else if (XMLHttpRequest.responseText == "true") {
+                        //The user is logged in and they own the book -> submitting review
+
+                    }
+                },
+                error: function (XMLHttpRequest) {
+                    console.log("error", XMLHttpRequest);
+                },
+                abort: function (XMLHttpRequest) {
+                    console.log("abort", XMLHttpRequest);
+                },
+                loadstart: function (XMLHttpRequest) { },
+                progress: function (XMLHttpRequest) { }
+            });
+
+        }
+    }
+
+
+
+
+
+
 
     render() {
         var bookInfo = this.props.location.state.book.bookInfo;
@@ -144,9 +253,7 @@ class BookDetails extends Component {
                     <ListItem>Publisher: {bookInfo.publisher}</ListItem>
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
-                    <ListItem>
-                        <Link component={RouterLink} to="/reviews" variant="title" onClick={this.checkIfUserOwnsBook}>Rate this book</Link>
-                    </ListItem>
+                    <Button onClick={this.handleOpen}>Write a review</Button>
                 </List>
                 <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
                 <h3>Summary</h3>

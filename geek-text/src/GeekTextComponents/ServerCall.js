@@ -28,7 +28,6 @@ const ServerCall = (method, params, changeStateFunctionCall) => {
         alert('Giving up :( Cannot create an XMLHTTP instance');
         return false;
     }
-    console.log("SERVER CALL: method: " + method + " params: " + params);
     httpRequest.onreadystatechange = alertContents;
     httpRequest.open('POST', 'http://localhost:82/server.php/');
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

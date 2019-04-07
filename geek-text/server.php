@@ -237,8 +237,8 @@
 		global $myObj;
 		global $params_arr;
 
-		$bookTitle = $params_arr[0];
-		$userID = $params_arr[1];
+		$bookTitle = urldecode($_POST['title']);
+		$userID = intval(urldecode($_POST['userid']));
 
 		$sql = "SET @BOOK_TITLE = '$bookTitle', @USED_ID = '$userID'";
 		
@@ -257,7 +257,6 @@
 
 		//Executes query string
 		$result = $conn->query($sql);
-		echo "SQL RESULT" + $result;
 
 		
 		if ($result->num_rows == 1){
@@ -303,23 +302,29 @@
 		global $conn;
 		global $myObj;
 
-		$review =  urldecode($_POST['review']); 
+		$comment =  urldecode($_POST['comment']); 
 		$rating =  intval(urldecode($_POST['rating'])); 
+		$book_id =  intval(urldecode($_POST['book_id'])); 
+		$user_id =  intval(urldecode($_POST['user_id'])); 
+		$anon =  urldecode($_POST['anon']); 
 		
-		// Rating is -1 by default
-		//echo ("Review = " + $review + " Rating = " + $rating);
-		//if ($rating == -1) { array_push($errors, "Please select a rating"); }
-
-		if (empty($review)){
-			$sql = "INSERT INTO reviews (comment,rating)
-					VALUES 
-					(NULL,'$rating')";
+		if (empty($comment)){
+			$comment = NULL;
+		}
+		if ($anon == 'true'){
+			$anon = 1;
+		}
+		else if ($anon == 'false'){
+			$anon = 0;
 		}
 		else {
-			$sql = "INSERT INTO reviews (comment,rating)
-					VALUES 
-					('$review','$rating')";
+			echo "anon not read";
 		}
+
+		$sql = "INSERT INTO `reviews` (`comment`, `rating`, `book_id`, `user_id`,`anon`)
+					VALUES 
+					('$comment','$rating','$book_id','$user_id','$anon')";
+
 
 		//Executes query string
 		if ($conn->query($sql) === TRUE) {
