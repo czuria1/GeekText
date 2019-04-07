@@ -16,6 +16,7 @@ import {
     formatExpirationDate,
     formatFormData,
   } from './utils';
+  import ajaxme from "ajaxme";
 
 function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, country, phoneNum) {
     this.cardType = cardType;
@@ -33,7 +34,7 @@ export default class PaymentSettings extends Component {
     constructor (props) {
         super (props);
         this.state = { 
-            currentUser: props.isUserLoggedIn,
+            currentUserId: props.currentUserId,
             dialogOpen: false, 
             currPayMethods: [], 
             number: '',
@@ -46,6 +47,42 @@ export default class PaymentSettings extends Component {
 
         this.addPayment = this.addPayment.bind(this);
         // this.removePayment = this.removePayment.bind(this);
+    }
+
+    componentWillMount() {
+        console.log("AddressSettings will mount");
+        this.getUserPaymentMethods();
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps !== this.props) {
+            this.setState({
+                currPayMethods: nextState.currPayMethods
+            })
+        }
+    }
+
+    getUserPaymentMethods() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=getPaymentMethods&currentUserId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                this.setState({
+                    currPayMethods: JSON.parse(XMLHttpRequest.responseText)
+                })
+                console.log('success', JSON.parse(XMLHttpRequest.responseText));
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
     }
 
     addPayment() {

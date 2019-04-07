@@ -73,7 +73,8 @@ class App extends Component {
                         <Route path="/loginSettings" component={LoginSettings}/>
                         <Route path="/addressSettings" render={(props) => <AddressSettings {...props} 
                                                                             currentUserId={this.state.userID}/>}/>
-                        <Route path="/paymentSettings" component={PaymentSettings}/>
+                        <Route path="/paymentSettings" render={(props) => <PaymentSettings {...props} 
+                                                                            currentUserId={this.state.userID}/>}/>
                         <Route path="/bookDetails" render={(props) => <BookDetails {...props} 
                                                                             currentUser={this.state.currentUser}
                                                                             userID={this.state.userID}/>}/>

@@ -479,8 +479,6 @@
 		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE) 
 				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone')";
 		
-		// echo $sql;
-
 		$result = $conn->query($sql);
 
 		echo $result;
@@ -488,6 +486,81 @@
 		$conn->close();
     }
 	
+	function getPaymentMethods() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_month, PAYMENT.exp_year, PAYMENT.zip_code
+                FROM USERS, PAYMENT
+				WHERE USERS.user_id = @CURRENT_USER AND USERS.user_id = PAYMENT.user_id";
+        
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "card_type" => $row["card_type"],
+                             "card_name" => $row["card_name"],
+							 "exp_month" => $row["exp_month"],
+							 "exp_year" => $row["exp_year"],
+							 "zip_code" => $row["zip_code"]
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing payment methods for user";
+        }
+        
+        $conn->close();
+	}
+
+	function addPaymentMethods() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$card_type = urldecode($_POST['card_type']);
+		$card_name = urldecode($_POST['card_name']);
+		$security_code = urldecode($_POST['security_code']);
+		$exp_month = urldecode($_POST['exp_month']);
+		$exp_year = urldecode($_POST['exp_year']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$zip_code = urldecode($_POST['zip_code']);
+
+		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, SECURITY_CODE, EXP_MONTH, EXP_YEAR, ZIP_CODE) 
+				VALUES($currentUserId, '$card_type', '$card_name', '$security_code', '$exp_month', '$exp_year', '$zip_code')";
+		
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+    }
 
 	if ($method == 'getSearchInfo')
 	{
@@ -522,6 +595,14 @@
 		getAddresses();
 	}
 	else if ($method == 'addAddress') 
+	{
+		addAddress();
+	}
+	else if ($method == 'getPaymentMethods') 
+	{
+		getAddresses();
+	}
+	else if ($method == 'addPaymentMethods') 
 	{
 		addAddress();
 	}
