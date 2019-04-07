@@ -1,0 +1,60 @@
+#list {
+    width: 60%;
+    padding-top: 100px;
+    float: right;
+}
+
+#line {
+    display: -ms-grid;
+    unicode-bidi: isolate;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+}
+
+#authorLink {
+    color: blue;
+}
+
+#shoppingCartLink {
+    color: blue;
+}
+
+#coverContainer {
+    padding-left: 10px;
+    float: left;
+}
+
+#detailContainer {
+    padding-left: 275px;
+    text-align: center;
+}
+
+#bookListContainer {
+    width: 100%;
+    text-align: -webkit-center;
+    
+}
+
+#noResultsContainer {
+    text-align: center;
+}
+
+#selectLabels{
+    margin-bottom: "auto";
+    margin-top: "auto";
+}
+
+#selectStlye {
+    margin-left: "4px";
+    margin-right: "8px";
+}
+#sortStyle {
+    align-items: "center";
+    display: "flex";
+    flex-wrap: "wrap";
+    justify-content: "center";
+}
+
+
