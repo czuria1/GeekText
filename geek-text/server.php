@@ -331,18 +331,18 @@
 		
 		if ($conn->query($sql) === TRUE) 
 		{
-			
+
 		} 
 		else 
 		{
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT USERS.username, USERS.password, USERS.id
+        $sql = "SELECT USERS.username, USERS.password, USERS.user_id
                 FROM USERS
-                WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
+				WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
         
-        $result = $conn->query($sql);
+		$result = $conn->query($sql);
         
         if ($result->num_rows > 0)
         {
@@ -353,7 +353,7 @@
                 $bus = array(
                              "username" => $row["username"],
 							 "password" => $row["password"],
-							 "id" => $row["id"]
+							 "user_id" => $row["user_id"]
                              );
                 
                 array_push($json, $bus);

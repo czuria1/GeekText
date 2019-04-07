@@ -126,11 +126,11 @@ export default class LoginScreen extends Component {
                     return;
                 } else {
                     this.setState({
-                        userID: JSON.parse(XMLHttpRequest.responseText)[0].id
+                        userID: JSON.parse(XMLHttpRequest.responseText)[0].user_id
                     })
                     this.updateCurrentUser();
                     this.props.history.push('/');
-                    console.log('success', JSON.parse(XMLHttpRequest.responseText)[0].id);
+                    console.log('success', XMLHttpRequest.responseText);
                 }
             }.bind(this),
             error: function(XMLHttpRequest) {
