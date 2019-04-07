@@ -28,7 +28,7 @@ export default class LoginSettings extends Component {
                       direction="column"
                       justify="flex-start"
                       alignItems="left">
-                      <h3>Your Addresses</h3>
+                      <h3>Your Login & Personal Information</h3>
                       </Grid>
                         <Grid 
                           item xs={6}

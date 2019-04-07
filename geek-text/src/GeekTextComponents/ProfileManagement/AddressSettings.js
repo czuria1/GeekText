@@ -123,7 +123,6 @@ export default class AddressSettings extends Component {
          });
 
         return (
-            <HashRouter>
                 <div>
                 <Dialog
                     open={this.state.dialogOpen}
@@ -135,12 +134,6 @@ export default class AddressSettings extends Component {
                         <DialogContentText>
                         Please enter your address information here in the fields below.
                         </DialogContentText>
-                        <TextInputMask
-                                ref={this.state.name}
-                                kind={'datetime'}
-                                options={{
-                                    format: 'DD-MM-YYYY HH:mm:ss'
-                                }} />
                         <TextField
                             autoFocus
                             required
@@ -196,6 +189,7 @@ export default class AddressSettings extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
+
                   <Grid
                     style={{
                       height: 300}}
@@ -222,7 +216,6 @@ export default class AddressSettings extends Component {
                         </Grid>
                       </Grid>
                     </div>
-            </HashRouter>
         );
     }
 }
