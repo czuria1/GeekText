@@ -54,12 +54,28 @@ export default class AddressSettings extends Component {
         this.setState({[fieldName] : fieldValue});
     }
 
+    componentWillMount() {
+        console.log("AddressSettings will mount");
+        this.getUserAddresses();
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps !== this.props) {
+            this.setState({
+                addresses: nextState.addresses
+            })
+        }
+    }
+
     getUserAddresses() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
             data: 'method=getAddresses&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
-                console.log('success', XMLHttpRequest);
+                this.setState({
+                    addresses: JSON.parse(XMLHttpRequest.responseText)
+                })
+                console.log('success', JSON.parse(XMLHttpRequest.responseText));
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -130,7 +146,7 @@ export default class AddressSettings extends Component {
 
         const that = this;
 
-        const cards = this.state.addresses.map(function (item, index) {
+        const cards = this.state.addresses.map(function(item, index) {
             return (
             <Card
                  nameOnCard={item.name}

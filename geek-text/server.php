@@ -423,7 +423,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
+        $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
                 FROM USERS, ADDRESS
 				WHERE USERS.user_id = @CURRENT_USER AND USERS.user_id = ADDRESS.user_id";
         
@@ -436,6 +436,7 @@
             while($row = $result->fetch_assoc())
             {
                 $bus = array(
+                             "name" => $row["name"],
                              "address" => $row["address"],
 							 "address_2" => $row["address_2"],
 							 "city" => $row["city"],
