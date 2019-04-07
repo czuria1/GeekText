@@ -8,7 +8,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import './BookDetails.css'
 import { Image } from 'react-bootstrap';
@@ -144,7 +143,7 @@ class BookDetails extends Component {
                 <TextField fullWidth onChange={this.handleComment} />
                 <StarsRating value={this.state.reviewRating} count={5} color2="blue" size={30} edit={true} onChange={this.handleRating} name="rating" />
                 <FormControlLabel control={
-                    <Checkbox checked={this.state.reviewAnon} onChange={this.handleAnon} label="I want to remain anonymous" />}
+                    <Checkbox checked={this.state.reviewAnon} onChange={this.handleAnon} color="blue" label="I want to remain anonymous" />}
                     label="I want to remain anonymous" />
             </DialogContent>
             <DialogActions>
@@ -162,6 +161,7 @@ class BookDetails extends Component {
 
     // Jimmy - Review Functions
     submitReview() {
+        console.log(this.props.location.state.book.bookInfo);
         ajaxme.post({
             url: "http://localhost:82/server.php/post",
             data:
@@ -169,9 +169,9 @@ class BookDetails extends Component {
                 "&comment=" +
                 this.state.reviewComment +
                 "&rating=" +
-                `${this.state.reviewRating}` +
+                this.state.reviewRating +
                 "&book_id=" +
-                `${this.state.bookInfo.id}` +
+                this.props.location.state.book.bookInfo.id +
                 "&user_id=" +
                 `${this.state.userID}` +
                 "&anon=" +
@@ -218,7 +218,7 @@ class BookDetails extends Component {
                     }
                     else if (XMLHttpRequest.responseText == "true") {
                         //The user is logged in and they own the book -> submitting review
-
+                        this.submitReview();
                     }
                 },
                 error: function (XMLHttpRequest) {
@@ -253,7 +253,7 @@ class BookDetails extends Component {
                     <ListItem>Publisher: {bookInfo.publisher}</ListItem>
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
-                    <Button onClick={this.handleOpen}>Write a review</Button>
+                    <ListItem><Button onClick={this.handleOpen}>Write a review</Button></ListItem>
                 </List>
                 <Image id="bookCover" src={bookInfo.cover} alt="Image not available" rounded fluid></Image>
                 <h3>Summary</h3>

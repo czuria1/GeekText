@@ -55,7 +55,7 @@
 		}
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
@@ -84,7 +84,8 @@
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
-					"isbn" => $row["ISBN"]
+					"isbn" => $row["ISBN"],
+					"id" => $row["ID"]
 				);
 
 				array_push($json, $bus);
