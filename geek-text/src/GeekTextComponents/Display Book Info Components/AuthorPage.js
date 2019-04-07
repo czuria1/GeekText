@@ -53,7 +53,6 @@ class AuthorPage extends Component{
     render() {
         return(
             <div >
-                <SearchArea></SearchArea>
                 <div id="list">
                     <ModalCover></ModalCover>
                     {this.returnList()}

@@ -29,27 +29,44 @@ class BookDetails extends Component {
             reviews: [],
             openAlert: false,
             currentUser: props.currentUser,
-            userID: props.userID
+            userID: props.userID,
+            doesOwnBook: false
         }
         
         this.getBookReview = this.getBookReview.bind(this);
         this.checkIfUserOwnsBook = this.checkIfUserOwnsBook.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.changeState = this.changeState.bind(this);
+        this.changeReviewState = this.changeReviewState.bind(this);
+        this.changeBookOwnedState = this.changeBookOwnedState.bind(this);
     }
     
     componentDidMount() {
         this.getBookReview();
     }
 
-    changeState(response) {
+    changeReviewState(response) {
         this.setState({
             reviews: response
         });
     }
 
+    changeBookOwnedState(response) {
+        if (response.length > 0)
+        {
+            this.setState({
+                doesOwnBook: true
+            });
+        }
+        else
+        {
+            this.setState({
+                doesOwnBook: false
+            });
+        }
+    }
+
     getBookReview() {
-        ServerCall("getBookReview", this.props.location.state.book.bookInfo.title, this.changeState);
+        ServerCall("getBookReview", this.props.location.state.book.bookInfo.title, this.changeReviewState);
     }
 
     displayReviews() {
@@ -85,24 +102,17 @@ class BookDetails extends Component {
     }
 
     checkIfUserOwnsBook(e) {
-        console.log("here");
-        
         if (this.state.currentUser === "")
         {
+            e.preventDefault();
             this.setState({
                 openAlert: true
             })
-            e.preventDefault();
+            
         }
         else
         {
-            var response = ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title + ";" + this.state.userID);
-
-            if (response[0].title !== this.props.location.state.book.bookInfo.title)
-            {
-                e.preventDefault();
-                alert("you dont own it")
-            }
+            ServerCall("doesUserOwnBook", this.props.location.state.book.bookInfo.title + ";" + this.state.userID, this.changeBookOwnedState);
         }
     }
 
@@ -131,11 +141,27 @@ class BookDetails extends Component {
         </Dialog>;
     }
 
+    goToReview() {
+        if (this.state.doesOwnBook)
+        {
+            document.getElementById("linkToReview").click();
+            // var input = document.getElementById("searchText");
+        
+            // input.addEventListener("keyup", function (event) {
+            //     if (event.keyCode === 13) {
+                    
+            //         document.getElementById("linkToList").click();
+            //     }
+            // });
+        }
+    }
+
     render() { 
         var bookInfo = this.props.location.state.book.bookInfo;
         
         return ( 
             <div id="bookDetailContainer">
+                {/* {this.goToReview()} */}
                 {this.createAlert()}
                 <List style={{ float: 'right', paddingRight: '500px'}}>
                     <ListItem>Format: Book</ListItem>
@@ -145,7 +171,13 @@ class BookDetails extends Component {
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
                     <ListItem>
-                        <Link component={RouterLink} to="/reviews" variant="title" onClick={this.checkIfUserOwnsBook}>Rate this book</Link>
+                        <Link id="linkToReview" 
+                              component={RouterLink} 
+                              to="/reviews" 
+                              variant="title" 
+                              onClick={this.checkIfUserOwnsBook}>
+                              Rate this book
+                        </Link>
                     </ListItem>
                 </List>
                 <BookCover src={bookInfo.cover} alt="Image not available" rounded fluid></BookCover>

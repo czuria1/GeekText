@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import { Link } from '@material-ui/core';
-import SearchBar from './SearchBar';
+import SearchIcon from 'react-icons/lib/fa/search';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import { Button } from "@material-ui/core";
 
 export default class SearchArea extends Component
 {
@@ -46,19 +49,27 @@ export default class SearchArea extends Component
 
     render() {
         return(
-            <div id="search-info-container">
-                <SearchBar setTextBoxListner={this.setTextBoxListner}
-                           handleSearch={this.handleSearch}
-                ></SearchBar>
-                <Link id="linkToList"
-                      component={RouterLink} 
-                      to={"/bookList/" + this.state.searchTerm} 
-                      variant="title" 
-                      onClick={this.searchButtonClicked}
-                      style={{ display: 'none'}} 
-                      >Search
+            <InputGroup style={{display: 'flex', alignItems: 'center'}}>
+                <FormControl
+                    id="searchText"
+                    style={{borderRadius: '1.2rem'}}
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="basic-addon1"
+                    onChange={this.handleSearch}
+                    onFocus={this.setTextBoxListner}
+                    />
+                <InputGroup.Append style={{paddingLeft: '3%'}}>
+                <Link id="linkToList" 
+                    component={RouterLink} 
+                    to={"/bookList/" + this.state.searchTerm}
+                    onClick={this.searchButtonClicked}
+                    ><Button style={{color: 'white'}}>
+                        <SearchIcon size={20}></SearchIcon>
+                    </Button>
                 </Link>
-            </div>
+                </InputGroup.Append>
+            </InputGroup>
         )
     }
 }

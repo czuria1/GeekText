@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link as RouterLink } from "react-router-dom";
-import { Link } from "@material-ui/core";
+import { Link, ListItem } from "@material-ui/core";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import {List as ListExt} from "@material-ui/core";
 
 const BookListContainer = styled.div`
     width: 100%;
@@ -40,12 +41,26 @@ const List = (book) => {
                         </img>
                     </CoverContainer>
                     <DetailContainer>
-                        <p>{book.bookIndex + 1}. <NavLink id="authorLink" to={{pathname: "/bookDetails", state: {book: book}}}>{book.bookInfo.title}</NavLink></p>
-                        <p><Link component={RouterLink} to={"/authorPage/" + book.bookInfo.author} variant="title">{book.bookInfo.author}</Link></p>
-                        <p>{book.bookInfo.genre}</p>
-                        <p>{book.bookInfo.publisher}</p>
-                        <p>{book.bookInfo.pub_date}</p>
-                        <p id="shoppingCartLink">Add To Shopping Cart</p>
+                        <ListExt>
+                            <ListItem>Title: <Link 
+                                component={RouterLink} 
+                                to={{pathname: "/bookDetails", state: {book: book}}} 
+                                style={{color: "MediumBlue"}}
+                                underline="always">
+                                {book.bookInfo.title}
+                            </Link></ListItem>
+                            <ListItem>Author: <Link 
+                                component={RouterLink} 
+                                to={"/authorPage/" + book.bookInfo.author}
+                                style={{color: "MediumBlue"}}
+                                underline="always">
+                                {book.bookInfo.author}
+                            </Link></ListItem>
+                            <ListItem>Genre: {book.bookInfo.genre}</ListItem>
+                            <ListItem>Publisher: {book.bookInfo.publisher}</ListItem>
+                            <ListItem>Publish Date: {book.bookInfo.pub_date}</ListItem>
+                            <ListItem>Add To Shopping Cart</ListItem>
+                        </ListExt>
                     </DetailContainer>
                     <Line></Line>
                 </BookListContainer>
