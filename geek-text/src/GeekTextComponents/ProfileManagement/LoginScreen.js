@@ -189,23 +189,12 @@ export default class LoginScreen extends Component {
                                         </Button>
                                     <br></br>
                                     <br></br>
-                                    <div className="submitArea">
-                                        <Button
-                                            className="submitButton"
-                                            variant="outlined"
-                                            disabled={!this.state.formValid}
-                                             onClick={this.loginButtonClicked}>Login
-                                        </Button>
-                                        <br></br>
-                                        <br></br>
-                                        <br></br>
                                         <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
                                             to="/registration" replace
                                             >Create Account</NavLink>
                                     </div>
                             </div>
                         </div>
-                       </div>
                     </div>
                 </HashRouter>
             )
