@@ -124,6 +124,12 @@ export default class PaymentSettings extends Component {
         this.setState({ [target.name]: target.value });
       };
 
+      handleInputFocus = ({ target }) => {
+        this.setState({
+          focused: target.name,
+        });
+      };
+
     removePayment(index) {
         delete this.state.currPayMethods[index];
         this.setState({payments: this.state.currPayMethods});
@@ -178,29 +184,29 @@ export default class PaymentSettings extends Component {
                             name="number"
                             label="Card Number"
                             fullWidth
-                            inputProps={{maxLength: 22}}
-                            // TODO
-                            onChange={event => this.handleInputChange}
-                            onFocus={event => this.handleInputChange}/>
+                            inputProps={{minLength: 16, maxLength: 22}}
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
                         <TextField
                             margin="dense"
                             name="name"
                             label="Name"
                             fullWidth
-                            onChange={event => this.setState({name: event.target.value})}
-                            onFocus={event => this.setState({name: event.target.value, focused: 'name'})}/>
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
                         <TextField
                             margin="dense"
                             name="expiry"
                             label="Valid Thru"
-                            onChange={event => this.setState({expiry: event.target.value})}
-                            onFocus={event => this.setState({expiry: event.target.value, focused: 'expiry'})}/>
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
                         <TextField
                             margin="dense"
                             name="cvc"
                             label="CVC"
-                            onChange={event => this.setState({cvc: event.target.value})}
-                            onFocus={event => this.setState({cvc: event.target.value, focused: 'cvc'})}/>
+                            inputProps={{minLength: 3, maxLength: 4}}
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">

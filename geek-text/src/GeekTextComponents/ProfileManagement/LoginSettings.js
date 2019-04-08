@@ -8,7 +8,9 @@ export default class LoginSettings extends Component {
     constructor (props) {
         super (props);
         this.state = { 
-            currentUser: props.isUserLoggedIn
+            currentUser: props.isUserLoggedIn,
+            username: props.username
+
         }
     }
 
@@ -40,14 +42,13 @@ export default class LoginSettings extends Component {
                                     style={{paddingBottom: '1%'}}
                                     className="textfield"
                                     name="username"
-                                    required
+                                    value={this.state.username}
                                     label="Username"
                                     variant="outlined"></TextField>
                             <TextField 
                                     className="textfield"
                                     name="username"
-                                    required
-                                    label="Username"
+                                    label="Password"
                                     variant="outlined"></TextField>
                         </Grid>
                         <Grid 
