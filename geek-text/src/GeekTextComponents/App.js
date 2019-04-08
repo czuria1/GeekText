@@ -6,7 +6,6 @@ import Cart from "./Cart"
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './Display Book Info Components/AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
-<<<<<<< Updated upstream
 import BookList from './Display Book Info Components/BookList';
 import SearchArea from './Display Book Info Components/SearchArea';
 import LoginSettings from './ProfileManagement/LoginSettings';
@@ -14,42 +13,22 @@ import AddressSettings from './ProfileManagement/AddressSettings';
 import PaymentSettings from './ProfileManagement/PaymentSettings';
 import BookDetails from './Display Book Info Components/BookDetails';
 import Reviews from './Review';
-
 //import AuthorPage from './AuthorPage';
-
 //import ProfileSettings from './ProfileManagement/ProfileSettings';
-=======
-import BookList from './BookList';
-import SearchArea from './SearchArea';
 import HomePage from './HomePage';
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 class App extends Component {
 
     constructor (props) {
         super (props);
         this.state = {
-<<<<<<< Updated upstream
+
             currentUser: '',
             isUserLoggedIn: false,
-            userID: ''
-=======
+            userID: '',
             currentUser: 'test',
             isUserLoggedIn: false,
             isOnHomePage: false
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
@@ -77,30 +56,12 @@ class App extends Component {
 
     render() {
         return (
-
             <HashRouter>
-
                 <div>
                     <Header 
                         currentUser={this.state.currentUser}
                         isUserLoggedIn={this.state.isUserLoggedIn}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                         logoutUser={this.logoutUser}></Header>
-
-=======
-                        logoutUser={this.state.logoutUser}></Header>
-                       
->>>>>>> Stashed changes
-=======
-                        logoutUser={this.state.logoutUser}></Header>
-                       
->>>>>>> Stashed changes
-=======
-                        logoutUser={this.state.logoutUser}></Header>
-                       
->>>>>>> Stashed changes
                     <div>
                       <div id="route-container">
                       <Route path= "/homePage" component={HomePage}/>

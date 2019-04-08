@@ -23,8 +23,6 @@
     "stars-rating": "^1.1.0",
     "styled-components": "^4.2.0",
     "react-redux": "^6.0.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.8",
     "redux": "^4.0.1",
     "superagent": "^4.1.0",
     "xmlhttprequest": "^1.8.0"
