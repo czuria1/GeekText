@@ -135,6 +135,11 @@ export default class PaymentSettings extends Component {
         this.setState({payments: this.state.currPayMethods});
     }
 
+    getEndingCardNum(item) {
+        var endingNum = "" + item;
+        return endingNum.slice(-4);
+    }
+
     render() {
 
         const that = this;
@@ -143,7 +148,7 @@ export default class PaymentSettings extends Component {
            return (
            <Panel
                 cardType={item.cardType}
-                endingNum={item.endingNum}
+                endingNum={that.getEndingCardNum(item.endingNum)}
                 expDate={item.expDate}
                 nameOnCard={item.nameOnCard}
                 address={item.address}
