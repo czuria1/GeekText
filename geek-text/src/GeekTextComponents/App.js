@@ -70,7 +70,9 @@ class App extends Component {
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>
-                        <Route path="/loginSettings" component={LoginSettings}/>
+                        <Route path="/loginSettings" render={(props) => <LoginSettings {...props}
+                                                                            username={this.state.currentUser}
+                                                                            currentUser={this.state.currentUser}/>}/>
                         <Route path="/addressSettings" render={(props) => <AddressSettings {...props} 
                                                                             currentUserId={this.state.userID}/>}/>
                         <Route path="/paymentSettings" render={(props) => <PaymentSettings {...props} 
