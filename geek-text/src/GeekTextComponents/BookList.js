@@ -396,14 +396,14 @@ class BookList extends Component{
 
  
             <div >
-                 <SearchArea></SearchArea>
-                <div id="listContainer">
+                 
                 <p>ORDER THE BOOKS</p>
                 <select defaultValue = {this.state.order} onChange = {this.ASC}>
                 <option value ={"ASC"} onClick = {this.ASC} >DESCENDING</option>
                 <option value ={"DESC"}onClick = {this.DESC} >ASCENDING</option>
                 </select>
-                
+                <SearchArea></SearchArea>
+                <div id="listContainer">
                
                 </div>
             
