@@ -12,10 +12,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {TextInputMask}  from 'react-masked-text';
 import ajaxme from "ajaxme";
 
-function Address(name, address, address_2, city, state, zip_code, country, phoneNum) {
+function Address(name, address, address_2, city, state, zip_code, country, phoneNum, isHomeAddress) {
     this.name = name;
     this.address = address;
     this.address_2 = address_2;
@@ -24,6 +23,7 @@ function Address(name, address, address_2, city, state, zip_code, country, phone
     this.zip_code = zip_code;
     this.country = country;
     this.phoneNum = phoneNum;
+    this.isHomeAddress = isHomeAddress;
 }
 
 export default class AddressSettings extends Component {
@@ -44,6 +44,7 @@ export default class AddressSettings extends Component {
             zip_code: '',
             country: '',
             phoneNum: '',
+            isHomeAddress: false, 
             editName: '',
             editAddress: '',
             editAddress_2: '',
@@ -186,7 +187,7 @@ export default class AddressSettings extends Component {
         const cards = this.state.addresses.map(function(item, index) {
             return (
             <Card
-                 nameOnCard={item.name}
+                 name={item.name}
                  address={item.address}
                  address_2={item.address_2}
                  city={item.city}
@@ -296,7 +297,8 @@ export default class AddressSettings extends Component {
                         label="Phone Number"
                         fullWidth
                         onChange={this.handleInput}
-                        onFocus={this.handleInput}/>
+                        onFocus={this.handleInput}>
+                    </TextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.handleEditClose} color="primary">

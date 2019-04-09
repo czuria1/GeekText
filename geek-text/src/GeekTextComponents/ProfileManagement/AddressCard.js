@@ -24,7 +24,7 @@ function MediaCard(props) {
     <Card className={classes.card}>
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography component="p">
             {props.name}
           </Typography>
           <Typography component="p">
@@ -56,6 +56,9 @@ function MediaCard(props) {
         </Button>
         <Button size="small" color="primary" onClick={props.removeAddress}>
           Delete
+        </Button>
+        <Button size="small" color="primary" onClick={props.removeAddress}>
+          Set as home address
         </Button>
       </CardActions>
     </Card>
