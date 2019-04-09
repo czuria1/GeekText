@@ -116,7 +116,7 @@ class Header extends Component {
                             </Button>
                             <Dropdown.Toggle split className="menuToggle"></Dropdown.Toggle>
 
-                            <Dropdown.Menu>
+                            <Dropdown.Menu alignRight>
                                 <Dropdown.Item>
                                     <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
                                         to="/profilesettings"
