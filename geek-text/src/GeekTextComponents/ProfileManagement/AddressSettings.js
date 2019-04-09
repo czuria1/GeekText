@@ -184,7 +184,6 @@ export default class AddressSettings extends Component {
                             onChange={this.handleInput}
                             onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="address"
@@ -194,16 +193,15 @@ export default class AddressSettings extends Component {
                             onChange={this.handleInput}
                             onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="address"
+                            label="Address 2"
                             name="address_2"
                             fullWidth
                             onChange={this.handleInput}
                             onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="city"
@@ -213,7 +211,6 @@ export default class AddressSettings extends Component {
                             onChange={this.handleInput}
                             onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="state"
@@ -223,7 +220,6 @@ export default class AddressSettings extends Component {
                             onChange={this.handleInput}
                             onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="zip_code"
@@ -233,7 +229,6 @@ export default class AddressSettings extends Component {
                             onChange={this.handleInput}
                             onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="country"
@@ -242,7 +237,6 @@ export default class AddressSettings extends Component {
                             onChange={this.handleInput}
                             onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="phoneNum"
@@ -256,7 +250,9 @@ export default class AddressSettings extends Component {
                         <Button onClick={this.handleClose} color="primary">
                         Cancel
                         </Button>
-                        <Button onClick={this.addAddress} color="primary">
+                        <Button 
+                        disabled
+                        onClick={this.addAddress} color="primary">
                         Add Address
                         </Button>
                     </DialogActions>
