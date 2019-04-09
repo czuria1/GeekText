@@ -33,7 +33,9 @@ export default class AddressSettings extends Component {
         this.state = { 
             currentUserId: props.currentUserId, 
             dialogOpen: false, 
-            addresses: [], 
+            editDialogOpen: false,
+            addresses: [],
+            currentEditAddress: [], 
             name: '',
             address: '',
             address_2: '',
@@ -134,12 +136,25 @@ export default class AddressSettings extends Component {
         this.setState({addresses: this.state.addresses});
     }
 
+    editAddress(item) {
+        this.setState({ currentEditAddress: item });
+        this.handleEditClickOpen();
+    }
+
     handleClickOpen = () => {
         this.setState({ dialogOpen: true });
     }
     
     handleClose = () => {
         this.setState({ dialogOpen: false });
+    }
+
+    handleEditClickOpen = () => {
+        this.setState({ editDialogOpen: true });
+    }
+    
+    handleEditClose = () => {
+        this.setState({ editDialogOpen: false , currentEditAddress: []});
     }
 
     render() {
@@ -157,12 +172,116 @@ export default class AddressSettings extends Component {
                  zip_code={item.zip_code}
                  country={item.country}
                  phoneNum={item.phoneNum}
+                 editAddress={event => that.editAddress(item)}
                  removeAddress={event => that.removeAddress(index)}
                  ></Card>)
          });
 
         return (
                 <div>
+                <Dialog
+                open={this.state.editDialogOpen}
+                onClose={this.handleClose}
+                aria-labelledby="form-dialog-title"
+                >
+                <DialogTitle id="form-dialog-title">Update Address</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                    Please enter your address information here in the fields below.
+                    </DialogContentText>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.name}
+                        id="name"
+                        name="name"
+                        label="Full Name"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.address}
+                        id="address"
+                        name="address"
+                        label="Address"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.address_2}
+                        id="address"
+                        label="Address 2"
+                        name="address_2"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.city}
+                        id="city"
+                        name="city"
+                        label="City"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.state}
+                        id="state"
+                        name="state"
+                        label="State"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.zip_code}
+                        id="zip_code"
+                        name="zip_code"
+                        label="Zip Code"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.country}
+                        name="country"
+                        id="country"
+                        label="Country"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.currentEditAddress.phoneNum}
+                        name="phoneNum"
+                        id="phoneNum"
+                        label="Phone Number"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleEditClose} color="primary">
+                    Cancel
+                    </Button>
+                    <Button 
+                    // disabled
+                    onClick={this.addAddress} color="primary">
+                    Save Changes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
                 <Dialog
                     open={this.state.dialogOpen}
                     onClose={this.handleClose}
@@ -231,6 +350,7 @@ export default class AddressSettings extends Component {
                         <TextField
                             required
                             margin="dense"
+                            name="country"
                             id="country"
                             label="Country"
                             fullWidth
@@ -239,7 +359,7 @@ export default class AddressSettings extends Component {
                         <TextField
                             required
                             margin="dense"
-                            id="phoneNum"
+                            name="phoneNum"
                             id="phoneNum"
                             label="Phone Number"
                             fullWidth
@@ -251,7 +371,7 @@ export default class AddressSettings extends Component {
                         Cancel
                         </Button>
                         <Button 
-                        disabled
+                        // disabled
                         onClick={this.addAddress} color="primary">
                         Add Address
                         </Button>
