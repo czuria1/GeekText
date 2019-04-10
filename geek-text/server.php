@@ -423,7 +423,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
+        $sql = "SELECT ADDRESS.address_id, ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
                 FROM USERS, ADDRESS
 				WHERE USERS.id = @CURRENT_USER AND USERS.id = ADDRESS.user_id";
         
@@ -436,6 +436,7 @@
             while($row = $result->fetch_assoc())
             {
                 $bus = array(
+							 "address_id" => $row["address_id"],
                              "name" => $row["name"],
                              "address" => $row["address"],
 							 "address_2" => $row["address_2"],
@@ -484,7 +485,35 @@
 		echo $result;
 
 		$conn->close();
-    }
+	}
+	
+	function deleteAddress() {
+		global $conn;
+        global $myObj;
+        
+		$addressId = urldecode($_POST['address_id']);
+		$currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$sql = "DELETE FROM ADDRESS
+				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
 	
 	function getPaymentMethods() {
         global $conn;
@@ -605,6 +634,10 @@
 	else if ($method == 'addPaymentMethods') 
 	{
 		addAddress();
+	}
+	else if ($method == 'deleteAddress') 
+	{
+		deleteAddress();
 	}
 	
 
