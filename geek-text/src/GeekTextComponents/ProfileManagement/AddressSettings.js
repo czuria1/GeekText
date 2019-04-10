@@ -225,7 +225,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.address}
                         id="address"
                         value={this.state.editAddress}
                         name="editAddress"
@@ -236,7 +235,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.address_2}
                         id="address"
                         label="Address 2"
                         value={this.state.editAddress_2}
@@ -247,7 +245,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.city}
                         id="city"
                         value={this.state.editCity}
                         name="editCity"
@@ -258,7 +255,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.state}
                         id="state"
                         value={this.state.editState}
                         name="editState"
@@ -269,7 +265,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.zip_code}
                         id="zip_code"
                         value={this.state.editZip_code}
                         name="editZip_code"
@@ -280,7 +275,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.country}
                         value={this.state.editCountry}
                         name="editCountry"
                         id="country"
