@@ -64,6 +64,7 @@
 						books.GENRE LIKE @SEARCH_TERM";
 		
 					//This is for posting in ASC order and then having the function to DESC
+		/*
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
 			print "error 60";
@@ -77,7 +78,7 @@
 		$sql += "ORDER BY books ASC";
 		print "error 68";
 		}		
-
+		*/
 
 		
 		
