@@ -120,6 +120,7 @@ export default class LoginScreen extends Component {
             url: 'http://localhost:82/server.php/post',
             data: 'method=loginUser&username=' + `${this.state.username}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest.responseText);
                 if (XMLHttpRequest.responseText === "No such user exists") {
                     // TODO
                     alert("Username or password is invalid");

@@ -4,7 +4,7 @@
     //Info to connect to DB
 	$servername = "localhost";
 	$dbusername = "root";
-	$dbpassword = "password";
+	$dbpassword = "W&tson$2018";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -145,7 +145,7 @@
 				JOIN   books ON books.ID = reviews.book_id
 				JOIN   users ON reviews.user_id = users.id
 				JOIN   
-						(SELECT sum(rating) AS total
+						(SELECT sum(rewviews.rating) AS total
 						FROM   reviews
 						JOIN   books ON books.ID = reviews.book_id
 						JOIN   users ON reviews.user_id = users.id
