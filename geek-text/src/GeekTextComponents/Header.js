@@ -42,28 +42,13 @@ class Header extends Component {
             <HashRouter>
             <div className="topnav">
                 <div className="logo">
-                    <h1 align = "left">Geek Text</h1>
-
                 <Button>
-                <NavLink style={{ textDecoration: 'none', color: 'black'}}
-                                 to="/HomePage"
-                                 ><h1 align = "center">Geek Text</h1></NavLink>
-
+                    <NavLink to="/HomePage">
+                    <h1 align = "left">Geek Text</h1></NavLink>
                     </Button>
                 </div>
                 <div className="loginButton">
                     {this.loggedInUser()}
-                </div>
-                <div className="shoppingCartButton">
-                    <Button variant="outlined">
-                        <NavLink style={{ textDecoration: 'none',  color: 'black'}} 
-                                 to="/shoppingCart"
-                                 ><Image src={image} width={128}
-                                 height={128} roundedCircle fluid/>
-                        </NavLink>
-
-                    </Button>
-
                 </div>
                 <div id="search-info-container" className="search">
                 <SearchArea></SearchArea>

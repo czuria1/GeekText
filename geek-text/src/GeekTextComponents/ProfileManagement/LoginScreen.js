@@ -120,6 +120,7 @@ export default class LoginScreen extends Component {
             url: 'http://localhost:82/server.php/post',
             data: 'method=loginUser&username=' + `${this.state.username}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest.responseText);
                 if (XMLHttpRequest.responseText === "No such user exists") {
                     // TODO
                     alert("Username or password is invalid");
@@ -189,23 +190,12 @@ export default class LoginScreen extends Component {
                                         </Button>
                                     <br></br>
                                     <br></br>
-                                    <div className="submitArea">
-                                        <Button
-                                            className="submitButton"
-                                            variant="outlined"
-                                            disabled={!this.state.formValid}
-                                             onClick={this.loginButtonClicked}>Login
-                                        </Button>
-                                        <br></br>
-                                        <br></br>
-                                        <br></br>
                                         <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
                                             to="/registration" replace
                                             >Create Account</NavLink>
                                     </div>
                             </div>
                         </div>
-                       </div>
                     </div>
                 </HashRouter>
             )
