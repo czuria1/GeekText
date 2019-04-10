@@ -31,7 +31,7 @@ class Review extends Component {
   submitButtonClicked() {
     //Used to connect to the server
     ajaxme.post({
-      url: "http://localhost:82/server.php/post",
+      url: "http://localhost/server.php/post",
       data:
         "method=submitReview" +
         "&review=" +

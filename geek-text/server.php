@@ -4,7 +4,7 @@
     //Info to connect to DB
 	$servername = "localhost";
 	$dbusername = "root";
-	$dbpassword = "W&tson$2018";
+	$dbpassword = "1995";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -74,6 +74,7 @@ return $result;
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM";
 		
+		/*
 		//This is for posting in ASC order and then having the function to DESC
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
@@ -88,7 +89,7 @@ return $result;
 		$sql += "ORDER BY books ASC";
 		print "error 68";
 		}		
-
+		*/
 		
 		
 

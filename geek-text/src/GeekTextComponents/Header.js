@@ -42,7 +42,10 @@ class Header extends Component {
             <HashRouter>
             <div className="topnav">
                 <div className="logo">
-                    <h1 align = "left">Geek Text</h1>
+                <Button variant="Light">
+                    <NavLink to="/HomePage">
+                    <h1 align = "left">Geek Text</h1></NavLink>
+                    </Button>
                 </div>
                 <div id="search-info-container" className="search">
                 <SearchArea></SearchArea>
