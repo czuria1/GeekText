@@ -4,14 +4,13 @@ import "./BookList.css"
 import ajaxme from "ajaxme";
 import SearchArea from "./SearchArea";
 //import Pagination from 'rc-pagination';
-import Pagination from "react-js-pagination";
-
+ import Pagination from "react-js-pagination";
 import 'rc-pagination/assets/index.css';
 
 const pageSize = 10;
 
-
-
+    const per_page = 10;
+var total = 33;
 // window.onload = store;
 
 
@@ -25,12 +24,15 @@ class BookList extends Component{
             onPage: 1,
             order: "ASC",
             pageSize:10,
+            //js-pagination
             apageSize:10,
+            itemsCountPerPage: 10,
+            totalItemsCount: 10,
             sort: "title"
          
         };
       this.retriveResults = this.retriveResults.bind(this);
-     
+    // this.handlePageChange =this.handlePageChange.bind(this);
       this.sortResults = this.sortResults.bind(this);
       this.ASC = this.ASC.bind(this);
       this.DESC = this.DESC.bind(this);
@@ -53,7 +55,17 @@ class BookList extends Component{
    ////////////////////////////////////////////////////////////////////////
 //    handlePageChange(pageNumber) {
 //     console.log(`active page: ${pageNumber}`);
-//     this.setState({activePage: pageNumber});
+//     //this.setState({activePage: pageNumber});
+//        // this.setState({
+//         //     onPage: page,
+//         // });
+        
+//         Axios.get('http://127.0.0.1:3000/bookList?page='+pageNumber).then(response=>
+//         {this.setState({books:response.data.data,
+//         itemsCountPerPage:response.data.per_page,
+//     totalItemsCount:response.data.total,
+//     activePage:response.data.current_page});
+//     });
 //   }
 
 
@@ -395,7 +407,7 @@ class BookList extends Component{
         return (
 
  
-            <div >
+            <div>
                  
                 <p>ORDER THE BOOKS</p>
                 <select defaultValue = {this.state.order} onChange = {this.ASC}>
@@ -407,26 +419,27 @@ class BookList extends Component{
                
                 </div>
             
-                {/* <Pagination
-// activePage={this.state.activePage}
-// itemsCountPerPage={10}
-// totalItemsCount={450}
-// pageRangeDisplayed={5}
-// onChange={onChange}
+                <Pagination class = "d-flex justify-content-center"
+activePage={this.state.activePage}
+itemsCountPerPage={10}
+totalItemsCount={450}
+pageRangeDisplayed={5}
+onChange={this.handlePageChange}
+itemClass='page-item'
+linkClass= 'page-link'
+//  onChangePage = {this.onChangePage}
+                            
+                            // onChange={onChange}
+                            
+                            // onPage = {this.state.onPage}
+                            // pageSize = {this.state.pageSize}
+                            // pageSizeOptions = {'10,20'}
+                            // showQuickJumper
+                            // showSizeChanger
+                            total = {this.state.books.length}
+                            
 
-                //  onChangePage = {this.onChangePage}
-                            
-                //             onChange={onChange}
-                            
-                //             onPage = {this.state.onPage}
-                //             pageSize = {this.state.pageSize}
-                //             pageSizeOptions = {'10,20'}
-                //             showQuickJumper
-                //             showSizeChanger
-                //             total = {this.state.books.length}
-                            
-
-                            />  */}
+                            /> 
             </div>
         )
     }

@@ -22,6 +22,17 @@
 	    die("connection failed");
 	}
 
+	/////////////////////////////////////////////////////////////////////////////
+function index(){
+	$result = $conn->paginate(10);
+return $result;
+}
+
+
+
+
+	/////////////////////////////////////
+
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
 	{
