@@ -63,7 +63,7 @@
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM";
 		
-					//This is for posting in ASC order and then having the function to DESC
+		//This is for posting in ASC order and then having the function to DESC
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
 			print "error 60";
@@ -77,7 +77,6 @@
 		$sql += "ORDER BY books ASC";
 		print "error 68";
 		}		
-
 
 		
 		
@@ -145,7 +144,7 @@
 				JOIN   books ON books.ID = reviews.book_id
 				JOIN   users ON reviews.user_id = users.id
 				JOIN   
-						(SELECT sum(rewviews.rating) AS total
+						(SELECT sum(reviews.rating) AS total
 						FROM   reviews
 						JOIN   books ON books.ID = reviews.book_id
 						JOIN   users ON reviews.user_id = users.id

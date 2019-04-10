@@ -238,7 +238,7 @@ class BookDetails extends Component {
                 success: function (XMLHttpRequest) {
                     console.log("success", XMLHttpRequest);
                     if (XMLHttpRequest.responseText == 'false') {
-                        alert("Please purchase a book before reviewing.");
+                        alert("Please purchase this book before reviewing.");
                     }   
                     else if (XMLHttpRequest.responseText == "true") {
                         //The user is logged in and they own the book -> submitting review
