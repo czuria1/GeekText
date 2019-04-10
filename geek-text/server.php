@@ -4,23 +4,7 @@
     //Info to connect to DB
 	$servername = "localhost";
 	$dbusername = "root";
-
-
-
-
-	$dbpassword = "password";
-
 	$dbpassword = "1995";
-
-
-	$dbpassword = "1995";
-
-
-	$dbpassword = "1995";
-
-
-	$dbpassword = "1995";
-
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -71,30 +55,14 @@
 		}
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-
-
-
-
 			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
-
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
-
-
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
-
-
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
-
-
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
-
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
 			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM";
-		
+		/*
 					//This is for posting in ASC order and then having the function to DESC
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
@@ -109,7 +77,7 @@
 		$sql += "ORDER BY books ASC";
 		print "error 68";
 		}		
-
+*/
 
 		
 		
@@ -132,24 +100,8 @@
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
-
-
-
-
 					"isbn" => $row["ISBN"],
 					"id" => $row["ID"]
-
-					"isbn" => $row["ISBN"]
-
-
-					"isbn" => $row["ISBN"]
-
-
-					"isbn" => $row["ISBN"]
-
-
-					"isbn" => $row["ISBN"]
-
 				);
 
 				array_push($json, $bus);
@@ -173,29 +125,9 @@
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
-
-
-
-
 		global $params_arr;
 
 		$bookTitle = $params_arr[0];
-
-
-		$bookTitle = urldecode($_POST['searchParam']);
-
-
-
-		$bookTitle = urldecode($_POST['searchParam']);
-
-
-
-		$bookTitle = urldecode($_POST['searchParam']);
-
-
-
-		$bookTitle = urldecode($_POST['searchParam']);
-
 
 		$sql = "SET @BOOK_TITLE = '$bookTitle';";
 
@@ -208,23 +140,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-
-
-
-
 		$sql = "SELECT reviews.rating, reviews.comment, reviews.anon, users.nickname,  TOTAL_RATINGS.total
-
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
-
-
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
-
-
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
-
-
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
-
 				FROM   reviews
 				JOIN   books ON books.ID = reviews.book_id
 				JOIN   users ON reviews.user_id = users.id
@@ -248,24 +164,8 @@
 				$bus = array(
 					"rating" => $row["rating"],
 					"comment" => $row["comment"],
-
-
-
-
 					"nickname" => $row["nickname"],
 					"anon" => $row["anon"],
-
-					"username" => $row["username"],
-
-
-					"username" => $row["username"],
-
-
-					"username" => $row["username"],
-
-
-					"username" => $row["username"],
-
 					"total" => $row["total"]
 				);
 
@@ -567,10 +467,6 @@
 	else if ($method == 'getBookReview')
     {
         getBookReview();
-
-
-
-
 	}
 	else if ($method == 'doesUserOwnBook')
     {
@@ -578,17 +474,5 @@
     }
 	
 
-
-
-    }
-
-
-    }
-
-
-    }
-
-
-    }
 
 ?>

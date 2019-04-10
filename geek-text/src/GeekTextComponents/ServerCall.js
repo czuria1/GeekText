@@ -29,7 +29,7 @@ const ServerCall = (method, params, changeStateFunctionCall) => {
         return false;
     }
     httpRequest.onreadystatechange = alertContents;
-    httpRequest.open('POST', 'http://localhost:82/server.php/');
+    httpRequest.open('POST', 'http://localhost/server.php/');
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send('method=' + encodeURIComponent(method) + '&params=' + encodeURIComponent(params));
 }
