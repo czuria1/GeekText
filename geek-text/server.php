@@ -338,7 +338,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT USERS.username, USERS.password, USERS.user_id
+        $sql = "SELECT USERS.username, USERS.password, USERS.id
                 FROM USERS
 				WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
         
@@ -353,7 +353,7 @@
                 $bus = array(
                              "username" => $row["username"],
 							 "password" => $row["password"],
-							 "user_id" => $row["user_id"]
+							 "id" => $row["id"]
                              );
                 
                 array_push($json, $bus);
@@ -425,7 +425,7 @@
         
         $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
                 FROM USERS, ADDRESS
-				WHERE USERS.user_id = @CURRENT_USER AND USERS.user_id = ADDRESS.user_id";
+				WHERE USERS.id = @CURRENT_USER AND USERS.id = ADDRESS.user_id";
         
 		$result = $conn->query($sql);
         
@@ -505,7 +505,7 @@
         
         $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_month, PAYMENT.exp_year, PAYMENT.zip_code
                 FROM USERS, PAYMENT
-				WHERE USERS.user_id = @CURRENT_USER AND USERS.user_id = PAYMENT.user_id";
+				WHERE USERS.id = @CURRENT_USER AND USERS.id = PAYMENT.user_id";
         
 		$result = $conn->query($sql);
         

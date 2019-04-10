@@ -121,7 +121,7 @@ export default class LoginScreen extends Component {
                     return;
                 } else {
                     this.setState({
-                        userID: JSON.parse(XMLHttpRequest.responseText)[0].user_id
+                        userID: JSON.parse(XMLHttpRequest.responseText)[0].id
                     })
                     this.updateCurrentUser();
                     this.props.history.push('/');
