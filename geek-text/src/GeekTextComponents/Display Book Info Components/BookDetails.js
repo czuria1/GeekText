@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
 import ServerCall from "../ServerCall";
 import styled from "styled-components";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Checkbox, FormControlLabel} from '@material-ui/core';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Checkbox, FormControlLabel } from '@material-ui/core';
 import ajaxme from "ajaxme";
 
 const BookCover = styled(Image)`
@@ -39,6 +39,7 @@ class BookDetails extends Component {
         }
 
         this.getBookReview = this.getBookReview.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         //this.changeState = this.changeState.bind(this);
         // Jimmy Review methods binding
@@ -61,14 +62,12 @@ class BookDetails extends Component {
     }
 
     changeBookOwnedState(response) {
-        if (response.length > 0)
-        {
+        if (response.length > 0) {
             this.setState({
                 doesOwnBook: true
             });
         }
-        else
-        {
+        else {
             this.setState({
                 doesOwnBook: false
             });
@@ -127,9 +126,10 @@ class BookDetails extends Component {
 
 
     handleOpen = () => {
+        console.log("IN HANDLEOPEN");
         this.setState({
             openAlert: true
-        })
+        });
     }
     handleClose = () => {
         this.setState({
@@ -163,9 +163,9 @@ class BookDetails extends Component {
                     Share your thoughts on the book below
                 </DialogContentText>
                 <TextField fullWidth onChange={this.handleComment} />
-                <StarsRating value={this.state.reviewRating} count={5} color2="blue" size={30} edit={true} onChange={this.handleRating} name="rating" />
+                <StarsRating value={this.state.reviewRating} count={5} size={30} edit={true} onChange={this.handleRating} name="rating" />
                 <FormControlLabel control={
-                    <Checkbox checked={this.state.reviewAnon} onChange={this.handleAnon} color="blue" label="I want to remain anonymous" />}
+                    <Checkbox checked={this.state.reviewAnon} onChange={this.handleAnon} color="primary" label="I want to remain anonymous" />}
                     label="I want to remain anonymous" />
             </DialogContent>
             <DialogActions>
@@ -183,6 +183,7 @@ class BookDetails extends Component {
 
     // Jimmy - Review Functions
     submitReview() {
+
         console.log(this.props.location.state.book.bookInfo);
         ajaxme.post({
             url: "http://localhost:82/server.php/post",
@@ -221,9 +222,10 @@ class BookDetails extends Component {
 
     canUserReviewBook() {
         if (this.state.currentUser === "") {
-            alert("Please log in to review a book");
+           alert("Please log in to review a book");
         }
         else {
+            var me = this;
             ajaxme.post({
                 url: "http://localhost:82/server.php/post",
                 data:
@@ -236,13 +238,14 @@ class BookDetails extends Component {
                 success: function (XMLHttpRequest) {
                     console.log("success", XMLHttpRequest);
                     if (XMLHttpRequest.responseText == 'false') {
-                        alert("You cannot review this book since you do not own it.");
-                    }
+                        alert("Please purchase a book before reviewing.");
+                    }   
                     else if (XMLHttpRequest.responseText == "true") {
                         //The user is logged in and they own the book -> submitting review
-                        this.submitReview();
+                        me.handleOpen();
                     }
                 },
+
                 error: function (XMLHttpRequest) {
                     console.log("error", XMLHttpRequest);
                 },
@@ -251,7 +254,8 @@ class BookDetails extends Component {
                 },
                 loadstart: function (XMLHttpRequest) { },
                 progress: function (XMLHttpRequest) { }
-            });
+            })
+
 
         }
     }
@@ -269,17 +273,17 @@ class BookDetails extends Component {
             <div id="bookDetailContainer">
                 {/* {this.goToReview()} */}
                 {this.createAlert()}
-                <List style={{ float: 'right', paddingRight: '500px'}}>
+                <List style={{ float: 'right', paddingRight: '500px' }}>
                     <ListItem>Format: Book</ListItem>
                     <ListItem>Title: {bookInfo.title}</ListItem>
                     <ListItem>Author: {bookInfo.author}</ListItem>
                     <ListItem>Publisher: {bookInfo.publisher}</ListItem>
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
-                    <ListItem><Button onClick={this.handleOpen}>Write a review</Button></ListItem>
+                    <ListItem><Button onClick={this.canUserReviewBook}>Write a review</Button></ListItem>
                 </List>
                 <BookCover src={bookInfo.cover} alt="Image not available" rounded fluid></BookCover>
-                <ExpansionPanel style={{marginTop: '100px'}}>
+                <ExpansionPanel style={{ marginTop: '100px' }}>
                     <ExpansionPanelSummary>Summary</ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Typography>{bookInfo.description}</Typography>
@@ -293,12 +297,13 @@ class BookDetails extends Component {
                 </ExpansionPanel>
                 <ExpansionPanel>
                     <ExpansionPanelSummary >Ratings And Comments</ExpansionPanelSummary>
-                    <ExpansionPanelDetails style={{display: 'block'}}>
+                    <ExpansionPanelDetails style={{ display: 'block' }}>
+                        Average Rating
                         <StarsRating count={5} value={this.getTotalReviews()} size={30} edit={false}></StarsRating>
                         {this.displayReviews()}
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-            </div> 
+            </div>
         );
     }
 }
