@@ -77,16 +77,16 @@ return $result;
 		//This is for posting in ASC order and then having the function to DESC
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
-			print "error 60";
+			
 		$_POST['queryorder'] = 'ASC';
 		$sql . "ORDER BY books	DESC";
-		print "error 62";
+		
 		}
 		else{
-			print "error 65";
+			
 			$_POST['queryorder'] = 'DESC';
 		$sql += "ORDER BY books ASC";
-		print "error 68";
+		
 		}		
 
 		
