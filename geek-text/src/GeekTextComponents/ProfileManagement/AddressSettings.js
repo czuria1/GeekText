@@ -162,6 +162,26 @@ export default class AddressSettings extends Component {
         });
     }
 
+    setHomeAddress(index) {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=setHomeAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+    }
+
     editAddress(item, index) {
         this.setState({ currentEditAddress: index,
             editName : item.name,
@@ -217,6 +237,7 @@ export default class AddressSettings extends Component {
                         phoneNum={item.phoneNum}
                         editAddress={event => that.editAddress(item, index)}
                         removeAddress={event => that.removeAddress(index)}
+                        setHomeAddress={event => that.setHomeAddress(index)}
                         ></Card>
                 </Grid>)
          });

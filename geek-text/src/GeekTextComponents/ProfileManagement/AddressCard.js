@@ -56,7 +56,7 @@ function MediaCard(props) {
         <Button size="small" color="primary" onClick={props.removeAddress}>
           Delete
         </Button>
-        <Button size="small" color="primary" onClick={props.removeAddress}>
+        <Button size="small" color="primary" onClick={props.setHomeAddress}>
           Set as home address
         </Button>
       </CardActions>

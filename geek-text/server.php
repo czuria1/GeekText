@@ -514,6 +514,35 @@
 
 		$conn->close();
 	}
+
+	function setHomeAddress() {
+		global $conn;
+        global $myObj;
+        
+		$addressId = urldecode($_POST['address_id']);
+		$currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$sql = "UPDATE ADDRESS
+				SET ADDRESS.is_home_address = TRUE
+				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
 	
 	function getPaymentMethods() {
         global $conn;
@@ -638,6 +667,10 @@
 	else if ($method == 'deleteAddress') 
 	{
 		deleteAddress();
+	}
+	else if ($method == 'setHomeAddress') 
+	{
+		setHomeAddress();
 	}
 	
 
