@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
   card: {
     maxWidth: 345,
+    height: 181,
   },
   media: {
     height: 140,
@@ -22,7 +23,6 @@ function MediaCard(props) {
   const { classes } = props;
   return (
     <Card className={classes.card}>
-      <CardActionArea>
         <CardContent>
           <Typography component="p">
             {props.name}
@@ -43,7 +43,6 @@ function MediaCard(props) {
             Phone Number: {props.phoneNum}
           </Typography>
         </CardContent>
-      </CardActionArea>
       <CardActions>
         <Button size="small" color="primary" onClick={props.editAddress}>
           Edit

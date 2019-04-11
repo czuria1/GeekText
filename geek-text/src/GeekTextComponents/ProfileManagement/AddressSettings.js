@@ -141,8 +141,25 @@ export default class AddressSettings extends Component {
     }
 
     removeAddress(index) {
-        delete this.state.addresses[index];
-        this.setState({addresses: this.state.addresses});
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=deleteAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                delete this.state.addresses[index];
+                this.setState({addresses: this.state.addresses});
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
     }
 
     editAddress(item, index) {
@@ -186,18 +203,22 @@ export default class AddressSettings extends Component {
 
         const cards = this.state.addresses.map(function(item, index) {
             return (
-            <Card
-                 name={item.name}
-                 address={item.address}
-                 address_2={item.address_2}
-                 city={item.city}
-                 state={item.state}
-                 zip_code={item.zip_code}
-                 country={item.country}
-                 phoneNum={item.phoneNum}
-                 editAddress={event => that.editAddress(item, index)}
-                 removeAddress={event => that.removeAddress(index)}
-                 ></Card>)
+                <Grid
+                    style={{padding: '10px'}}
+                    item sm={4}>
+                    <Card
+                        name={item.name}
+                        address={item.address}
+                        address_2={item.address_2}
+                        city={item.city}
+                        state={item.state}
+                        zip_code={item.zip_code}
+                        country={item.country}
+                        phoneNum={item.phoneNum}
+                        editAddress={event => that.editAddress(item, index)}
+                        removeAddress={event => that.removeAddress(index)}
+                        ></Card>
+                </Grid>)
          });
 
         return (
@@ -225,7 +246,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.address}
                         id="address"
                         value={this.state.editAddress}
                         name="editAddress"
@@ -236,7 +256,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.address_2}
                         id="address"
                         label="Address 2"
                         value={this.state.editAddress_2}
@@ -247,7 +266,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.city}
                         id="city"
                         value={this.state.editCity}
                         name="editCity"
@@ -258,7 +276,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.state}
                         id="state"
                         value={this.state.editState}
                         name="editState"
@@ -269,7 +286,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.zip_code}
                         id="zip_code"
                         value={this.state.editZip_code}
                         name="editZip_code"
@@ -280,7 +296,6 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.currentEditAddress.country}
                         value={this.state.editCountry}
                         name="editCountry"
                         id="country"
@@ -409,8 +424,7 @@ export default class AddressSettings extends Component {
                 </Dialog>
 
                   <Grid
-                    style={{
-                      height: 300}}
+                    style={{height: 300}}
                     container spacing={0}
                     direction="row"
                     justify="center"
@@ -425,10 +439,11 @@ export default class AddressSettings extends Component {
                       <Button onClick={this.handleClickOpen}>Add Address</Button>
                       </Grid>
                         <Grid 
-                          item xs={6}
+                          item xs={7}
+                          spacing
                           container
                           direction="row"
-                          justify="center"
+                          justify="flex-start"
                           alignItems="center">
                             {cards}
                         </Grid>

@@ -39,16 +39,31 @@ export default class LoginSettings extends Component {
                           justify="center"
                           alignItems="center">
                             <TextField 
-                                    style={{paddingBottom: '1%'}}
+                                    style={{paddingBottom: '2%'}}
                                     className="textfield"
                                     name="username"
                                     value={this.state.username}
                                     label="Username"
                                     variant="outlined"></TextField>
                             <TextField 
+                                    style={{paddingBottom: '2%'}}
                                     className="textfield"
                                     name="username"
                                     label="Password"
+                                    variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    disabled
+                                    name="email"
+                                    label="Email"
+                                    variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    nickname
+                                    name="nickname"
+                                    label="Nickname"
                                     variant="outlined"></TextField>
                         </Grid>
                         <Grid 
