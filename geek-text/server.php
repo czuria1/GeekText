@@ -572,6 +572,49 @@
 
 		$conn->close();
 	}
+
+	function updateAddress() {
+		global $conn;
+        global $myObj;
+        
+		$addressId = urldecode($_POST['address_id']);
+		$currentUserId = urldecode($_POST['currentUserId']);
+		
+		$name = urldecode($_POST['name']);
+		$address = urldecode($_POST['address']);
+		$address_2 = urldecode($_POST['address_2']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$country = urldecode($_POST['country']);
+		$phone = urldecode($_POST['phone']);
+
+		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE, IS_HOME_ADDRESS) 
+				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone', 'false')";
+
+		$sql = "UPDATE ADDRESS
+				SET ADDRESS.name = '$name' AND ADDRESS.address ='$address' AND ADDRESS.address_2 = '$address_2' AND ADDRESS.city = '$city' AND ADDRESS.state = '$state'
+				ADDRESS.zip_code = '$zip_code' AND ADDRESS.country = '$country' AND ADDRESS.phone '$phone'
+				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
 	
 	function getPaymentMethods() {
         global $conn;
@@ -700,6 +743,10 @@
 	else if ($method == 'setHomeAddress') 
 	{
 		setHomeAddress();
+	}
+	else if ($method == 'updateAddress') 
+	{
+		updateAddress();
 	}
 	
 

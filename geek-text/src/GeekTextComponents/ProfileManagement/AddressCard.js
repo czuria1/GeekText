@@ -8,6 +8,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = {
   card: {
@@ -28,6 +34,115 @@ function MediaCard(props) {
           Set as home address
         </Button>
       ) 
+    }
+  }
+
+  function editAddressDialog() {
+    if (props.editAddressDialog) {
+      return(
+        <Dialog
+                open={props.editAddressDialog}
+                onClose={props.handleClose}
+                aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Update Address</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                    Please enter your address information here in the fields below.
+                    </DialogContentText>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={props.name}
+                        name="editName"
+                        id="name"
+                        label="Full Name"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="address"
+                        value={props.address}
+                        name="editAddress"
+                        label="Address"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="address"
+                        label="Address 2"
+                        value={props.address_2}
+                        name="editAddress_2"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="city"
+                        value={props.city}
+                        name="editCity"
+                        label="City"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="state"
+                        value={props.state}
+                        name="editState"
+                        label="State"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="zip_code"
+                        value={props.zip_code}
+                        name="editZip_code"
+                        label="Zip Code"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={props.country}
+                        name="editCountry"
+                        id="country"
+                        label="Country"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={props.phoneNum}
+                        name="editPhoneNum"
+                        id="phoneNum"
+                        label="Phone Number"
+                        fullWidth
+                        onChange={props.handleInput}
+                        onFocus={props.handleInput}>
+                    </TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={props.handleEditClose} color="primary">
+                    Cancel
+                    </Button>
+                    <Button 
+                    // disabled
+                    onClick={props.updateEditedAddress} color="primary">
+                    Save Changes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+      )
     }
   }
 
@@ -63,6 +178,7 @@ function MediaCard(props) {
         </Button>
         <div>
         {isHomeAddress()} 
+        {editAddressDialog()}
         </div>
       </CardActions>
     </Card>
