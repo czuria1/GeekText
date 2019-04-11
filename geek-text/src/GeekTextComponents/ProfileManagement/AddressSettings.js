@@ -235,6 +235,7 @@ export default class AddressSettings extends Component {
                         zip_code={item.zip_code}
                         country={item.country}
                         phoneNum={item.phoneNum}
+                        isHomeAddress={!!+item.is_home_address}
                         editAddress={event => that.editAddress(item, index)}
                         removeAddress={event => that.removeAddress(index)}
                         setHomeAddress={event => that.setHomeAddress(index)}

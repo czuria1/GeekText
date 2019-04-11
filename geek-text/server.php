@@ -423,7 +423,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT ADDRESS.address_id, ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
+        $sql = "SELECT ADDRESS.address_id, ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone, ADDRESS.is_home_address
                 FROM USERS, ADDRESS
 				WHERE USERS.id = @CURRENT_USER AND USERS.id = ADDRESS.user_id";
         
@@ -445,6 +445,7 @@
 							 "zip_code" => $row["zip_code"],
 							 "country" => $row["country"],
 							 "phone" => $row["phone"],
+							 "is_home_address" => $row["is_home_address"]
                              );
                 
                 array_push($json, $bus);

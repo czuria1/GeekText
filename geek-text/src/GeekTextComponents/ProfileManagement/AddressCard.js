@@ -20,11 +20,22 @@ const styles = {
 };
 
 function MediaCard(props) {
+
+  function isHomeAddress () {
+    if (!props.isHomeAddress) {
+      return (
+        <Button size="small" color="primary" onClick={props.setHomeAddress}>
+          Set as home address
+        </Button>
+      ) 
+    }
+  }
+
   const { classes } = props;
   return (
     <Card className={classes.card}>
         <CardContent>
-          <Typography component="p">
+          <Typography component="p" style={{fontWeight: 'bold'}}>
             {props.name}
           </Typography>
           <Typography component="p">
@@ -50,9 +61,9 @@ function MediaCard(props) {
         <Button size="small" color="primary" onClick={props.removeAddress}>
           Delete
         </Button>
-        <Button size="small" color="primary" onClick={props.setHomeAddress}>
-          Set as home address
-        </Button>
+        <div>
+        {isHomeAddress()} 
+        </div>
       </CardActions>
     </Card>
   );
