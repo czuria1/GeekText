@@ -65,6 +65,21 @@ return $result;
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
+		//Paginate
+		$limit = 33;
+		$sql = "SELECT count(books.TITLE) FROM books";
+
+		if(isset($_GET{'page'})){
+			$page = $_GET{'page'} + 1;
+			$offset = $limit * $page;
+		}else{
+			$page = 0;
+			$offset = 0;
+		}
+		$count = $row[0];
+		$lefts = $count - ($page * $limit);
+
+
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
 			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
 				 FROM   books 
@@ -74,19 +89,20 @@ return $result;
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM";
 		
-		//This is for posting in ASC order and then having the function to DESC
+
+					//This is for posting in ASC order and then having the function to DESC
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
-			print "error 60";
+			
 		$_POST['queryorder'] = 'ASC';
 		$sql . "ORDER BY books	DESC";
-		print "error 62";
+		
 		}
 		else{
-			print "error 65";
+			
 			$_POST['queryorder'] = 'DESC';
 		$sql += "ORDER BY books ASC";
-		print "error 68";
+		
 		}		
 
 		
@@ -125,6 +141,19 @@ return $result;
 		{
 		    echo "0 results";
 		}
+
+		///PAGINATION previous
+		if( $page > 0 ) {
+            $last = $page - 2;
+            echo "<a href = \"$_PHP_SELF?page = $last\">Last1</a> |";
+            echo "<a href = \"$_PHP_SELF?page = $page\">Next2</a>";
+         }else if( $page == 0 ) {
+            echo "<a href = \"$_PHP_SELF?page = $page\">Next3</a>";
+         }else if( $lefts < $limit ) {
+            $last = $page - 2;
+            echo "<a href = \"$_PHP_SELF?page = $last\">Last4</a>";
+         }
+
 
 
 		$conn->close();
