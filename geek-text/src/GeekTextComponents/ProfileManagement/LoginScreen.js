@@ -23,7 +23,8 @@ export default class LoginScreen extends Component {
             usernameValid: false, 
             passwordValid: false, 
             formValid: false,
-            userID: props.userID
+            userID: props.userID,
+            currentUserHomeAddressId: props.currentUserHomeAddressId
         }
 
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
@@ -31,13 +32,8 @@ export default class LoginScreen extends Component {
     }
 
     updateCurrentUser() {
-        this.props.setCurrentUser(this.state.username, this.state.userID, true);
+        this.props.setCurrentUser(this.state.username, this.state.userID, true, this.state.currentUserHomeAddressId);
     }
-
-    // validateEmail(email) {
-    //     const regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //     return regexp.test(email);
-    // }
     
     handleInput = (e) => {
         const fieldName = e.target.name;
@@ -77,38 +73,11 @@ export default class LoginScreen extends Component {
         });
     }
 
-//    componentWillMount() {
-//        console.log("LoginScreen will mount");
-//    }
-//
-//    componentDidMount() {
-//        console.log("LoginScreen did mount!");
-//    }
-//
-//    componentWillReceiveProps(nextProps) {
-//        console.log("LoginScreen will receive props", nextProps);
-//    }
-
     shouldComponentUpdate(nextProps, nextState) {
         console.log("Should LoginScreen update", nextProps, nextState);
-        // if (nextState.status === 1) {
-        //     return false;
-        // }
         
         return true;
     }
-
-//    componentWillUpdate(nextProps, nextState) {
-//        console.log("LoginScreen will update", nextProps, nextState);
-//    }
-//
-//    componentDidUpdate(prevProps, prevState) {
-//        console.log("LoginScreen did update", prevProps, prevState);
-//    }
-//
-//    componentWillUnmount() {
-//        console.log("LoginScreen will unmount");
-//    }
 
     loginButtonClicked() {
         ajaxme.post({
@@ -121,7 +90,8 @@ export default class LoginScreen extends Component {
                     return;
                 } else {
                     this.setState({
-                        userID: JSON.parse(XMLHttpRequest.responseText)[0].id
+                        userID: JSON.parse(XMLHttpRequest.responseText)[0].id,
+                        currentUserHomeAddressId: JSON.parse(XMLHttpRequest.responseText)[0].home_address_id
                     })
                     this.updateCurrentUser();
                     this.props.history.push('/');

@@ -35,6 +35,7 @@ export default class AddressSettings extends Component {
             dialogOpen: false, 
             editDialogOpen: false,
             addresses: [],
+            currentHomeAddress: props.currentUserHomeAddressId,
             currentEditAddress: 0, 
             name: '',
             address: '',
@@ -165,8 +166,9 @@ export default class AddressSettings extends Component {
     setHomeAddress(index) {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=setHomeAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
+            data: 'method=setHomeAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}` + '&prevHomeAddress=' + `${this.state.currentHomeAddress}`,
             success: function (XMLHttpRequest) {
+                this.setState({currentHomeAddress: this.state.addresses[index].address_id});
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {

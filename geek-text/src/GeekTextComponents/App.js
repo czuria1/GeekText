@@ -19,9 +19,10 @@ class App extends Component {
     constructor (props) {
         super (props);
         this.state = {
-            currentUser: 'testUser',
-            isUserLoggedIn: true,
-            userID: '1'
+            currentUser: '',
+            isUserLoggedIn: false,
+            userID: '',
+            currentUserHomeAddressId: '' 
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
@@ -30,11 +31,12 @@ class App extends Component {
         document.title = "Geek Text Home";
     }
 
-    setCurrentUser(newUser, userID, loggedIn) {
+    setCurrentUser(newUser, userID, loggedIn, home_address_id) {
         this.setState({
             currentUser: newUser,
             userID: userID,
-            isUserLoggedIn: loggedIn
+            isUserLoggedIn: loggedIn, 
+            currentUserHomeAddressId: home_address_id
         });
         
     }

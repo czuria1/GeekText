@@ -338,7 +338,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT USERS.username, USERS.password, USERS.id
+        $sql = "SELECT USERS.username, USERS.password, USERS.id, USERS.home_address_id
                 FROM USERS
 				WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
         
@@ -353,7 +353,8 @@
                 $bus = array(
                              "username" => $row["username"],
 							 "password" => $row["password"],
-							 "id" => $row["id"]
+							 "id" => $row["id"], 
+							 "home_address_id" => $row["home_address_id"]
                              );
                 
                 array_push($json, $bus);
@@ -478,8 +479,8 @@
 		$country = urldecode($_POST['country']);
 		$phone = urldecode($_POST['phone']);
 
-		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE) 
-				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone')";
+		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE, IS_HOME_ADDRESS) 
+				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone', 'false')";
 		
 		$result = $conn->query($sql);
 
@@ -522,8 +523,9 @@
         
 		$addressId = urldecode($_POST['address_id']);
 		$currentUserId = urldecode($_POST['currentUserId']);
+		$prevHomeAddress = urldecode($_POST['prevHomeAddress']);
 
-		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId'";
+		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId', @PREV_ADDRESS = '$prevHomeAddress'";
 		
 		if ($conn->query($sql) === TRUE) 
 		{
@@ -537,6 +539,32 @@
 		$sql = "UPDATE ADDRESS
 				SET ADDRESS.is_home_address = TRUE
 				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE ADDRESS
+				SET ADDRESS.is_home_address = FALSE
+				WHERE @PREV_ADDRESS is not null AND ADDRESS.address_id = @PREV_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+			echo $prevHomeAddress;
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE USERS
+				SET USERS.home_address_id = @CURRENT_ADDRESS
+				WHERE USERS.id = @CURRENT_USER;";
 
 		$result = $conn->query($sql);
 
