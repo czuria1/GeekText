@@ -12,15 +12,18 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {TextInputMask}  from 'react-masked-text';
 import ajaxme from "ajaxme";
 
-function Address(name, address, city, country, phoneNum) {
+function Address(name, address, address_2, city, state, zip_code, country, phoneNum, isHomeAddress) {
     this.name = name;
     this.address = address;
+    this.address_2 = address_2;
     this.city = city;
+    this.state = state;
+    this.zip_code = zip_code;
     this.country = country;
     this.phoneNum = phoneNum;
+    this.isHomeAddress = isHomeAddress;
 }
 
 export default class AddressSettings extends Component {
@@ -30,23 +33,61 @@ export default class AddressSettings extends Component {
         this.state = { 
             currentUserId: props.currentUserId, 
             dialogOpen: false, 
-            addresses: [], 
+            editDialogOpen: false,
+            addresses: [],
+            currentHomeAddress: props.currentUserHomeAddressId,
+            currentEditAddress: 0, 
             name: '',
             address: '',
+            address_2: '',
             city: '',
+            state: '',
+            zip_code: '',
             country: '',
-            phoneNum: ''
+            phoneNum: '',
+            isHomeAddress: false, 
+            editName: '',
+            editAddress: '',
+            editAddress_2: '',
+            editCity: '',
+            editState: '',
+            editZip_code: '',
+            editCountry: '',
+            editPhoneNum: ''
         }
 
         this.addAddress = this.addAddress.bind(this);
     }
 
+    handleInput = (e) => {
+        const fieldName = e.target.name;
+        const fieldValue = e.target.value;
+        
+        this.setState({[fieldName] : fieldValue});
+    }
+
+    componentWillMount() {
+        console.log("AddressSettings will mount");
+        this.getUserAddresses();
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps !== this.props) {
+            this.setState({
+                addresses: nextState.addresses
+            })
+        }
+    }
+
     getUserAddresses() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=getAddress&userId=' + `${this.state.currentUserId}`,
+            data: 'method=getAddresses&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
-                console.log('success', XMLHttpRequest);
+                this.setState({
+                    addresses: JSON.parse(XMLHttpRequest.responseText)
+                })
+                console.log('success', JSON.parse(XMLHttpRequest.responseText));
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -62,12 +103,16 @@ export default class AddressSettings extends Component {
     }
 
     addAddress() {
-        this.state.addresses.push(new Address(this.state.name, this.state.address, this.state.city, this.state.country, this.state.phoneNum));
+        this.state.addresses.push(new Address(this.state.name, this.state.address, this.state.address_2, this.state.city, this.state.state, this.state.zip_code, this.state.country, this.state.phoneNum));
         this.setState({addresses: this.state.addresses, dialogOpen: false});
+        this.addAddressButtonClicked();
         this.setState({
                         name: '',
                         address: '',
+                        address_2: '',
                         city: '',
+                        state: '',
+                        zip_code: '',
                         country: '',
                         phoneNum: ''});
     }
@@ -75,7 +120,10 @@ export default class AddressSettings extends Component {
     addAddressButtonClicked() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=addAddress&address=' + `${this.state.address}` + '&password=' + `${this.state.password}`,
+            data: 'method=addAddress&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.name}`
+                                               + '&address=' + `${this.state.address}` + '&address_2=' + `${this.state.address_2}` + '&city=' + `${this.state.city}` 
+                                               + '&state=' + `${this.state.state}` + '&zip_code=' + `${this.state.zip_code}` + '&country=' + `${this.state.country}` 
+                                               + '&phone=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
                 console.log('success', XMLHttpRequest);
             }.bind(this),
@@ -94,8 +142,89 @@ export default class AddressSettings extends Component {
     }
 
     removeAddress(index) {
-        delete this.state.addresses[index];
-        this.setState({addresses: this.state.addresses});
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=deleteAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                delete this.state.addresses[index];
+                this.setState({addresses: this.state.addresses});
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+    }
+
+    setHomeAddress(index) {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=setHomeAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}` + '&prevHomeAddress=' + `${this.state.currentHomeAddress}`,
+            success: function (XMLHttpRequest) {
+                this.setState({currentHomeAddress: this.state.addresses[index].address_id});
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+    }
+
+    editAddress(item, index) {
+        this.setState({ currentEditAddress: index,
+            editName : item.name,
+            editAddress: item.address,
+            editAddress_2: item.address_2, 
+            editCity: item.city, 
+            editState: item.state, 
+            editCountry: item.country, 
+            editPhoneNum: item.phoneNum});
+        this.handleEditClickOpen();
+    }
+
+    // TODO
+    updateEditedAddress() {
+        // let addressesCopy = JSON.parse(JSON.stringify(this.state.addresses));
+        // addressesCopy[this.state.currentEditAddress] = newAddress;
+        // this.setState({addresses: addressesCopy});
+        var index = this.state.currentEditAddress;
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=updateAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.editName}`
+                                                    + '&address=' + `${this.state.editAddress}` + '&address_2=' + `${this.state.editAddress_2}` + '&city=' + `${this.state.editCity}` 
+                                                    + '&state=' + `${this.state.editState}` + '&zip_code=' + `${this.state.editZip_code}` + '&country=' + `${this.state.editCountry}` 
+                                                    + '&phone=' + `${this.state.editPhoneNum}`,
+            success: function (XMLHttpRequest) {
+                this.setState({
+                    addresses: JSON.parse(XMLHttpRequest.responseText)
+                });
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
     }
 
     handleClickOpen = () => {
@@ -106,25 +235,44 @@ export default class AddressSettings extends Component {
         this.setState({ dialogOpen: false });
     }
 
+    handleEditClickOpen = () => {
+        this.setState({ editDialogOpen: true });
+    }
+    
+    handleEditClose = () => {
+        this.setState({ editDialogOpen: false , currentEditAddress: []});
+    }
+
     render() {
 
         const that = this;
 
-        const cards = this.state.addresses.map(function (item, index) {
+        const cards = this.state.addresses.map(function(item, index) {
             return (
-            <Card
-                 nameOnCard={item.name}
-                 address={item.address}
-                 city={item.city}
-                 country={item.country}
-                 phoneNum={item.phoneNum}
-                 removeAddress={event => that.removeAddress(index)}
-                 ></Card>)
+                <Grid
+                    style={{padding: '10px'}}
+                    item sm={4}>
+                    <Card
+                        name={item.name}
+                        address={item.address}
+                        address_2={item.address_2}
+                        city={item.city}
+                        state={item.state}
+                        zip_code={item.zip_code}
+                        country={item.country}
+                        phoneNum={item.phoneNum}
+                        isHomeAddress={!!+item.is_home_address}
+                        editAddressDialog={that.editDialogOpen}
+                        editAddress={that.handleEditClickOpen}
+                        removeAddress={event => that.removeAddress(index)}
+                        setHomeAddress={event => that.setHomeAddress(index)}
+                        ></Card>
+                </Grid>)
          });
 
         return (
-            <HashRouter>
                 <div>
+
                 <Dialog
                     open={this.state.dialogOpen}
                     onClose={this.handleClose}
@@ -135,70 +283,94 @@ export default class AddressSettings extends Component {
                         <DialogContentText>
                         Please enter your address information here in the fields below.
                         </DialogContentText>
-                        <TextInputMask
-                                ref={this.state.name}
-                                kind={'datetime'}
-                                options={{
-                                    format: 'DD-MM-YYYY HH:mm:ss'
-                                }} />
                         <TextField
                             autoFocus
                             required
                             margin="dense"
                             id="name"
+                            name="name"
                             label="Full Name"
                             fullWidth
-                            onChange={event => this.setState({name: event.target.value})}
-                            onFocus={event => this.setState({name: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
                             id="address"
+                            name="address"
                             label="Address"
                             fullWidth
-                            onChange={event => this.setState({address: event.target.value})}
-                            onFocus={event => this.setState({address: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
+                            required
+                            margin="dense"
+                            id="address"
+                            label="Address 2"
+                            name="address_2"
+                            fullWidth
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
+                        <TextField
                             required
                             margin="dense"
                             id="city"
+                            name="city"
                             label="City"
                             fullWidth
-                            onChange={event => this.setState({city: event.target.value})}
-                            onFocus={event => this.setState({city: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
+                            id="state"
+                            name="state"
+                            label="State"
+                            fullWidth
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
+                        <TextField
+                            required
+                            margin="dense"
+                            id="zip_code"
+                            name="zip_code"
+                            label="Zip Code"
+                            fullWidth
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
+                        <TextField
+                            required
+                            margin="dense"
+                            name="country"
                             id="country"
                             label="Country"
                             fullWidth
-                            onChange={event => this.setState({country: event.target.value})}
-                            onFocus={event => this.setState({country: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                         <TextField
-                            autoFocus
                             required
                             margin="dense"
+                            name="phoneNum"
                             id="phoneNum"
                             label="Phone Number"
                             fullWidth
-                            onChange={event => this.setState({phoneNum: event.target.value})}
-                            onFocus={event => this.setState({phoneNum: event.target.value})}/>
+                            onChange={this.handleInput}
+                            onFocus={this.handleInput}/>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                         Cancel
                         </Button>
-                        <Button onClick={this.addAddress} color="primary">
+                        <Button 
+                        // disabled
+                        onClick={this.addAddress} color="primary">
                         Add Address
                         </Button>
                     </DialogActions>
                 </Dialog>
+
                   <Grid
-                    style={{
-                      height: 300}}
+                    style={{height: 300}}
                     container spacing={0}
                     direction="row"
                     justify="center"
@@ -213,16 +385,16 @@ export default class AddressSettings extends Component {
                       <Button onClick={this.handleClickOpen}>Add Address</Button>
                       </Grid>
                         <Grid 
-                          item xs={6}
+                          item xs={7}
+                          spacing
                           container
                           direction="row"
-                          justify="center"
+                          justify="flex-start"
                           alignItems="center">
                             {cards}
                         </Grid>
                       </Grid>
                     </div>
-            </HashRouter>
         );
     }
 }
