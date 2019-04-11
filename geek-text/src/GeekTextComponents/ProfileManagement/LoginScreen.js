@@ -1,16 +1,11 @@
-import React, { Component } from "react";
-import './login.css';
-import ajaxme from "ajaxme";
-import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import { Route, NavLink, HashRouter } from "react-router-dom";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
+import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
+import ajaxme from "ajaxme";
+import React, { Component } from "react";
+import { HashRouter, NavLink } from "react-router-dom";
+import './login.css';
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -28,7 +23,8 @@ export default class LoginScreen extends Component {
             usernameValid: false,
             passwordValid: false,
             formValid: false,
-            userID: props.userID
+            userID: props.userID,
+            currentUserHomeAddressId: props.currentUserHomeAddressId
         }
 
         this.loginButtonClicked = this.loginButtonClicked.bind(this);
@@ -36,14 +32,9 @@ export default class LoginScreen extends Component {
     }
 
     updateCurrentUser() {
-        this.props.setCurrentUser(this.state.username, this.state.userID, true);
+        this.props.setCurrentUser(this.state.username, this.state.userID, true, this.state.currentUserHomeAddressId);
     }
-
-    // validateEmail(email) {
-    //     const regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //     return regexp.test(email);
-    // }
-
+    
     handleInput = (e) => {
         const fieldName = e.target.name;
         const fieldValue = e.target.value;
@@ -82,55 +73,30 @@ export default class LoginScreen extends Component {
         });
     }
 
-    //    componentWillMount() {
-    //        console.log("LoginScreen will mount");
-    //    }
-    //
-    //    componentDidMount() {
-    //        console.log("LoginScreen did mount!");
-    //    }
-    //
-    //    componentWillReceiveProps(nextProps) {
-    //        console.log("LoginScreen will receive props", nextProps);
-    //    }
-
     shouldComponentUpdate(nextProps, nextState) {
         console.log("Should LoginScreen update", nextProps, nextState);
-        // if (nextState.status === 1) {
-        //     return false;
-        // }
-
+        
         return true;
     }
-
-    //    componentWillUpdate(nextProps, nextState) {
-    //        console.log("LoginScreen will update", nextProps, nextState);
-    //    }
-    //
-    //    componentDidUpdate(prevProps, prevState) {
-    //        console.log("LoginScreen did update", prevProps, prevState);
-    //    }
-    //
-    //    componentWillUnmount() {
-    //        console.log("LoginScreen will unmount");
-    //    }
 
     loginButtonClicked() {
         ajaxme.post({
             url: 'http://localhost:82/server.php/post',
             data: 'method=loginUser&username=' + `${this.state.username}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest.responseText);
                 if (XMLHttpRequest.responseText === "No such user exists") {
                     // TODO
                     alert("Username or password is invalid");
                     return;
                 } else {
                     this.setState({
-                        userID: JSON.parse(XMLHttpRequest.responseText)[0].id
+                        userID: JSON.parse(XMLHttpRequest.responseText)[0].id,
+                        currentUserHomeAddressId: JSON.parse(XMLHttpRequest.responseText)[0].home_address_id
                     })
                     this.updateCurrentUser();
                     this.props.history.push('/');
-                    console.log('success', JSON.parse(XMLHttpRequest.responseText)[0].id);
+                    console.log('success', XMLHttpRequest.responseText);
                 }
             }.bind(this),
             error: function (XMLHttpRequest) {
@@ -189,23 +155,12 @@ export default class LoginScreen extends Component {
                                         </Button>
                                     <br></br>
                                     <br></br>
-                                    <div className="submitArea">
-                                        <Button
-                                            className="submitButton"
-                                            variant="outlined"
-                                            disabled={!this.state.formValid}
-                                             onClick={this.loginButtonClicked}>Login
-                                        </Button>
-                                        <br></br>
-                                        <br></br>
-                                        <br></br>
                                         <NavLink style={{ textDecoration: 'none',  color: 'black', fontWeight: 'bold'}} 
                                             to="/registration" replace
                                             >Create Account</NavLink>
                                     </div>
                             </div>
                         </div>
-                       </div>
                     </div>
                 </HashRouter>
             )

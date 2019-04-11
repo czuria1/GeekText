@@ -4,7 +4,7 @@
     //Info to connect to DB
 	$servername = "localhost";
 	$dbusername = "root";
-	$dbpassword = "password";
+	$dbpassword = "W&tson$2018";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -31,6 +31,17 @@
 	{
 	    die("connection failed");
 	}
+
+	/////////////////////////////////////////////////////////////////////////////
+function index(){
+	$result = $conn->paginate(10);
+return $result;
+}
+
+
+
+
+	/////////////////////////////////////
 
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
@@ -63,7 +74,7 @@
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM";
 		
-					//This is for posting in ASC order and then having the function to DESC
+		//This is for posting in ASC order and then having the function to DESC
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
 			print "error 60";
@@ -77,7 +88,6 @@
 		$sql += "ORDER BY books ASC";
 		print "error 68";
 		}		
-
 
 		
 		
@@ -145,7 +155,7 @@
 				JOIN   books ON books.ID = reviews.book_id
 				JOIN   users ON reviews.user_id = users.id
 				JOIN   
-						(SELECT sum(rating) AS total
+						(SELECT sum(reviews.rating) AS total
 						FROM   reviews
 						JOIN   books ON books.ID = reviews.book_id
 						JOIN   users ON reviews.user_id = users.id
@@ -367,18 +377,18 @@
 		
 		if ($conn->query($sql) === TRUE) 
 		{
-			
+
 		} 
 		else 
 		{
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT USERS.username, USERS.password, USERS.id
+        $sql = "SELECT USERS.username, USERS.password, USERS.id, USERS.home_address_id
                 FROM USERS
-                WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
+				WHERE USERS.username = @USERNAME AND USERS.password = @PASSWORD";
         
-        $result = $conn->query($sql);
+		$result = $conn->query($sql);
         
         if ($result->num_rows > 0)
         {
@@ -389,7 +399,8 @@
                 $bus = array(
                              "username" => $row["username"],
 							 "password" => $row["password"],
-							 "id" => $row["id"]
+							 "id" => $row["id"], 
+							 "home_address_id" => $row["home_address_id"]
                              );
                 
                 array_push($json, $bus);
@@ -442,7 +453,290 @@
 		$conn->close();
 	}
     
-    
+    function getAddresses() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT ADDRESS.address_id, ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone, ADDRESS.is_home_address
+                FROM USERS, ADDRESS
+				WHERE USERS.id = @CURRENT_USER AND USERS.id = ADDRESS.user_id";
+        
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+							 "address_id" => $row["address_id"],
+                             "name" => $row["name"],
+                             "address" => $row["address"],
+							 "address_2" => $row["address_2"],
+							 "city" => $row["city"],
+							 "state" => $row["state"],
+							 "zip_code" => $row["zip_code"],
+							 "country" => $row["country"],
+							 "phone" => $row["phone"],
+							 "is_home_address" => $row["is_home_address"]
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing addresses for user";
+        }
+        
+        $conn->close();
+	}
+
+	function addAddress() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$name = urldecode($_POST['name']);
+		$address = urldecode($_POST['address']);
+		$address_2 = urldecode($_POST['address_2']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$country = urldecode($_POST['country']);
+		$phone = urldecode($_POST['phone']);
+
+		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE, IS_HOME_ADDRESS) 
+				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone', 'false')";
+		
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
+	
+	function deleteAddress() {
+		global $conn;
+        global $myObj;
+        
+		$addressId = urldecode($_POST['address_id']);
+		$currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$sql = "DELETE FROM ADDRESS
+				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
+
+	function setHomeAddress() {
+		global $conn;
+        global $myObj;
+        
+		$addressId = urldecode($_POST['address_id']);
+		$currentUserId = urldecode($_POST['currentUserId']);
+		$prevHomeAddress = urldecode($_POST['prevHomeAddress']);
+
+		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId', @PREV_ADDRESS = '$prevHomeAddress'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$sql = "UPDATE ADDRESS
+				SET ADDRESS.is_home_address = TRUE
+				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE ADDRESS
+				SET ADDRESS.is_home_address = FALSE
+				WHERE @PREV_ADDRESS is not null AND ADDRESS.address_id = @PREV_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+			echo $prevHomeAddress;
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE USERS
+				SET USERS.home_address_id = @CURRENT_ADDRESS
+				WHERE USERS.id = @CURRENT_USER;";
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
+
+	function updateAddress() {
+		global $conn;
+        global $myObj;
+        
+		$addressId = urldecode($_POST['address_id']);
+		$currentUserId = urldecode($_POST['currentUserId']);
+		
+		$name = urldecode($_POST['name']);
+		$address = urldecode($_POST['address']);
+		$address_2 = urldecode($_POST['address_2']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$country = urldecode($_POST['country']);
+		$phone = urldecode($_POST['phone']);
+
+		$sql = "SET @CURRENT_ADDRESS = '$addressId', @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE, IS_HOME_ADDRESS) 
+				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone', 'false')";
+
+		$sql = "UPDATE ADDRESS
+				SET ADDRESS.name = '$name' AND ADDRESS.address ='$address' AND ADDRESS.address_2 = '$address_2' AND ADDRESS.city = '$city' AND ADDRESS.state = '$state'
+				ADDRESS.zip_code = '$zip_code' AND ADDRESS.country = '$country' AND ADDRESS.phone '$phone'
+				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
+	
+	function getPaymentMethods() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_month, PAYMENT.exp_year, PAYMENT.zip_code
+                FROM USERS, PAYMENT
+				WHERE USERS.id = @CURRENT_USER AND USERS.id = PAYMENT.user_id";
+        
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "card_type" => $row["card_type"],
+                             "card_name" => $row["card_name"],
+							 "exp_month" => $row["exp_month"],
+							 "exp_year" => $row["exp_year"],
+							 "zip_code" => $row["zip_code"]
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing payment methods for user";
+        }
+        
+        $conn->close();
+	}
+
+	function addPaymentMethods() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$card_type = urldecode($_POST['card_type']);
+		$card_name = urldecode($_POST['card_name']);
+		$security_code = urldecode($_POST['security_code']);
+		$exp_month = urldecode($_POST['exp_month']);
+		$exp_year = urldecode($_POST['exp_year']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$zip_code = urldecode($_POST['zip_code']);
+
+		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, SECURITY_CODE, EXP_MONTH, EXP_YEAR, ZIP_CODE) 
+				VALUES($currentUserId, '$card_type', '$card_name', '$security_code', '$exp_month', '$exp_year', '$zip_code')";
+		
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+    }
 
 	if ($method == 'getSearchInfo')
 	{
@@ -471,8 +765,35 @@
 	else if ($method == 'doesUserOwnBook')
     {
         doesUserOwnBook();
-    }
+	} 
+	else if ($method == 'getAddresses') 
+	{
+		getAddresses();
+	}
+	else if ($method == 'addAddress') 
+	{
+		addAddress();
+	}
+	else if ($method == 'getPaymentMethods') 
+	{
+		getAddresses();
+	}
+	else if ($method == 'addPaymentMethods') 
+	{
+		addAddress();
+	}
+	else if ($method == 'deleteAddress') 
+	{
+		deleteAddress();
+	}
+	else if ($method == 'setHomeAddress') 
+	{
+		setHomeAddress();
+	}
+	else if ($method == 'updateAddress') 
+	{
+		updateAddress();
+	}
 	
-
 
 ?>
