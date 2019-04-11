@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "root";
-	$dbpassword = "W&tson$2018";
+	$dbusername = "jyepe";
+	$dbpassword = "9373yepe";
 	$dbname = "geektext_db";
 
 	//what method to execute
