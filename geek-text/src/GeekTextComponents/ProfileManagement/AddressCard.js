@@ -34,19 +34,13 @@ function MediaCard(props) {
             {props.address_2}
           </Typography>
           <Typography component="p">
-            {props.city}
-          </Typography>
-          <Typography component="p">
-            {props.state}
-          </Typography>
-          <Typography component="p">
-            {props.zip_code}
+            {props.city}, {props.state} {props.zip_code}
           </Typography>
           <Typography component="p">
             {props.country}
           </Typography>
           <Typography component="p">
-            {props.phoneNum}
+            Phone Number: {props.phoneNum}
           </Typography>
         </CardContent>
       <CardActions>
