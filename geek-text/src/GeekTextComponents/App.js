@@ -25,7 +25,8 @@ class App extends Component {
         this.state = {
             currentUser: '',
             isUserLoggedIn: false,
-            userID: ''
+            userID: '',
+            currentUserHomeAddressId: '' 
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
@@ -34,11 +35,12 @@ class App extends Component {
         document.title = "Geek Text Home";
     }
 
-    setCurrentUser(newUser, userID, loggedIn) {
+    setCurrentUser(newUser, userID, loggedIn, home_address_id) {
         this.setState({
             currentUser: newUser,
             userID: userID,
-            isUserLoggedIn: loggedIn
+            isUserLoggedIn: loggedIn, 
+            currentUserHomeAddressId: home_address_id
         });
         
     }
@@ -76,9 +78,13 @@ class App extends Component {
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>
-                        <Route path="/loginSettings" component={LoginSettings}/>
-                        <Route path="/addressSettings" component={AddressSettings}/>
-                        <Route path="/paymentSettings" component={PaymentSettings}/>
+                        <Route path="/loginSettings" render={(props) => <LoginSettings {...props}
+                                                                            username={this.state.currentUser}
+                                                                            currentUser={this.state.currentUser}/>}/>
+                        <Route path="/addressSettings" render={(props) => <AddressSettings {...props} 
+                                                                            currentUserId={this.state.userID}/>}/>
+                        <Route path="/paymentSettings" render={(props) => <PaymentSettings {...props} 
+                                                                            currentUserId={this.state.userID}/>}/>
                         <Route path="/bookDetails" render={(props) => <BookDetails {...props} 
                                                                             currentUser={this.state.currentUser}
                                                                             userID={this.state.userID}/>}/>
