@@ -406,6 +406,58 @@
 
 		$conn->close();
 	}
+
+	function getUserInfo() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT USERS.username, USERS.fname, USERS.lname, USERS.nickname, USERS.email, USERS.password
+                FROM USERS
+				WHERE USERS.id = @CURRENT_USER";
+
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "username" => $row["username"],
+                             "fname" => $row["fname"],
+                             "lname" => $row["lname"],
+                             "nickname" => $row["nickname"],
+                             "email" => $row["email"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No such user exists";
+        }
+        
+        $conn->close();
+    }
     
     function getAddresses() {
         global $conn;
@@ -808,6 +860,10 @@
 	else if ($method == 'updateAddress') 
 	{
 		updateAddress();
+	}
+	else if ($method == 'getUserInfo') 
+	{
+		getUserInfo();
 	}
 	
 

@@ -18,11 +18,17 @@ function PaperSheet(props) {
   return (
     <div>
       <Paper className={classes.root} elevation={1}>
-        <Typography variant="h6" component="h8">
+        <Typography component="p" style={{fontWeight: 'bold'}}>
           {props.name}
         </Typography>
         <Typography component="p">
-          {props.address}, {props.city}, {props.state} 
+          {props.address} {props.address_2}, {props.city}, {props.state} {props.zip_code}
+        </Typography>
+        <Typography component="p">
+          {props.country}
+        </Typography>
+        <Typography component="p">
+          Phone Number: {props.phone} 
         </Typography>
       </Paper>
     </div>
