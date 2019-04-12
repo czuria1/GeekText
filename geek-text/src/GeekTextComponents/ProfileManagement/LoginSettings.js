@@ -19,15 +19,7 @@ export default class LoginSettings extends Component {
     }
 
     handleInput = (e) => {
-        const { userInfo } = this.state;
-        const { id } = e.target;
-        const { value } = e.target.name;
 
-        console.log(value);
-
-        // userInfo[id] = !this.state.userInfo[id];
-        
-        // this.setState({userInfo});
     }
 
     componentWillMount() {
@@ -127,6 +119,7 @@ export default class LoginSettings extends Component {
                         name="password"
                         label="Password"
                         type="password"
+                        onChange={that.handleInput}
                         variant="outlined"></TextField>
                 <TextField 
                         style={{paddingBottom: '2%'}}
@@ -135,6 +128,7 @@ export default class LoginSettings extends Component {
                         value={item.email !== 'null' ? item.email : undefined}
                         name="email"
                         label="Email"
+                        onChange={that.handleInput}
                         variant="outlined"></TextField>
                 <TextField 
                         style={{paddingBottom: '2%'}}
@@ -143,6 +137,7 @@ export default class LoginSettings extends Component {
                         value={item.nickname !== 'null' ? item.nickname : undefined}
                         name="nickname"
                         label="Nickname"
+                        onChange={that.handleInput}
                         variant="outlined"></TextField>
                 </div>
             )
