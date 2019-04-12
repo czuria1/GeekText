@@ -65,6 +65,13 @@ export default class LoginSettings extends Component {
                                     name="nickname"
                                     label="Nickname"
                                     variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    nickname
+                                    name="currentAddress"
+                                    label="Current Address"
+                                    variant="outlined"></TextField>
                         </Grid>
                         <Grid 
                             item xs={7}
