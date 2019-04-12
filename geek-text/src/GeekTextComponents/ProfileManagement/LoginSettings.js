@@ -18,8 +18,7 @@ export default class LoginSettings extends Component {
         return (
             <div>
                 <Grid
-                    style={{
-                      height: 300}}
+                    style={{paddingTop: '50px'}}
                     container spacing={0}
                     direction="row"
                     justify="center"
@@ -33,6 +32,7 @@ export default class LoginSettings extends Component {
                       <h3>Your Login & Personal Information</h3>
                       </Grid>
                         <Grid 
+                          style={{paddingTop: '50px'}}
                           item xs={6}
                           container
                           direction="row"

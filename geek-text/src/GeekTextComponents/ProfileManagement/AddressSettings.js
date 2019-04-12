@@ -370,7 +370,7 @@ export default class AddressSettings extends Component {
                 </Dialog>
 
                   <Grid
-                    style={{height: 300}}
+                    style={{paddingTop: '50px'}}
                     container spacing={0}
                     direction="row"
                     justify="center"
@@ -384,7 +384,8 @@ export default class AddressSettings extends Component {
                       <h3>Your Addresses</h3>
                       <Button onClick={this.handleClickOpen}>Add Address</Button>
                       </Grid>
-                        <Grid 
+                        <Grid
+                          style={{paddingTop: '50px'}} 
                           item xs={7}
                           spacing
                           container

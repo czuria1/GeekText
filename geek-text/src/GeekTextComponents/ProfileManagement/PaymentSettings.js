@@ -223,8 +223,7 @@ export default class PaymentSettings extends Component {
                     </DialogActions>
                 </Dialog>
                 <Grid
-                    style={{
-                        height: 300}}
+                    style={{paddingTop: '50px'}}
                     container spacing={0}
                     direction="row"
                     justify="center"
@@ -239,6 +238,7 @@ export default class PaymentSettings extends Component {
                     <Button onClick={this.handleClickOpen}>Add A Payment Method</Button>
                     </Grid>
                     <Grid 
+                        style={{paddingTop: '50px'}}
                         item xs={6}
                         container
                         direction="row"
