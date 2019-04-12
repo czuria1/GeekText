@@ -84,10 +84,14 @@ export default class AddressSettings extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=getAddresses&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
-                this.setState({
-                    addresses: JSON.parse(XMLHttpRequest.responseText)
-                })
-                console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                if (XMLHttpRequest.responseText === "No existing addresses for user") {
+                
+                } else {
+                    this.setState({
+                        addresses: JSON.parse(XMLHttpRequest.responseText)
+                    })
+                    console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                }
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);

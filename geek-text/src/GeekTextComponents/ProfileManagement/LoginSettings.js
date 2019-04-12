@@ -69,10 +69,14 @@ export default class LoginSettings extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=getHomeAddress&address_id=' + `${this.state.homeAddressId}` + '&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
+            if (XMLHttpRequest.responseText === "No existing addresses for user") {
+                
+            } else {
                 this.setState({
                     homeAddress: JSON.parse(XMLHttpRequest.responseText)
                 })
-                console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                console.log('success', JSON.parse(XMLHttpRequest.responseText));   
+            }
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -131,7 +135,7 @@ export default class LoginSettings extends Component {
         });
 
         const address = this.state.homeAddress.map(function(item, index) {
-            if (that.state.homeAddress !== null) {
+            if (that.state.homeAddress.length !== 0) {
                 return (
                     <HomeAddressPanel
                         name={item.name}
