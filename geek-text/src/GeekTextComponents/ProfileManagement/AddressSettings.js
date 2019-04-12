@@ -84,10 +84,14 @@ export default class AddressSettings extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=getAddresses&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
-                this.setState({
-                    addresses: JSON.parse(XMLHttpRequest.responseText)
-                })
-                console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                if (XMLHttpRequest.responseText === "No existing addresses for user") {
+                
+                } else {
+                    this.setState({
+                        addresses: JSON.parse(XMLHttpRequest.responseText)
+                    })
+                    console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                }
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -370,7 +374,7 @@ export default class AddressSettings extends Component {
                 </Dialog>
 
                   <Grid
-                    style={{height: 300}}
+                    style={{paddingTop: '50px'}}
                     container spacing={0}
                     direction="row"
                     justify="center"
@@ -384,7 +388,8 @@ export default class AddressSettings extends Component {
                       <h3>Your Addresses</h3>
                       <Button onClick={this.handleClickOpen}>Add Address</Button>
                       </Grid>
-                        <Grid 
+                        <Grid
+                          style={{paddingTop: '50px'}} 
                           item xs={7}
                           spacing
                           container

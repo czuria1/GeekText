@@ -481,6 +481,58 @@ return $result;
 
 		$conn->close();
 	}
+
+	function getUserInfo() {
+        global $conn;
+        global $myObj;
+        
+        $currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT USERS.username, USERS.fname, USERS.lname, USERS.nickname, USERS.email, USERS.password
+                FROM USERS
+				WHERE USERS.id = @CURRENT_USER";
+
+		$result = $conn->query($sql);
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "username" => $row["username"],
+                             "fname" => $row["fname"],
+                             "lname" => $row["lname"],
+                             "nickname" => $row["nickname"],
+                             "email" => $row["email"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No such user exists";
+        }
+        
+        $conn->close();
+    }
     
     function getAddresses() {
         global $conn;
@@ -590,6 +642,63 @@ return $result;
 		echo $result;
 
 		$conn->close();
+	}
+
+	function getHomeAddress() {
+        global $conn;
+        global $myObj;
+        
+		$currentUserId = urldecode($_POST['currentUserId']);
+		$addressId = urldecode($_POST['address_id']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId', @HOME_ADDRESS = '$addressId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
+                FROM ADDRESS
+				WHERE ADDRESS.user_id = @CURRENT_USER AND ADDRESS.address_id = @HOME_ADDRESS";
+
+		$result = $conn->query($sql);
+
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "name" => $row["name"],
+                             "address" => $row["address"],
+							 "address_2" => $row["address_2"],
+							 "city" => $row["city"],
+							 "state" => $row["state"],
+							 "zip_code" => $row["zip_code"],
+							 "country" => $row["country"],
+							 "phone" => $row["phone"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing addresses for user";
+        }
+        
+        $conn->close();
 	}
 
 	function setHomeAddress() {
@@ -819,9 +928,17 @@ return $result;
 	{
 		setHomeAddress();
 	}
+	else if ($method == 'getHomeAddress') 
+	{
+		getHomeAddress();
+	}
 	else if ($method == 'updateAddress') 
 	{
 		updateAddress();
+	}
+	else if ($method == 'getUserInfo') 
+	{
+		getUserInfo();
 	}
 	
 

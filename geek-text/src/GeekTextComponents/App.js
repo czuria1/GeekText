@@ -80,7 +80,9 @@ class App extends Component {
                         <Route path="/bookList/:term" component={BookList}/>
                         <Route path="/loginSettings" render={(props) => <LoginSettings {...props}
                                                                             username={this.state.currentUser}
-                                                                            currentUser={this.state.currentUser}/>}/>
+                                                                            currentUser={this.state.currentUser}
+                                                                            homeAddress={this.state.currentUserHomeAddressId}
+                                                                            currentUserId={this.state.userID}/>}/>
                         <Route path="/addressSettings" render={(props) => <AddressSettings {...props} 
                                                                             currentUserId={this.state.userID}/>}/>
                         <Route path="/paymentSettings" render={(props) => <PaymentSettings {...props} 

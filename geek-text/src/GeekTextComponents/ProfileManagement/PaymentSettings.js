@@ -50,7 +50,7 @@ export default class PaymentSettings extends Component {
     }
 
     componentWillMount() {
-        console.log("AddressSettings will mount");
+        console.log("PaymentSettings will mount");
         this.getUserPaymentMethods();
     }
 
@@ -67,10 +67,14 @@ export default class PaymentSettings extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=getPaymentMethods&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
-                this.setState({
-                    currPayMethods: JSON.parse(XMLHttpRequest.responseText)
-                })
-                console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                if (XMLHttpRequest.responseText === "No existing payment methods for user") {
+                
+                } else {
+                    this.setState({
+                        currPayMethods: JSON.parse(XMLHttpRequest.responseText)
+                    })
+                    console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                }
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -223,8 +227,7 @@ export default class PaymentSettings extends Component {
                     </DialogActions>
                 </Dialog>
                 <Grid
-                    style={{
-                        height: 300}}
+                    style={{paddingTop: '50px'}}
                     container spacing={0}
                     direction="row"
                     justify="center"
@@ -239,6 +242,7 @@ export default class PaymentSettings extends Component {
                     <Button onClick={this.handleClickOpen}>Add A Payment Method</Button>
                     </Grid>
                     <Grid 
+                        style={{paddingTop: '50px'}}
                         item xs={6}
                         container
                         direction="row"
