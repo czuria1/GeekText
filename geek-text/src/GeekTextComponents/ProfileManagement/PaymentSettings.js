@@ -67,15 +67,14 @@ export default class PaymentSettings extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=getPaymentMethods&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
-                console.log(XMLHttpRequest);
-                // if (XMLHttpRequest.responseText === "No existing payment methods for user") {
+                if (XMLHttpRequest.responseText === "No existing payment methods for user") {
                 
-                // } else {
-                //     this.setState({
-                //         currPayMethods: JSON.parse(XMLHttpRequest.responseText)
-                //     })
-                //     console.log('success', JSON.parse(XMLHttpRequest.responseText));
-                // }
+                } else {
+                    this.setState({
+                        currPayMethods: JSON.parse(XMLHttpRequest.responseText)
+                    })
+                    console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                }
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);

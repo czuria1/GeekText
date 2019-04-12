@@ -46,13 +46,17 @@ export default class LoginSettings extends Component {
             url: 'http://localhost/server.php/post',
             data: 'method=getUserInfo&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
-                this.setState({
-                    userInfo: JSON.parse(XMLHttpRequest.responseText)
-                })
-                console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                if (XMLHttpRequest.responseText === "No such user exists") {
+                    
+                } else {
+                    this.setState({
+                        userInfo: JSON.parse(XMLHttpRequest.responseText)
+                    })
+                    console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                }
             }.bind(this),
             error: function(XMLHttpRequest) {
-                console.log('userInfo: error', XMLHttpRequest);
+                console.log('error', XMLHttpRequest);
             },
             abort: function(XMLHttpRequest) {
                 console.log('abort', XMLHttpRequest);
@@ -91,6 +95,16 @@ export default class LoginSettings extends Component {
         });
     }
 
+    getNoHomeAddress() {
+        return(
+            <h6>No home address set</h6>
+        )
+    }
+
+    changeHomeAddress() {
+        this.props.history.push('/addressSettings');
+    }
+
     render() {
 
         var that = this;
@@ -118,7 +132,7 @@ export default class LoginSettings extends Component {
                         style={{paddingBottom: '2%'}}
                         className="textfield"
                         disabled
-                        value={item.email}
+                        value={item.email !== 'null' ? item.email : undefined}
                         name="email"
                         label="Email"
                         variant="outlined"></TextField>
@@ -126,7 +140,7 @@ export default class LoginSettings extends Component {
                         style={{paddingBottom: '2%'}}
                         className="textfield"
                         nickname
-                        value={item.nickname}
+                        value={item.nickname !== 'null' ? item.nickname : undefined}
                         name="nickname"
                         label="Nickname"
                         variant="outlined"></TextField>
@@ -135,7 +149,6 @@ export default class LoginSettings extends Component {
         });
 
         const address = this.state.homeAddress.map(function(item, index) {
-            if (that.state.homeAddress.length !== 0) {
                 return (
                     <HomeAddressPanel
                         name={item.name}
@@ -148,11 +161,6 @@ export default class LoginSettings extends Component {
                         phone={item.phone}
                         ></HomeAddressPanel>
                 )
-            } else {
-                return (
-                    <h4>Null</h4>
-                )
-            }
         });
 
         return (
@@ -187,11 +195,11 @@ export default class LoginSettings extends Component {
                             <p>Home Address</p>
                             </Grid>
                         <Grid 
-                            item xs={11}
+                            item xs={9}
                             direction="row"
                             justify="center"
                             alignItems="center">
-                                {address}
+                                {this.state.homeAddress.length > 0 ? address : this.getNoHomeAddress()}
                         </Grid>
                         </Grid>
                         <Grid 

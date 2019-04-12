@@ -85,7 +85,6 @@ export default class LoginScreen extends Component {
             data: 'method=loginUser&username=' + `${this.state.username}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
                 if (XMLHttpRequest.responseText === "No such user exists") {
-                    // TODO
                     alert("Username or password is invalid");
                     return;
                 } else {
