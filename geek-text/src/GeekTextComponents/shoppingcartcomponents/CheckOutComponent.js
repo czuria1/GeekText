@@ -33,12 +33,12 @@ class CheckOutComponent extends Component{
                     <Row className="collection-item">
                             <label>
                                 <input type="checkbox" ref="shipping" onChange= {this.handleChecked} />
-                                <span>Expedited shipping(+9.99$)</span>
+                                <span>Expedited shipping($9.99)</span>
                             </label>
                         </Row>
                         <Row>
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
-                            <b>Total: {this.props.total.toFixed(2)} $</b>
+                            <b>Total: ${this.props.total.toFixed(2)}</b>
                             </OverlayTrigger>
                             </Row>
                     </div>

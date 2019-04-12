@@ -14,8 +14,8 @@ export default class ItemDetails extends Component {
                 <br/>
                 <br/>
                 <div>
-                <Card border="primary" style={{ width: '18rem' , backgroundColor: 'whitesmoke'}}>
-                    <Card.Img variant="top" src={`${this.props.bookImage}`} fluid/>
+                <Card border="light" style={{ width: '18rem' , backgroundColor: 'whitesmoke'}}>
+                    <Card.Img variant="top" src={`${this.props.bookImage}`} width="100%" height="250vh" object-fit="cover"/>
                         <Card.Body>
                         <Card.Title>{`${this.props.bookTitle}`}</Card.Title>
                             <Card.Text>

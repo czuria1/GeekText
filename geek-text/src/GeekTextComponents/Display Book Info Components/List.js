@@ -62,7 +62,7 @@ const List = (book) => {
                             <ListItem>Genre: {book.bookInfo.genre}</ListItem>
                             <ListItem>Publisher: {book.bookInfo.publisher}</ListItem>
                             <ListItem>Publish Date: {book.bookInfo.pub_date}</ListItem>
-                            <ListItem>Price: {book.bookInfo.price}</ListItem>
+                            <ListItem>Price: ${book.bookInfo.price}</ListItem>
                             <ListItem><Button variant="outline-dark" onClick={()=>{store.dispatch(addFromListToCart(book))}}>Add Item to Shopping cart</Button></ListItem>
                         </ListExt>
                     </DetailContainer>

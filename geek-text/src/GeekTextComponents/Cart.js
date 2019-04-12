@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom'
 import { removeItem,addQuantity,subtractQuantity} from './shoppingcartcomponents/actions/cartActions'
 import CheckOutComponent from './shoppingcartcomponents/CheckOutComponent'
 import ItemDetails from './shoppingcartcomponents/ItemDetails/ItemDetails'
-import {Button, Collapse, Card, Row, Col, Media, Image } from 'react-bootstrap';
-import image from './Images/shoppingCartIcon.png';
+import {Button, Collapse } from 'react-bootstrap';
 import './ShoppingCartPage.css';
 
 class Cart extends Component{
@@ -17,14 +16,14 @@ class Cart extends Component{
         };
     }
 
-    handleRemove = (id)=>{
-        this.props.removeItem(id);
+    handleRemove = (book)=>{
+        this.props.removeItem(book);
     }
-    handleAddQuantity = (id)=>{
-        this.props.addQuantity(id);
+    handleAddQuantity = (book)=>{
+        this.props.addQuantity(book);
     }
-    handleSubtractQuantity = (id)=>{
-        this.props.subtractQuantity(id);
+    handleSubtractQuantity = (book)=>{
+        this.props.subtractQuantity(book);
     }
     render(){
               
@@ -54,17 +53,9 @@ class Cart extends Component{
        return(
            
             <div className="container">
-            <h1 className="shoppingcarttitle">
-                <Media>
-                    <img
-                        width={75}
-                        height={75}
-                        src={image}
-                    />
-                     <h2>Shopping Cart</h2>
-                </Media></h1>
+            <h1 className="shoppingcarttitle">Shopping Cart</h1>
             <br/>
-            <Button className="item-details-button" variant="outline-primary" onClick={() => this.setState({ open: !this.state.open})}>
+            <Button className="item-details-button" variant="outline-secondary" onClick={() => this.setState({ open: !this.state.open})}>
                 {this.state.open === false ? `See` : `Hide ` } items in cart
                 {this.state.open === false ? `+` : `-` }
                 </Button>
