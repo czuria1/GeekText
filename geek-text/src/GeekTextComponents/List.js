@@ -18,7 +18,7 @@ const List = (book) => {
                         <p>{book.bookInfo.genre}</p>
                         <p>{book.bookInfo.publisher}</p>
                         <p>{book.bookInfo.pub_date}</p>
-                        <p id="shoppingCartLink">Add To Shopping Cart</p>
+                        <Button variant="outline-dark" onClick={()=>{this.handleClick(book.bookInfo.id)}}>Add Item to Shopping cart</Button>
                     </div>
                     <hr id="line"></hr>
                 </div>
@@ -33,5 +33,12 @@ function showModal(book) {
     modalImage.src = book.bookInfo.cover;
     caption.innerHTML = book.bookInfo.title;
 }
+
+const mapDispatchToProps= (dispatch)=>{
+    
+    return{
+        addToCart: (id)=>{dispatch(addToCart(id))}
+    }
+}
  
-export default List;
+export default connect(mapStateToProps,mapDispatchToProps)(List);

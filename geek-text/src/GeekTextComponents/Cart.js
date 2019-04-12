@@ -33,14 +33,14 @@ class Cart extends Component{
                 this.props.items.map(item=>{
                     return(
                        
-                        <li key={item.id}>
-                                    <ItemDetails quantity={item.quantity} author={item.author} bookImage={item.img} bookTitle={item.title} bookPrice={item.price.toFixed(2)} desc={item.desc.substr(0,75) + "..."}/>
+                        <li key={item.bookInfo.id}>
+                                    <ItemDetails quantity={item.bookInfo.quantity} author={item.bookInfo.author} bookImage={item.bookInfo.cover} bookTitle={item.bookInfo.title} bookPrice={item.bookInfo.price} desc={item.bookInfo.description.substr(0,75) + "..."}/>
                                     <div className="item-desc">
                                         <div className="add-remove">
-                                            <Link to="/shoppingCart"><Button variant="outline-secondary" onClick={()=>{this.handleAddQuantity(item.id)}}>Increase qty</Button></Link>
-                                            <Link to="/shoppingCart"><Button  variant="outline-secondary" onClick={()=>{this.handleSubtractQuantity(item.id)}}>Decrease qty</Button></Link>
+                                            <Link to="/shoppingCart"><Button variant="outline-secondary" onClick={()=>{this.handleAddQuantity(item)}}>Increase qty</Button></Link>
+                                            <Link to="/shoppingCart"><Button  variant="outline-secondary" onClick={()=>{this.handleSubtractQuantity(item)}}>Decrease qty</Button></Link>
                                         </div>
-                                        <Button variant="outline-danger" onClick={()=>{this.handleRemove(item.id)}}>Remove from cart</Button>
+                                        <Button variant="outline-danger" onClick={()=>{this.handleRemove(item)}}>Remove from cart</Button>
                                     </div>
                                 </li>
                          
@@ -92,9 +92,9 @@ const mapStateToProps = (state)=>{
 }
 const mapDispatchToProps = (dispatch)=>{
     return{
-        removeItem: (id)=>{dispatch(removeItem(id))},
-        addQuantity: (id)=>{dispatch(addQuantity(id))},
-        subtractQuantity: (id)=>{dispatch(subtractQuantity(id))}
+        removeItem: (book)=>{dispatch(removeItem(book))},
+        addQuantity: (book)=>{dispatch(addQuantity(book))},
+        subtractQuantity: (book)=>{dispatch(subtractQuantity(book))}
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Cart)

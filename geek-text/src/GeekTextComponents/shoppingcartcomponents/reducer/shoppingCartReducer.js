@@ -4,10 +4,10 @@ import Item3 from '../../Images/Image3.jpg'
 import Item4 from '../../Images/Image4.jpg'
 import Item5 from '../../Images/Image5.jpg'
 import Item6 from '../../Images/Image6.jpg'
-import { ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING } from '../actions/action-types/cart-actions';
+import { ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING, ADD_FROM_LIST_TO_CART } from '../actions/action-types/cart-actions';
 
 
-const initState = {
+let initState= {
     items: [
         {id:1,title:'DreamCatcher', author:"Steven King", desc: "Once upon a time, in the haunted city of Derry (site of the classics It and Insomnia), four boys stood together and did a brave thing. Certainly a good thing, perhaps even a great thing. Something that changed them in ways they could never begin to understand.", price:10.00,img:Item1},
         {id:2,title:'The Grapes of Wrath',author:"John Steinbeck", desc: "First published in 1939, SteinbeckÔÇÖs Pulitzer Prize-winning epic of the Great Depression chronicles the Dust Bowl migration of the 1930s and tells the story of one Oklahoma farm family, the JoadsÔÇödriven from their homestead and forced to travel west to the promised land of California. Out of their trials and their repeated collisions against the hard realities of an America divided into Haves and Have-Nots evolves a drama that is intensely human yet majestic in its scale and moral vision, elemental yet plainspoken, tragic but ultimately stirring in its human dignity.", price:8.99,img: Item2},
@@ -21,6 +21,7 @@ const initState = {
 
 }
 
+
 const shoppingCartReducer= (state = initState,action)=>{
    
     //INSIDE HOME COMPONENT
@@ -33,7 +34,7 @@ const shoppingCartReducer= (state = initState,action)=>{
             addedItem.quantity += 1 
              return{
                 ...state,
-                 total: state.total + addedItem.price 
+                 total: state.total + parseFloat(addedItem.price) 
                   }
         }
          else{
@@ -49,12 +50,38 @@ const shoppingCartReducer= (state = initState,action)=>{
             
         }
     }
+
+    if(action.type === ADD_FROM_LIST_TO_CART){
+        let addedItem = action.book;
+        //check if the action id exists in the addedItems
+       let existed_item= state.addedItems.find(item=> addedItem.bookInfo.id === item.bookInfo.id)
+       if(existed_item)
+       {
+          addedItem.bookInfo.quantity += 1 
+           return{
+              ...state,
+               total: state.total + parseFloat(addedItem.bookInfo.price) 
+                }
+      }
+       else{
+          addedItem.bookInfo.quantity = 1;
+          //calculating the total
+          let newTotal = state.total + parseFloat(addedItem.bookInfo.price) 
+          
+          return{
+              ...state,
+              addedItems: [...state.addedItems, addedItem],
+              total : newTotal
+          }
+          
+      }
+  }
     if(action.type === REMOVE_ITEM){
-        let itemToRemove= state.addedItems.find(item=> action.id === item.id)
-        let new_items = state.addedItems.filter(item=> action.id !== item.id)
+        let itemToRemove= action.book;
+        let new_items = state.addedItems.filter(item=> action.book.bookInfo.id !== item.bookInfo.id)
         
         //calculating the total
-        let newTotal = state.total - (itemToRemove.price * itemToRemove.quantity )
+        let newTotal = state.total - (parseFloat(itemToRemove.bookInfo.price) * parseInt(itemToRemove.bookInfo.quantity))
         console.log(itemToRemove)
         return{
             ...state,
@@ -64,20 +91,20 @@ const shoppingCartReducer= (state = initState,action)=>{
     }
     //INSIDE CART COMPONENT
     if(action.type=== ADD_QUANTITY){
-        let addedItem = state.items.find(item=> item.id === action.id)
-          addedItem.quantity += 1 
-          let newTotal = state.total + addedItem.price
+        let addedItem = action.book;
+          addedItem.bookInfo.quantity += 1 
+          let newTotal = state.total + parseFloat(addedItem.bookInfo.price)
           return{
               ...state,
               total: newTotal
           }
     }
     if(action.type=== SUB_QUANTITY){  
-        let addedItem = state.items.find(item=> item.id === action.id) 
+        let addedItem = action.book;
         //if the qt == 0 then it should be removed
-        if(addedItem.quantity === 1){
-            let new_items = state.addedItems.filter(item=>item.id !== action.id)
-            let newTotal = state.total - addedItem.price
+        if(addedItem.bookInfo.quantity === 1){
+            let new_items = state.addedItems.filter(item=>item.bookInfo.id !== action.book.bookInfo.id)
+            let newTotal = state.total - parseFloat(addedItem.bookInfo.price);
             return{
                 ...state,
                 addedItems: new_items,
@@ -85,8 +112,8 @@ const shoppingCartReducer= (state = initState,action)=>{
             }
         }
         else {
-            addedItem.quantity -= 1
-            let newTotal = state.total - addedItem.price
+            addedItem.bookInfo.quantity -= 1
+            let newTotal = state.total - parseFloat(addedItem.bookInfo.price)
             return{
                 ...state,
                 total: newTotal
@@ -111,5 +138,4 @@ const shoppingCartReducer= (state = initState,action)=>{
 
     return state
 }
-
 export default shoppingCartReducer

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {Button, Row, Col, Tooltip, OverlayTrigger} from "react-bootstrap"
+import {Button, Row, Tooltip, OverlayTrigger} from "react-bootstrap"
 
 
 class CheckOutComponent extends Component{

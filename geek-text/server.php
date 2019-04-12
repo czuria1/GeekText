@@ -66,7 +66,7 @@ return $result;
 		}
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID, books.PRICE, books.QUANTITY
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
@@ -112,7 +112,9 @@ return $result;
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
 					"isbn" => $row["ISBN"],
-					"id" => $row["ID"]
+					"id" => $row["ID"],
+					"price" => $row["PRICE"],
+					"quantity" => $row["QUANTITY"]
 				);
 
 				array_push($json, $bus);
