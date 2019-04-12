@@ -22,7 +22,7 @@ class AuthorPage extends Component {
     getAllBooksFromAuthor() {
         //Used to connect to the server
         ajaxme.post({
-            url: 'http://localhost:82/server.php/post',
+            url: 'http://localhost/server.php/post',
             data: 'method=getAllBooksFromAuthor&searchParam=' + `${this.props.match.params.author}`,
             success: function (XMLHttpRequest) {
                 this.setState({
