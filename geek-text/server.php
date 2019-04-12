@@ -517,6 +517,63 @@
 		$conn->close();
 	}
 
+	function getHomeAddress() {
+        global $conn;
+        global $myObj;
+        
+		$currentUserId = urldecode($_POST['currentUserId']);
+		$addressId = urldecode($_POST['address_id']);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId', @HOME_ADDRESS = '$addressId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+        
+        $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
+                FROM ADDRESS
+				WHERE ADDRESS.user_id = @CURRENT_USER AND ADDRESS.address_id = @HOME_ADDRESS";
+
+		$result = $conn->query($sql);
+
+        
+        if ($result->num_rows > 0)
+        {
+            $json = array();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $bus = array(
+                             "name" => $row["name"],
+                             "address" => $row["address"],
+							 "address_2" => $row["address_2"],
+							 "city" => $row["city"],
+							 "state" => $row["state"],
+							 "zip_code" => $row["zip_code"],
+							 "country" => $row["country"],
+							 "phone" => $row["phone"],
+                             );
+                
+                array_push($json, $bus);
+                
+            }
+            
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
+        }
+        else
+        {
+            echo "No existing addresses for user";
+        }
+        
+        $conn->close();
+	}
+
 	function setHomeAddress() {
 		global $conn;
         global $myObj;
@@ -743,6 +800,10 @@
 	else if ($method == 'setHomeAddress') 
 	{
 		setHomeAddress();
+	}
+	else if ($method == 'getHomeAddress') 
+	{
+		getHomeAddress();
 	}
 	else if ($method == 'updateAddress') 
 	{
