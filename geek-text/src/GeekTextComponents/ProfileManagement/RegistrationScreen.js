@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import { Route, HashRouter } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
+import Validator from 'validator';
 
 export default class RegistrationScreen extends Component {
 
@@ -33,6 +34,10 @@ export default class RegistrationScreen extends Component {
     handleInput = (e) => {
         const fieldName = e.target.name;
         const fieldValue = e.target.value;
+
+        if (fieldName === "email") {
+            console.log(Validator.isEmail(this.state.email));
+        }
 
         // this.setState({[fieldName] : fieldValue}, () => {this.validateField(fieldName, fieldValue)});
         this.setState({ [fieldName]: fieldValue });
@@ -171,7 +176,7 @@ export default class RegistrationScreen extends Component {
                                 variant="outlined"
                                 onChange={this.handleInput}
                                 onClick={this.state.email === "" ? event => this.setState({ email: "" }) : event => this.setState({ email: event.target.value })}
-                                error={this.state.email === ""}></TextField>
+                                error={Validator.isEmail(this.state.email) !== true}></TextField>
                             <br></br>
                             <br></br>
                             <TextField
