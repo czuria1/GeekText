@@ -72,6 +72,7 @@ export default class PaymentSettings extends Component {
 
         this.addPayment = this.addPayment.bind(this);
         this.getUserPaymentMethods = this.getUserPaymentMethods.bind(this);
+        this.updateEditedPayment = this.updateEditedPayment.bind(this);
         // this.removePayment = this.removePayment.bind(this);
     }
 
