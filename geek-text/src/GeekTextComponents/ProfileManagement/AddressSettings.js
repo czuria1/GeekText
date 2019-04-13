@@ -220,9 +220,8 @@ export default class AddressSettings extends Component {
                                                     + '&state=' + `${this.state.editState}` + '&zip_code=' + `${this.state.editZip_code}` + '&country=' + `${this.state.editCountry}` 
                                                     + '&phone=' + `${this.state.editPhoneNum}`,
             success: function (XMLHttpRequest) {
-                this.setState({
-                    addresses: JSON.parse(XMLHttpRequest.responseText)
-                });
+                alert("Your changes have been saved!");
+                this.handleEditClose();
                 console.log('success', XMLHttpRequest.responseText);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -305,7 +304,7 @@ export default class AddressSettings extends Component {
 
             <Dialog
                 open={this.state.editDialogOpen}
-                onClose={this.handleClose}
+                onClose={this.handleEditClose}
                 aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Update Address</DialogTitle>
                 <DialogContent>
