@@ -16,7 +16,9 @@ import {
     formatExpirationDate,
     formatFormData,
   } from './utils';
-  import ajaxme from "ajaxme";
+import ajaxme from "ajaxme";
+import InputMask from 'react-input-mask';
+import Validator from 'validator';
 
 function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, country, phoneNum) {
     this.cardType = cardType;
@@ -37,12 +39,19 @@ export default class PaymentSettings extends Component {
             currentUserId: props.currentUserId,
             dialogOpen: false, 
             currPayMethods: [], 
+            formErrors: {number: '', name: '', expiry: '', cvc: ''},
             number: '',
             name: '',
             expiry: '',
             cvc: '',
             issuer: '',
-            focused: ''
+            focused: '', 
+            address: '', 
+            state: '',
+            city: '',
+            zip_code: '',
+            country: '',
+            phoneNum: ''
         }
 
         this.addPayment = this.addPayment.bind(this);
@@ -193,10 +202,12 @@ export default class PaymentSettings extends Component {
                             name="number"
                             label="Card Number"
                             fullWidth
+                            error={this.state.number < 16}
                             inputProps={{minLength: 16, maxLength: 22}}
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
+                            required
                             margin="dense"
                             name="name"
                             label="Name"
@@ -204,18 +215,70 @@ export default class PaymentSettings extends Component {
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
+                            required
                             margin="dense"
                             name="expiry"
                             label="Valid Thru"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
+                            required
+                            style={{marginLeft: '5%'}}
                             margin="dense"
                             name="cvc"
                             label="CVC"
                             inputProps={{minLength: 3, maxLength: 4}}
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="billingAddress"
+                            label="Billing Address"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            margin="dense"
+                            name="billState"
+                            label="Billing State"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            style={{marginLeft: '3%'}}
+                            margin="dense"
+                            name="billCity"
+                            label="Billing City"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            style={{marginLeft: '3%'}}
+                            margin="dense"
+                            name="zip_code"
+                            label="Billing Zip Code"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="billCountry"
+                            label="Billing Country"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="billPhone"
+                            label="Billing Phone Number"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}>
+                            <InputMask mask="(999) 999-9999" maskChar=" " />
+                            </TextField>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
