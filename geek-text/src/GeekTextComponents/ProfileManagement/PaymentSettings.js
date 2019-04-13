@@ -18,15 +18,16 @@ import {
   } from './utils';
 import ajaxme from "ajaxme";
 import InputMask from 'react-input-mask';
-import Validator from 'validator';
 
-function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, country, phoneNum) {
+function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, state, zip_code, country, phoneNum) {
     this.cardType = cardType;
     this.endingNum = endingNum;
-    this.expDate = expDate;
-    this.nameOnCard = nameOnCard;
+    this.expiry = expDate;
+    this.name = nameOnCard;
     this.address = address;
     this.city = city;
+    this.state = state;
+    this.zip_code = zip_code;
     this.country = country;
     this.phoneNum = phoneNum;
 }
@@ -42,6 +43,7 @@ export default class PaymentSettings extends Component {
             formErrors: {number: '', name: '', expiry: '', cvc: ''},
             number: '',
             name: '',
+            cardType: '',
             expiry: '',
             cvc: '',
             issuer: '',
@@ -55,6 +57,7 @@ export default class PaymentSettings extends Component {
         }
 
         this.addPayment = this.addPayment.bind(this);
+        this.getUserPaymentMethods = this.getUserPaymentMethods.bind(this);
         // this.removePayment = this.removePayment.bind(this);
     }
 
@@ -98,17 +101,48 @@ export default class PaymentSettings extends Component {
         });
     }
 
+    addPaymentButtonClicked() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=addPaymentMethods&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.cardType}` + '&card_num=' + `${this.state.number}`
+                            + '&card_name=' + `${this.state.name}` + '&security_code=' + `${this.state.cvc}` + '&exp_date=' + `${this.state.expiry}`
+                            + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
+                            + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
+            success: function (XMLHttpRequest) {
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+
+    }
+
     addPayment() {
-        // this.state.currPayMethods.push({cardType: 'Visa', endingNum: '1234', expDate: '06/2303', nameOnCard: 'Maxwell Doe', 
-        // address: '34242jh', city: 'Miami, FL', country: 'United States', phoneNum: '342-432-4324'});
-        this.state.currPayMethods.push(new PaymentMethod(this.state.issuer, this.state.number, this.state.expiry, this.state.name, 'test', 'test', 'test', 'test'));
+        this.state.currPayMethods.push(new PaymentMethod(this.state.issuer, this.state.number, this.state.expiry, this.state.name, this.state.address, 
+            this.state.city, this.state.state, this.state.zip_code, this.state.country, this.state.phoneNum));
         this.setState({payments: this.state.currPayMethods, dialogOpen: false});
-        this.setState({number: '',
-                        name: '',
-                        expiry: '',
-                        cvc: '',
-                        issuer: '',
-                        focused: ''});
+        this.addPaymentButtonClicked();
+        this.setState({
+            number: '',
+            name: '',
+            expiry: '',
+            cvc: '',
+            issuer: '',
+            focused: '', 
+            address: '', 
+            state: '',
+            city: '',
+            zip_code: '',
+            country: '',
+            phoneNum: ''});
     }
 
     handleCallback = ({ issuer }, isValid) => {
@@ -234,14 +268,14 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="billingAddress"
+                            name="address"
                             label="Billing Address"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
                             required
                             margin="dense"
-                            name="billState"
+                            name="state"
                             label="Billing State"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -249,7 +283,7 @@ export default class PaymentSettings extends Component {
                             required
                             style={{marginLeft: '3%'}}
                             margin="dense"
-                            name="billCity"
+                            name="city"
                             label="Billing City"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -265,7 +299,7 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="billCountry"
+                            name="country"
                             label="Billing Country"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -273,7 +307,7 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="billPhone"
+                            name="phoneNum"
                             label="Billing Phone Number"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}>

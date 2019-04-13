@@ -781,8 +781,8 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_month, PAYMENT.exp_year, 
-				PAYMENT.address, PAYMENT.city, PAYMENT.state, PAYMENT.country, PAYMENT.zip_code, PAYMENT.phone_num
+        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_date, 
+				PAYMENT.address, PAYMENT.city, PAYMENT.state, PAYMENT.country, PAYMENT.zip_code, PAYMENT.phone
                 FROM USERS, PAYMENT
 				WHERE USERS.id = @CURRENT_USER AND USERS.id = PAYMENT.user_id";
         
@@ -804,7 +804,7 @@
 							 "city" => $row["city"],
 							 "state" => $row["state"],
 							 "country" => $row["country"],
-							 "phone_num" => $row["phone_num"],
+							 "phone" => $row["phone"],
                              );
                 
                 array_push($json, $bus);
@@ -830,9 +830,9 @@
 
 		$card_type = urldecode($_POST['card_type']);
 		$card_name = urldecode($_POST['card_name']);
+		$card_num = urldecode($_POST['card_num']);
 		$security_code = urldecode($_POST['security_code']);
-		$exp_month = urldecode($_POST['exp_month']);
-		$exp_year = urldecode($_POST['exp_year']);
+		$exp_date = urldecode($_POST['exp_date']);
 		$zip_code = urldecode($_POST['zip_code']);
 		$address = urldecode($_POST['address']);
 		$city = urldecode($_POST['city']);
@@ -840,8 +840,8 @@
 		$country = urldecode($_POST['country']);
 		$phoneNumber = urldecode($_POST['phone_num']);
 
-		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, SECURITY_CODE, EXP_MONTH, EXP_YEAR, ZIP_CODE) 
-				VALUES($currentUserId, '$card_type', '$card_name', '$security_code', '$exp_month', '$exp_year', '$zip_code')";
+		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, CARD_NUM, SECURITY_CODE, EXP_DATE, ZIP_CODE, ADDRESS, CITY, STATE, COUNTRY, PHONE) 
+				VALUES('$currentUserId', '$card_type', '$card_name', '$card_num', '$security_code', '$exp_date', '$zip_code', '$address', '$city', '$state', '$country', '$phoneNumber')";
 		
 		$result = $conn->query($sql);
 
@@ -916,15 +916,11 @@
 	}
 	else if ($method == 'getPaymentMethods') 
 	{
-		getAddresses();
+		getPaymentMethods();
 	}
 	else if ($method == 'addPaymentMethods') 
 	{
-		addAddress();
-	}
-	else if ($method == 'addPaymentMethods') 
-	{
-		addAddress();
+		addPaymentMethods();
 	}
 	else if ($method == 'deletePaymentMethod') 
 	{
