@@ -266,8 +266,34 @@ export default class PaymentSettings extends Component {
         this.handleEditClickOpen();
     }
 
-    handleEditClickOpen = () => {
-        this.setState({ editDialogOpen: true });
+    handleEditClickOpen = (index) => {
+        var number = this.state.currPayMethods[index].number;
+        var name = this.state.currPayMethods[index].card_name;
+        var card_type = this.state.currPayMethods[index].card_type;
+        var exp_date = this.state.currPayMethods[index].exp_date;
+        var security_code = this.state.currPayMethods[index].security_code;
+        var address = this.state.currPayMethods[index].address;
+        var city = this.state.currPayMethods[index].city;
+        var state = this.state.currPayMethods[index].state;
+        var zip_code = this.state.currPayMethods[index].zip_code;
+        var country = this.state.currPayMethods[index].country;
+        var phone = this.state.currPayMethods[index].phone;
+        var id = this.state.currPayMethods[index].payment_id;
+        this.setState({ 
+            editDialogOpen: true,
+            editNumber: number,
+            editName: name,
+            editCardType: card_type,
+            editExpiry: exp_date,
+            editCvc: security_code, 
+            editAddress: address, 
+            editState: state, 
+            editCity: city,
+            editZip_code: zip_code,
+            editCountry: country,
+            editPhoneNum: phone,
+            currentEditPaymentMethod: id
+        });
     }
     
     handleEditClose = () => {
