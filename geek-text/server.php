@@ -1022,6 +1022,10 @@ return $result;
 	{
 		addPaymentMethods();
 	}
+	else if ($method == 'updatePaymentMethod') 
+	{
+		updatePaymentMethod();
+	}
 	else if ($method == 'deletePaymentMethod') 
 	{
 		deletePaymentMethod();
