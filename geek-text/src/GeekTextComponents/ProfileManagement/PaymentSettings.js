@@ -145,6 +145,28 @@ export default class PaymentSettings extends Component {
             phoneNum: ''});
     }
 
+    removePayment(index) {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=deletePaymentMethod&paymentId=' + `${this.state.currPayMethods[index].payment_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                delete this.state.currPayMethods[index];
+                this.setState({payments: this.state.currPayMethods});
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+    }
+
     handleCallback = ({ issuer }, isValid) => {
         if (isValid) {
           this.setState({ issuer });
@@ -176,11 +198,6 @@ export default class PaymentSettings extends Component {
           focused: target.name,
         });
       };
-
-    removePayment(index) {
-        delete this.state.currPayMethods[index];
-        this.setState({payments: this.state.currPayMethods});
-    }
 
     getEndingCardNum(item) {
         var endingNum = "" + item;

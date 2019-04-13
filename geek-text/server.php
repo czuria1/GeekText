@@ -781,7 +781,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.card_num, PAYMENT.exp_date, 
+        $sql = "SELECT PAYMENT.payment_id, PAYMENT.card_type, PAYMENT.card_name, PAYMENT.card_num, PAYMENT.exp_date, 
 				PAYMENT.address, PAYMENT.city, PAYMENT.state, PAYMENT.country, PAYMENT.zip_code, PAYMENT.phone
                 FROM USERS, PAYMENT
 				WHERE USERS.id = @CURRENT_USER AND USERS.id = PAYMENT.user_id";
@@ -795,6 +795,7 @@
             while($row = $result->fetch_assoc())
             {
                 $bus = array(
+                             "payment_id" => $row["payment_id"],
                              "card_type" => $row["card_type"],
                              "card_name" => $row["card_name"],
                              "card_num" => $row["card_num"],
