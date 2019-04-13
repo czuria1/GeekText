@@ -194,9 +194,10 @@ total = {this.state.books.length}
 
             <input onFocus={this.setTextBoxListner} 
                     id="searchText"  
+                    placeholder="Author, Genre, Title "
                     onChange={this.handleSearch}/>
-
-                <button id="topSearch" onClick = {() => this.topResults(this.props.match.params.term)}>Top Sellers</button>
+                
+                <button id="topSearch"  onClick = {() => this.topResults(this.props.match.params.term)}>Top Sellers</button>
            
             </div>
         
