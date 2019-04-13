@@ -57,6 +57,7 @@ export default class AddressSettings extends Component {
         }
 
         this.addAddress = this.addAddress.bind(this);
+        this.updateEditedAddress = this.updateEditedAddress.bind(this);
         this.setHomeAddressInApp = this.setHomeAddressInApp.bind(this);
     }
 
@@ -214,7 +215,7 @@ export default class AddressSettings extends Component {
     updateEditedAddress() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=updateAddress&address_id=' + `${this.state.addresses.address_id}` + '&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.editName}`
+            data: 'method=updateAddress&address_id=' + `${this.state.currentEditAddress}` + '&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.editName}`
                                                     + '&address=' + `${this.state.editAddress}` + '&address_2=' + `${this.state.editAddress_2}` + '&city=' + `${this.state.editCity}` 
                                                     + '&state=' + `${this.state.editState}` + '&zip_code=' + `${this.state.editZip_code}` + '&country=' + `${this.state.editCountry}` 
                                                     + '&phone=' + `${this.state.editPhoneNum}`,
@@ -222,7 +223,7 @@ export default class AddressSettings extends Component {
                 this.setState({
                     addresses: JSON.parse(XMLHttpRequest.responseText)
                 });
-                console.log('success', XMLHttpRequest);
+                console.log('success', XMLHttpRequest.responseText);
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -245,8 +246,28 @@ export default class AddressSettings extends Component {
         this.setState({ dialogOpen: false });
     }
 
-    handleEditClickOpen = () => {
-        this.setState({ editDialogOpen: true });
+    handleEditClickOpen = (index) => {
+        var name = this.state.addresses[index].name;
+        var address = this.state.addresses[index].address;
+        var address_2 = this.state.addresses[index].address_2;
+        var city = this.state.addresses[index].city;
+        var state = this.state.addresses[index].state;
+        var zip_code = this.state.addresses[index].zip_code;
+        var country = this.state.addresses[index].country;
+        var phone = this.state.addresses[index].phone;
+        var id = this.state.addresses[index].address_id;
+        this.setState({ 
+            editDialogOpen: true,
+            editName: name,
+            editAddress: address,
+            editAddress_2: address_2, 
+            editCity: city, 
+            editState: state, 
+            editZip_code: zip_code, 
+            editCountry: country, 
+            editPhoneNum: phone, 
+            currentEditAddress: id
+        });
     }
     
     handleEditClose = () => {
@@ -272,7 +293,7 @@ export default class AddressSettings extends Component {
                         country={item.country}
                         phoneNum={item.phone}
                         isHomeAddress={!!+item.is_home_address}
-                        editAddress={that.handleEditClickOpen}
+                        editAddress={event => that.handleEditClickOpen(index)}
                         removeAddress={event => that.removeAddress(index)}
                         setHomeAddress={event => that.setHomeAddress(index)}
                         ></Card>
@@ -294,7 +315,7 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.state.name}
+                        value={this.state.editName}
                         name="editName"
                         id="name"
                         label="Full Name"
@@ -305,18 +326,17 @@ export default class AddressSettings extends Component {
                         required
                         margin="dense"
                         id="address"
-                        value={this.address}
+                        value={this.state.editAddress}
                         name="editAddress"
                         label="Address"
                         fullWidth
                         onChange={this.handleInput}
                         onFocus={this.handleInput}/>
                     <TextField
-                        required
                         margin="dense"
                         id="address"
                         label="Address 2"
-                        value={this.address_2}
+                        value={this.state.editAddress_2}
                         name="editAddress_2"
                         fullWidth
                         onChange={this.handleInput}
@@ -325,7 +345,7 @@ export default class AddressSettings extends Component {
                         required
                         margin="dense"
                         id="city"
-                        value={this.city}
+                        value={this.state.editCity}
                         name="editCity"
                         label="City"
                         fullWidth
@@ -335,7 +355,7 @@ export default class AddressSettings extends Component {
                         required
                         margin="dense"
                         id="state"
-                        value={this.state}
+                        value={this.state.editState}
                         name="editState"
                         label="State"
                         fullWidth
@@ -345,7 +365,7 @@ export default class AddressSettings extends Component {
                         required
                         margin="dense"
                         id="zip_code"
-                        value={this.zip_code}
+                        value={this.state.editZip_code}
                         name="editZip_code"
                         label="Zip Code"
                         fullWidth
@@ -354,7 +374,7 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.country}
+                        value={this.state.editCountry}
                         name="editCountry"
                         id="country"
                         label="Country"
@@ -364,7 +384,7 @@ export default class AddressSettings extends Component {
                     <TextField
                         required
                         margin="dense"
-                        value={this.phoneNum}
+                        value={this.state.editPhoneNum}
                         name="editPhoneNum"
                         id="phoneNum"
                         label="Phone Number"
