@@ -15,6 +15,7 @@
     "react-credit-cards": "^0.7.0",
     "react-dom": "^16.7.0",
     "react-icons": "^2.2.7",
+    "react-input-mask": "^2.0.4",
     "react-js-pagination": "^3.0.2",
     "react-masked-text": "^0.4.1",
     "react-native-masked-text": "^1.11.1",

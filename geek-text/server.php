@@ -34,7 +34,7 @@
 
 	/////////////////////////////////////////////////////////////////////////////
 function index(){
-	$result = $conn->paginate(10);
+	$result = BookList::paginate(10);
 return $result;
 }
 
@@ -66,22 +66,22 @@ return $result;
 		}
 
 		//Paginate
-		$limit = 33;
-		$sql = "SELECT count(books.TITLE) FROM books";
+		// $limit = 10;
+		// $sql = "SELECT count(books.TITLE) FROM books";
 
-		if(isset($_GET{'page'})){
-			$page = $_GET{'page'} + 1;
-			$offset = $limit * $page;
-		}else{
-			$page = 0;
-			$offset = 0;
-		}
-		$count = $row[0];
-		$lefts = $count - ($page * $limit);
+		// if(isset($_GET{'page'})){
+		// 	$page = $_GET{'page'} + 1;
+		// 	$offset = $limit * $page;
+		// }else{
+		// 	$page = 0;
+		// 	$offset = 0;
+		// }
+		// $count = $row[0];
+		// $lefts = $count - ($page * $limit);
 
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID, books.PRICE, books.QUANTITY
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
@@ -89,22 +89,22 @@ return $result;
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM";
 		
-		/*
-		//This is for posting in ASC order and then having the function to DESC
-		$queryorder = array('ASC', 'DESC');
-		if(!in_array($_POST['queryorder'], $queryorder)){
+
+					//This is for posting in ASC order and then having the function to DESC
+		//$queryorder = array('ASC', 'DESC');
+		if($params_arr[1] == "ASC"){
 			
-		$_POST['queryorder'] = 'ASC';
-		$sql . "ORDER BY books	DESC";
+//$_POST['queryorder'] = 'ASC';
+		$sql . "ORDER BY books.TITLE ASC";
 		
 		}
 		else{
 			
-			$_POST['queryorder'] = 'DESC';
-		$sql += "ORDER BY books ASC";
+			//$_POST['queryorder'] = 'DESC';
+		$sql . "ORDER BY books.TITLE DESC";
 		
 		}		
-		*/
+
 		
 		
 
@@ -127,9 +127,7 @@ return $result;
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
 					"isbn" => $row["ISBN"],
-					"id" => $row["ID"],
-					"price" => $row["PRICE"],
-					"quantity" => $row["QUANTITY"]
+					"id" => $row["ID"]
 				);
 
 				array_push($json, $bus);
@@ -145,16 +143,16 @@ return $result;
 		}
 
 		///PAGINATION previous
-		if( $page > 0 ) {
-            $last = $page - 2;
-            echo "<a href = \"$_PHP_SELF?page = $last\">Last1</a> |";
-            echo "<a href = \"$_PHP_SELF?page = $page\">Next2</a>";
-         }else if( $page == 0 ) {
-            echo "<a href = \"$_PHP_SELF?page = $page\">Next3</a>";
-         }else if( $lefts < $limit ) {
-            $last = $page - 2;
-            echo "<a href = \"$_PHP_SELF?page = $last\">Last4</a>";
-         }
+		// if( $page > 0 ) {
+        //     $last = $page - 2;
+        //     echo "<a href = \"$_PHP_SELF?page = $last\">Last1</a> |";
+        //     echo "<a href = \"$_PHP_SELF?page = $page\">Next2</a>";
+        //  }else if( $page == 0 ) {
+        //     echo "<a href = \"$_PHP_SELF?page = $page\">Next3</a>";
+        //  }else if( $lefts < $limit ) {
+        //     $last = $page - 2;
+        //     echo "<a href = \"$_PHP_SELF?page = $last\">Last4</a>";
+        //  }
 
 
 
@@ -353,6 +351,80 @@ return $result;
 		$conn->close();
 	}
 
+	//Gets and returns the book info the user searched for
+	function topSearchInfo()
+	{
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+		global $params_arr;
+		
+		
+		$keyword = $params_arr[0];
+		
+		$sql = "SET @SEARCH_TERM = '%$top%';";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+			//echo "New record created successfully";
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+			
+		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
+				 FROM   books 
+				 JOIN   authors ON books.AUTHOR = authors.ID
+				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
+			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
+						books.TITLE LIKE @SEARCH_TERM OR
+						books.GENRE LIKE @SEARCH_TERM
+				ORDER BY books.TITLE LIMIT 3";
+		
+
+		//Executes query string
+		$result = $conn->query($sql);
+		//Im making the page number between 10 and 20
+		if ($result->num_rows > 0) 
+		{
+			$json = array();
+	    	// convert the data into json object
+	    	while($row = $result->fetch_assoc()) 
+	    	{
+				$bus = array(
+					"cover" => $row["COVER"],
+					"title" => $row["TITLE"],
+					"author" => $row["FIRST_NAME"]. " " .$row["LAST_NAME"],
+					"genre" => $row["GENRE"],
+					"publisher" => $row["PUBLISHER"],
+					"pub_date" => $row["PUB_DATE"],
+					"description" => $row["DESCRIPTION"],
+					"bio" => $row["BIO"],
+					"isbn" => $row["ISBN"],
+					"id" => $row["ID"]
+				);
+
+				array_push($json, $bus);
+				
+			}
+
+			$jsonstring = json_encode($json);
+			echo $jsonstring;
+		}
+		else
+		{
+		    echo "0 results";
+		}
+
+
+		$conn->close();
+	}
+
+
+
 	function submitReview()
 	{
 		
@@ -483,58 +555,6 @@ return $result;
 
 		$conn->close();
 	}
-
-	function getUserInfo() {
-        global $conn;
-        global $myObj;
-        
-        $currentUserId = urldecode($_POST['currentUserId']);
-
-		$sql = "SET @CURRENT_USER = '$currentUserId'";
-		
-		if ($conn->query($sql) === TRUE) 
-		{
-
-		} 
-		else 
-		{
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
-        
-        $sql = "SELECT USERS.username, USERS.fname, USERS.lname, USERS.nickname, USERS.email, USERS.password
-                FROM USERS
-				WHERE USERS.id = @CURRENT_USER";
-
-		$result = $conn->query($sql);
-        
-        if ($result->num_rows > 0)
-        {
-            $json = array();
-            
-            while($row = $result->fetch_assoc())
-            {
-                $bus = array(
-                             "username" => $row["username"],
-                             "fname" => $row["fname"],
-                             "lname" => $row["lname"],
-                             "nickname" => $row["nickname"],
-                             "email" => $row["email"],
-                             );
-                
-                array_push($json, $bus);
-                
-            }
-            
-            $jsonstring = json_encode($json);
-            echo $jsonstring;
-        }
-        else
-        {
-            echo "No such user exists";
-        }
-        
-        $conn->close();
-    }
     
     function getAddresses() {
         global $conn;
@@ -644,63 +664,6 @@ return $result;
 		echo $result;
 
 		$conn->close();
-	}
-
-	function getHomeAddress() {
-        global $conn;
-        global $myObj;
-        
-		$currentUserId = urldecode($_POST['currentUserId']);
-		$addressId = urldecode($_POST['address_id']);
-
-		$sql = "SET @CURRENT_USER = '$currentUserId', @HOME_ADDRESS = '$addressId'";
-		
-		if ($conn->query($sql) === TRUE) 
-		{
-
-		} 
-		else 
-		{
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
-        
-        $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
-                FROM ADDRESS
-				WHERE ADDRESS.user_id = @CURRENT_USER AND ADDRESS.address_id = @HOME_ADDRESS";
-
-		$result = $conn->query($sql);
-
-        
-        if ($result->num_rows > 0)
-        {
-            $json = array();
-            
-            while($row = $result->fetch_assoc())
-            {
-                $bus = array(
-                             "name" => $row["name"],
-                             "address" => $row["address"],
-							 "address_2" => $row["address_2"],
-							 "city" => $row["city"],
-							 "state" => $row["state"],
-							 "zip_code" => $row["zip_code"],
-							 "country" => $row["country"],
-							 "phone" => $row["phone"],
-                             );
-                
-                array_push($json, $bus);
-                
-            }
-            
-            $jsonstring = json_encode($json);
-            echo $jsonstring;
-        }
-        else
-        {
-            echo "No existing addresses for user";
-        }
-        
-        $conn->close();
 	}
 
 	function setHomeAddress() {
@@ -882,6 +845,10 @@ return $result;
 	{
 		getSearchInfo();
 	}
+	else if ($method == 'topSearchInfo')
+	{
+		topSearchInfo();
+	}
 	else if ($method == 'registerUser') 
 	{
 		registerUser();
@@ -930,17 +897,9 @@ return $result;
 	{
 		setHomeAddress();
 	}
-	else if ($method == 'getHomeAddress') 
-	{
-		getHomeAddress();
-	}
 	else if ($method == 'updateAddress') 
 	{
 		updateAddress();
-	}
-	else if ($method == 'getUserInfo') 
-	{
-		getUserInfo();
 	}
 	
 
