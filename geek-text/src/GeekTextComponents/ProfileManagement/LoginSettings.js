@@ -83,6 +83,7 @@ export default class LoginSettings extends Component {
                 + '&lastname=' + `${this.state.lname}` + '&nickname=' + `${this.state.nickname}`
                 + '&email=' + `${this.state.email}` + '&password=' + `${this.state.password}`,
             success: function (XMLHttpRequest) {
+                alert("Your changes have been saved!");
                 console.log('success', XMLHttpRequest.responseText);
             }.bind(this),
             error: function(XMLHttpRequest) {

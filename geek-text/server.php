@@ -781,7 +781,8 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_month, PAYMENT.exp_year, PAYMENT.zip_code
+        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_month, PAYMENT.exp_year, 
+				PAYMENT.address, PAYMENT.city, PAYMENT.state, PAYMENT.country, PAYMENT.zip_code, PAYMENT.phone_num
                 FROM USERS, PAYMENT
 				WHERE USERS.id = @CURRENT_USER AND USERS.id = PAYMENT.user_id";
         
@@ -798,7 +799,12 @@
                              "card_name" => $row["card_name"],
 							 "exp_month" => $row["exp_month"],
 							 "exp_year" => $row["exp_year"],
-							 "zip_code" => $row["zip_code"]
+							 "zip_code" => $row["zip_code"],
+							 "address" => $row["address"],
+							 "city" => $row["city"],
+							 "state" => $row["state"],
+							 "country" => $row["country"],
+							 "phone_num" => $row["phone_num"],
                              );
                 
                 array_push($json, $bus);
@@ -828,7 +834,11 @@
 		$exp_month = urldecode($_POST['exp_month']);
 		$exp_year = urldecode($_POST['exp_year']);
 		$zip_code = urldecode($_POST['zip_code']);
-		$zip_code = urldecode($_POST['zip_code']);
+		$address = urldecode($_POST['address']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$country = urldecode($_POST['country']);
+		$phoneNumber = urldecode($_POST['phone_num']);
 
 		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, SECURITY_CODE, EXP_MONTH, EXP_YEAR, ZIP_CODE) 
 				VALUES($currentUserId, '$card_type', '$card_name', '$security_code', '$exp_month', '$exp_year', '$zip_code')";
@@ -838,7 +848,35 @@
 		echo $result;
 
 		$conn->close();
-    }
+	}
+	
+	function deletePaymentMethod() {
+		global $conn;
+        global $myObj;
+        
+		$paymentId = urldecode($_POST['paymentId']);
+		$currentUserId = urldecode($_POST['currentUserId']);
+
+		$sql = "SET @CURRENT_PAYMENT = '$paymentId', @CURRENT_USER = '$currentUserId'";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+		
+		$sql = "DELETE FROM PAYMENT
+				WHERE PAYMENT.payment_id = @CURRENT_PAYMENT AND PAYMENT.user_id = @CURRENT_USER";
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
 
 	if ($method == 'getSearchInfo')
 	{
@@ -884,9 +922,13 @@
 	{
 		addAddress();
 	}
-	else if ($method == 'deleteAddress') 
+	else if ($method == 'addPaymentMethods') 
 	{
-		deleteAddress();
+		addAddress();
+	}
+	else if ($method == 'deletePaymentMethod') 
+	{
+		deletePaymentMethod();
 	}
 	else if ($method == 'setHomeAddress') 
 	{
