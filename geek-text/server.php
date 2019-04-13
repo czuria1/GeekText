@@ -784,7 +784,7 @@ return $result;
 		
 		if ($conn->query($sql) === TRUE) 
 		{
-
+			echo $sql;
 		} 
 		else 
 		{
@@ -848,21 +848,16 @@ return $result;
 		
 		if ($conn->query($sql) === TRUE) 
 		{
-
 		} 
 		else 
 		{
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "INSERT INTO address (USER_ID, NAME, ADDRESS, ADDRESS_2, CITY, STATE, ZIP_CODE, COUNTRY, PHONE, IS_HOME_ADDRESS) 
-				VALUES($currentUserId, '$name', '$address', '$address_2', '$city', '$state', '$zip_code', '$country', '$phone', 'false')";
-
 		$sql = "UPDATE ADDRESS
-				SET ADDRESS.name = '$name' AND ADDRESS.address ='$address' AND ADDRESS.address_2 = '$address_2' AND ADDRESS.city = '$city' AND ADDRESS.state = '$state'
-				ADDRESS.zip_code = '$zip_code' AND ADDRESS.country = '$country' AND ADDRESS.phone '$phone'
+				SET ADDRESS.name = '$name' , ADDRESS.address ='$address' , ADDRESS.address_2 = '$address_2' , ADDRESS.city = '$city' , ADDRESS.state = '$state',
+				ADDRESS.zip_code = '$zip_code' , ADDRESS.country = '$country' , ADDRESS.phone = '$phone'
 				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
-
 
 		$result = $conn->query($sql);
 
