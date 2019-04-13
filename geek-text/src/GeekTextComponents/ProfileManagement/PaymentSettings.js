@@ -85,7 +85,7 @@ export default class PaymentSettings extends Component {
                     this.setState({
                         currPayMethods: JSON.parse(XMLHttpRequest.responseText)
                     })
-                    console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                    console.log('success', XMLHttpRequest);
                 }
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -194,14 +194,16 @@ export default class PaymentSettings extends Component {
         const panels = this.state.currPayMethods.map(function (item, index) {
            return (
            <Panel
-                cardType={item.cardType}
-                endingNum={that.getEndingCardNum(item.endingNum)}
-                expDate={item.expDate}
-                nameOnCard={item.nameOnCard}
+                cardType={item.card_type}
+                endingNum={that.getEndingCardNum(item.card_num)}
+                expDate={item.exp_date}
+                nameOnCard={item.card_name}
                 address={item.address}
                 city={item.city}
                 country={item.country}
-                phoneNum={item.phoneNum}
+                state={item.state}
+                zip_code={item.zip_code}
+                phone={item.phone}
                 removePayment={event => that.removePayment(index)}
                 ></Panel>)
         });

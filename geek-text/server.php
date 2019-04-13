@@ -781,7 +781,7 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
         
-        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.exp_date, 
+        $sql = "SELECT PAYMENT.card_type, PAYMENT.card_name, PAYMENT.card_num, PAYMENT.exp_date, 
 				PAYMENT.address, PAYMENT.city, PAYMENT.state, PAYMENT.country, PAYMENT.zip_code, PAYMENT.phone
                 FROM USERS, PAYMENT
 				WHERE USERS.id = @CURRENT_USER AND USERS.id = PAYMENT.user_id";
@@ -797,8 +797,8 @@
                 $bus = array(
                              "card_type" => $row["card_type"],
                              "card_name" => $row["card_name"],
-							 "exp_month" => $row["exp_month"],
-							 "exp_year" => $row["exp_year"],
+                             "card_num" => $row["card_num"],
+							 "exp_date" => $row["exp_date"],
 							 "zip_code" => $row["zip_code"],
 							 "address" => $row["address"],
 							 "city" => $row["city"],
