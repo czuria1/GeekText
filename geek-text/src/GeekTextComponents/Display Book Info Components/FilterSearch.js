@@ -6,7 +6,7 @@ const FilterSearch = (props) => {
             <ExpansionPanel>
                 <ExpansionPanelSummary >Authors</ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <FormControlLabel control={<Checkbox/>} label="Author 1" />
+                    <FormControlLabel control={<Checkbox/>} label="Author" />
                     <FormControlLabel control={<Checkbox/>} label="Author 2" />
                     <FormControlLabel control={<Checkbox/>} label="Author 3" />
                     <FormControlLabel control={<Checkbox/>} label="Author 4" />

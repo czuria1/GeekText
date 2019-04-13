@@ -6,15 +6,16 @@
   width: 350px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(31, 106, 177, 0.19);
   padding: 1em;
-  background-color: antiquewhite
+  background-color: #383a47
 }
 
 .shoppingcarttitle {
   margin-top: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(31, 106, 177, 0.19);
   padding: 0.5em;
-  background-color: antiquewhite 
-
+  background-color: #383a47; 
+  color: white;
+  font-family:"apple-system";
 }
 
 .purchase-card > .show-grid {

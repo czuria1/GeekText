@@ -4,7 +4,7 @@
     //Info to connect to DB
 	$servername = "localhost";
 	$dbusername = "root";
-	$dbpassword = "password";
+	$dbpassword = "1995";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -34,7 +34,7 @@
 
 	/////////////////////////////////////////////////////////////////////////////
 function index(){
-	$result = $conn->paginate(10);
+	$result = BookList::paginate(10);
 return $result;
 }
 
@@ -66,18 +66,18 @@ return $result;
 		}
 
 		//Paginate
-		$limit = 33;
-		$sql = "SELECT count(books.TITLE) FROM books";
+		// $limit = 10;
+		// $sql = "SELECT count(books.TITLE) FROM books";
 
-		if(isset($_GET{'page'})){
-			$page = $_GET{'page'} + 1;
-			$offset = $limit * $page;
-		}else{
-			$page = 0;
-			$offset = 0;
-		}
-		$count = $row[0];
-		$lefts = $count - ($page * $limit);
+		// if(isset($_GET{'page'})){
+		// 	$page = $_GET{'page'} + 1;
+		// 	$offset = $limit * $page;
+		// }else{
+		// 	$page = 0;
+		// 	$offset = 0;
+		// }
+		// $count = $row[0];
+		// $lefts = $count - ($page * $limit);
 
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
@@ -91,19 +91,33 @@ return $result;
 		
 
 					//This is for posting in ASC order and then having the function to DESC
-		$queryorder = array('ASC', 'DESC');
-		if(!in_array($_POST['queryorder'], $queryorder)){
+		//$queryorder = array('ASC', 'DESC');
+		if($params_arr[1] == "ASC"){
 			
-		$_POST['queryorder'] = 'ASC';
-		$sql . "ORDER BY books	DESC";
+//$_POST['queryorder'] = 'ASC';
+		$sql . "ORDER BY books.TITLE ASC";
 		
 		}
 		else{
 			
-			$_POST['queryorder'] = 'DESC';
-		$sql += "ORDER BY books ASC";
+			//$_POST['queryorder'] = 'DESC';
+		$sql . "ORDER BY books.TITLE DESC";
 		
 		}		
+		//This is for posting in ASC order and then having the function to DESC
+		// $queryorder = array('ASC', 'DESC');
+		// if(!in_array($_POST['queryorder'], $queryorder)){
+		// 	print "error 60";
+		// $_POST['queryorder'] = 'ASC';
+		// $sql . "ORDER BY books	DESC";
+		// print "error 62";
+		// }
+		// else{
+		// 	print "error 65";
+		// 	$_POST['queryorder'] = 'DESC';
+		// $sql += "ORDER BY books ASC";
+		// print "error 68";
+		// }		
 
 		
 		
@@ -143,16 +157,16 @@ return $result;
 		}
 
 		///PAGINATION previous
-		if( $page > 0 ) {
-            $last = $page - 2;
-            echo "<a href = \"$_PHP_SELF?page = $last\">Last1</a> |";
-            echo "<a href = \"$_PHP_SELF?page = $page\">Next2</a>";
-         }else if( $page == 0 ) {
-            echo "<a href = \"$_PHP_SELF?page = $page\">Next3</a>";
-         }else if( $lefts < $limit ) {
-            $last = $page - 2;
-            echo "<a href = \"$_PHP_SELF?page = $last\">Last4</a>";
-         }
+		// if( $page > 0 ) {
+        //     $last = $page - 2;
+        //     echo "<a href = \"$_PHP_SELF?page = $last\">Last1</a> |";
+        //     echo "<a href = \"$_PHP_SELF?page = $page\">Next2</a>";
+        //  }else if( $page == 0 ) {
+        //     echo "<a href = \"$_PHP_SELF?page = $page\">Next3</a>";
+        //  }else if( $lefts < $limit ) {
+        //     $last = $page - 2;
+        //     echo "<a href = \"$_PHP_SELF?page = $last\">Last4</a>";
+        //  }
 
 
 
@@ -228,8 +242,9 @@ return $result;
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 
-		$authorName = urldecode($_POST['searchParam']);
+		$authorName = $params_arr[0];
 
 		$sql = "SET @AUTHOR_NAME = '$authorName';";
 
@@ -350,6 +365,80 @@ return $result;
 
 		$conn->close();
 	}
+
+	//Gets and returns the book info the user searched for
+	function topSearchInfo()
+	{
+		//Global allows variables outside the function scope to be used here
+		global $conn;
+		global $myObj;
+		global $params_arr;
+		
+		
+		$keyword = $params_arr[0];
+		
+		$sql = "SET @SEARCH_TERM = '%$top%';";
+		
+		if ($conn->query($sql) === TRUE) 
+		{
+			//echo "New record created successfully";
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+			
+		$sql = "SELECT books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
+				 FROM   books 
+				 JOIN   authors ON books.AUTHOR = authors.ID
+				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
+			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
+						books.TITLE LIKE @SEARCH_TERM OR
+						books.GENRE LIKE @SEARCH_TERM
+				ORDER BY books.TITLE LIMIT 3";
+		
+
+		//Executes query string
+		$result = $conn->query($sql);
+		//Im making the page number between 10 and 20
+		if ($result->num_rows > 0) 
+		{
+			$json = array();
+	    	// convert the data into json object
+	    	while($row = $result->fetch_assoc()) 
+	    	{
+				$bus = array(
+					"cover" => $row["COVER"],
+					"title" => $row["TITLE"],
+					"author" => $row["FIRST_NAME"]. " " .$row["LAST_NAME"],
+					"genre" => $row["GENRE"],
+					"publisher" => $row["PUBLISHER"],
+					"pub_date" => $row["PUB_DATE"],
+					"description" => $row["DESCRIPTION"],
+					"bio" => $row["BIO"],
+					"isbn" => $row["ISBN"],
+					"id" => $row["ID"]
+				);
+
+				array_push($json, $bus);
+				
+			}
+
+			$jsonstring = json_encode($json);
+			echo $jsonstring;
+		}
+		else
+		{
+		    echo "0 results";
+		}
+
+
+		$conn->close();
+	}
+
+
 
 	function submitReview()
 	{
@@ -685,63 +774,6 @@ return $result;
 		$conn->close();
 	}
 
-	function getHomeAddress() {
-        global $conn;
-        global $myObj;
-        
-		$currentUserId = urldecode($_POST['currentUserId']);
-		$addressId = urldecode($_POST['address_id']);
-
-		$sql = "SET @CURRENT_USER = '$currentUserId', @HOME_ADDRESS = '$addressId'";
-		
-		if ($conn->query($sql) === TRUE) 
-		{
-
-		} 
-		else 
-		{
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
-        
-        $sql = "SELECT ADDRESS.name, ADDRESS.address, ADDRESS.address_2, ADDRESS.city, ADDRESS.state, ADDRESS.zip_code, ADDRESS.country, ADDRESS.phone
-                FROM ADDRESS
-				WHERE ADDRESS.user_id = @CURRENT_USER AND ADDRESS.address_id = @HOME_ADDRESS";
-
-		$result = $conn->query($sql);
-
-        
-        if ($result->num_rows > 0)
-        {
-            $json = array();
-            
-            while($row = $result->fetch_assoc())
-            {
-                $bus = array(
-                             "name" => $row["name"],
-                             "address" => $row["address"],
-							 "address_2" => $row["address_2"],
-							 "city" => $row["city"],
-							 "state" => $row["state"],
-							 "zip_code" => $row["zip_code"],
-							 "country" => $row["country"],
-							 "phone" => $row["phone"],
-                             );
-                
-                array_push($json, $bus);
-                
-            }
-            
-            $jsonstring = json_encode($json);
-            echo $jsonstring;
-        }
-        else
-        {
-            echo "No existing addresses for user";
-        }
-        
-        $conn->close();
-	}
-
 	function setHomeAddress() {
 		global $conn;
         global $myObj;
@@ -1000,6 +1032,10 @@ return $result;
 	{
 		getSearchInfo();
 	}
+	else if ($method == 'topSearchInfo')
+	{
+		topSearchInfo();
+	}
 	else if ($method == 'registerUser') 
 	{
 		registerUser();
@@ -1051,10 +1087,6 @@ return $result;
 	else if ($method == 'setHomeAddress') 
 	{
 		setHomeAddress();
-	}
-	else if ($method == 'getHomeAddress') 
-	{
-		getHomeAddress();
 	}
 	else if ($method == 'updateAddress') 
 	{

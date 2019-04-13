@@ -45,7 +45,7 @@ class Header extends Component {
             <div className="topnav">
                 <div className="logo">
                 <NavLink style={{ textDecoration: 'none',  color: 'white'}} 
-                                    to="/">
+                                    to="/HomePage">
                     <h1 align = "left">Geek Text</h1>
                     </NavLink>
                 </div>
