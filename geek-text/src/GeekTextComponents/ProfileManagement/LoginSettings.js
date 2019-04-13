@@ -58,6 +58,7 @@ export default class LoginSettings extends Component {
                         fname: JSON.parse(XMLHttpRequest.responseText)[0].fname,
                         lname: JSON.parse(XMLHttpRequest.responseText)[0].lname,
                         email: JSON.parse(XMLHttpRequest.responseText)[0].email,
+                        password: JSON.parse(XMLHttpRequest.responseText)[0].password,
                     })
                     console.log('success', JSON.parse(XMLHttpRequest.responseText));
                 }

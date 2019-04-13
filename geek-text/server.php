@@ -442,6 +442,7 @@
                              "lname" => $row["lname"],
                              "nickname" => $row["nickname"],
                              "email" => $row["email"],
+                             "password" => $row["password"],
                              );
                 
                 array_push($json, $bus);
@@ -489,8 +490,6 @@
 				SET USERS.username = '$username',  USERS.fname ='$firstname', USERS.lname = '$lastname', USERS.nickname = '$nickname', USERS.email = '$email',
 				USERS.password = '$password'
 				WHERE USERS.id = @CURRENT_USER";
-
-		echo $sql;
 
 		$result = $conn->query($sql);
 
@@ -684,19 +683,6 @@
 		{
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
-		
-		$sql = "UPDATE ADDRESS
-				SET ADDRESS.is_home_address = TRUE
-				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
-
-		if ($conn->query($sql) === TRUE) 
-		{
-
-		} 
-		else 
-		{
-			echo "Error: " . $sql . "<br>" . $conn->error;
-		}
 
 		$sql = "UPDATE ADDRESS
 				SET ADDRESS.is_home_address = FALSE
@@ -704,7 +690,20 @@
 
 		if ($conn->query($sql) === TRUE) 
 		{
-			echo $prevHomeAddress;
+			echo $sql;
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE ADDRESS
+				SET ADDRESS.is_home_address = TRUE
+				WHERE ADDRESS.address_id = @CURRENT_ADDRESS AND ADDRESS.user_id = @CURRENT_USER";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+
 		} 
 		else 
 		{

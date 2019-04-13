@@ -57,6 +57,7 @@ export default class AddressSettings extends Component {
         }
 
         this.addAddress = this.addAddress.bind(this);
+        this.setHomeAddressInApp = this.setHomeAddressInApp.bind(this);
     }
 
     handleInput = (e) => {
@@ -71,13 +72,18 @@ export default class AddressSettings extends Component {
         this.getUserAddresses();
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if (nextProps !== this.props) {
-            this.setState({
-                addresses: nextState.addresses
-            })
-        }
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log("Should AddressSettings update", nextProps, nextState);
+        return true;
     }
+
+    // componentWillUpdate(nextProps, nextState) {
+    //     if (nextProps !== this.props) {
+    //         this.setState({
+    //             addresses: nextState.addresses
+    //         })
+    //     }
+    // }
 
     getUserAddresses() {
         ajaxme.post({
@@ -167,13 +173,18 @@ export default class AddressSettings extends Component {
         });
     }
 
+    setHomeAddressInApp(id) {
+        this.props.setHomeAddress(id);
+    }
+
     setHomeAddress(index) {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
             data: 'method=setHomeAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}` + '&prevHomeAddress=' + `${this.state.currentHomeAddress}`,
             success: function (XMLHttpRequest) {
                 this.setState({currentHomeAddress: this.state.addresses[index].address_id});
-                console.log('success', XMLHttpRequest);
+                this.setHomeAddressInApp(this.state.addresses[index].address_id);
+                console.log('success', XMLHttpRequest.responseText);
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
