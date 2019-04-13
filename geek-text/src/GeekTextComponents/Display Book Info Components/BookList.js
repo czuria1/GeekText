@@ -5,6 +5,7 @@ import ModalCover from "./ModalCover";
 import ServerCall from "../ServerCall";
 import styled from "styled-components";
 import ajaxme from "ajaxme";
+import axios from 'axios';
 import SearchArea from "./SearchArea";
 import Pagination from "react-js-pagination";
 import 'rc-pagination/assets/index.css';
@@ -32,9 +33,10 @@ class BookList extends Component {
             order: "ASC",
             pageSize:10,
             //js-pagination
-            apageSize:10,
-            itemsCountPerPage: 10,
-            totalItemsCount: 10,
+            activePage:1,
+            itemsCountPerPage: 1,
+            pageRangeDisplayed: 4,
+            totalItemsCount: 1,
             sort: "title"
         };
         this.retriveResults = this.retriveResults.bind(this);
@@ -43,6 +45,7 @@ class BookList extends Component {
         this.changeState = this.changeState.bind(this);
         this.ASC = this.ASC.bind(this);
         this.DESC = this.DESC.bind(this);
+        this.ASC.handlePageChange = this.handlePageChange.bind(this);
     }
 
     componentDidMount() {
@@ -51,6 +54,19 @@ class BookList extends Component {
             this.setState({size: this.props.pageSize});
           }
     }
+
+
+    handlePageChange(pageNumber) {
+            console.log(`active page is ${pageNumber}`);
+          //  this.setState({activePage: pageNumber});
+        axios.get("http://localhost:3000/#/bookList?page="+ pageNumber).then.setState({
+            books:this.props.books,
+            itemsCountPerPage: this.props.itemsCountPerPage,
+            totalItemsCount: this.props.totalItemsCount,
+            activePage: this.props.activePage
+        });    
+        
+     }
    
 
     
@@ -148,24 +164,14 @@ class BookList extends Component {
                     <ModalCover></ModalCover>
                     <Pagination class = "d-flex justify-content-center"
 activePage={this.state.activePage}
-itemsCountPerPage={10}
-totalItemsCount={33}
-pageRangeDisplayed={5}
+totalItemsCount={this.state.totalItemsCount}
+itemsCountPerPage={this.state.itemsCountPerPage}
+totalItemsCount={this.state.totalItemsCount}
+pageRangeDisplayed={this.state.pageRangeDisplayed}
 onChange={this.handlePageChange}
 itemClass='page-item'
 linkClass= 'page-link'
-//  onChangePage = {this.onChangePage}
-                        
-                        // onChange={onChange}
-                        
-                        // onPage = {this.state.onPage}
-                        // pageSize = {this.state.pageSize}
-                        // pageSizeOptions = {'10,20'}
-                        // showQuickJumper
-                        // showSizeChanger
-                        total = {this.state.books.length}
-                        
-
+total = {this.state.books.length}
                         /> 
                     {this.returnList()}
                     
