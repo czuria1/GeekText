@@ -949,6 +949,35 @@ return $result;
 		$conn->close();
 	}
 
+	function updatePaymentMethod() {
+        global $conn;
+        global $myObj;
+        
+		$currentUserId = urldecode($_POST['currentUserId']);
+		$paymentId = urldecode($_POST['paymentId']);
+
+		$card_type = urldecode($_POST['card_type']);
+		$card_name = urldecode($_POST['card_name']);
+		$card_num = urldecode($_POST['card_num']);
+		$security_code = urldecode($_POST['security_code']);
+		$exp_date = urldecode($_POST['exp_date']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$address = urldecode($_POST['address']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$country = urldecode($_POST['country']);
+		$phoneNumber = urldecode($_POST['phone_num']);
+
+		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, CARD_NUM, SECURITY_CODE, EXP_DATE, ZIP_CODE, ADDRESS, CITY, STATE, COUNTRY, PHONE) 
+				VALUES('$currentUserId', '$card_type', '$card_name', '$card_num', '$security_code', '$exp_date', '$zip_code', '$address', '$city', '$state', '$country', '$phoneNumber')";
+		
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
+
 	if ($method == 'getSearchInfo')
 	{
 		getSearchInfo();
