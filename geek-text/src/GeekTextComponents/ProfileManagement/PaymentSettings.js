@@ -91,7 +91,7 @@ export default class PaymentSettings extends Component {
 
     getUserPaymentMethods() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=getPaymentMethods&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
                 if (XMLHttpRequest.responseText === "No existing payment methods for user") {
@@ -118,7 +118,7 @@ export default class PaymentSettings extends Component {
 
     addPaymentButtonClicked() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=addPaymentMethods&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.cardType}` + '&card_num=' + `${this.state.number}`
                             + '&card_name=' + `${this.state.name}` + '&security_code=' + `${this.state.cvc}` + '&exp_date=' + `${this.state.expiry}`
                             + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
@@ -164,7 +164,7 @@ export default class PaymentSettings extends Component {
 
     removePayment(index) {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=deletePaymentMethod&paymentId=' + `${this.state.currPayMethods[index].payment_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
                 delete this.state.currPayMethods[index];
@@ -187,7 +187,7 @@ export default class PaymentSettings extends Component {
 
     updateEditedPayment() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=updatePaymentMethod&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.editCardType}` + '&card_num=' + `${this.state.editNumber}`
                             + '&card_name=' + `${this.state.editName}` + '&security_code=' + `${this.state.editCvc}` + '&exp_date=' + `${this.state.editExpiry}`
                             + '&zip_code=' + `${this.state.editZip_code}` + '&address=' + `${this.state.editAddress}` + '&city=' + `${this.state.editCity}` 

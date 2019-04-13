@@ -80,7 +80,7 @@ export default class AddressSettings extends Component {
 
     getUserAddresses() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=getAddresses&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
                 if (XMLHttpRequest.responseText === "No existing addresses for user") {
@@ -122,7 +122,7 @@ export default class AddressSettings extends Component {
 
     addAddressButtonClicked() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=addAddress&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.name}`
                                                + '&address=' + `${this.state.address}` + '&address_2=' + `${this.state.address_2}` + '&city=' + `${this.state.city}` 
                                                + '&state=' + `${this.state.state}` + '&zip_code=' + `${this.state.zip_code}` + '&country=' + `${this.state.country}` 
@@ -147,7 +147,7 @@ export default class AddressSettings extends Component {
 
     removeAddress(index) {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=deleteAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
                 delete this.state.addresses[index];
@@ -174,7 +174,7 @@ export default class AddressSettings extends Component {
 
     setHomeAddress(index) {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=setHomeAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}` 
                                     + '&prevHomeAddress=' + `${this.state.currentHomeAddress}`,
             success: function (XMLHttpRequest) {
@@ -210,7 +210,7 @@ export default class AddressSettings extends Component {
 
     updateEditedAddress() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=updateAddress&address_id=' + `${this.state.currentEditAddress}` + '&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.editName}`
                                                     + '&address=' + `${this.state.editAddress}` + '&address_2=' + `${this.state.editAddress_2}` + '&city=' + `${this.state.editCity}` 
                                                     + '&state=' + `${this.state.editState}` + '&zip_code=' + `${this.state.editZip_code}` + '&country=' + `${this.state.editCountry}` 

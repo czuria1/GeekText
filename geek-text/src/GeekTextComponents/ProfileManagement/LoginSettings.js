@@ -46,7 +46,7 @@ export default class LoginSettings extends Component {
 
     getUserInfo() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=getUserInfo&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
                 if (XMLHttpRequest.responseText === "No such user exists") {
@@ -78,7 +78,7 @@ export default class LoginSettings extends Component {
 
     updateUserInfo() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=updateUserInfo&currentUserId=' + `${this.state.currentUserId}` + '&username=' + `${this.state.username}` + '&firstname=' + `${this.state.fname}` 
                 + '&lastname=' + `${this.state.lname}` + '&nickname=' + `${this.state.nickname}`
                 + '&email=' + `${this.state.email}` + '&password=' + `${this.state.password}`,
@@ -102,7 +102,7 @@ export default class LoginSettings extends Component {
 
     getHomeAddress() {
         ajaxme.post({
-            url: 'http://localhost/server.php/post',
+            url: 'http://localhost:82/server.php/post',
             data: 'method=getHomeAddress&address_id=' + `${this.state.homeAddressId}` + '&currentUserId=' + `${this.state.currentUserId}`,
             success: function (XMLHttpRequest) {
             if (XMLHttpRequest.responseText === "No existing addresses for user") {
