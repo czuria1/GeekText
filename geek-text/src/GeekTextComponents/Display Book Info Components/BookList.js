@@ -23,6 +23,8 @@ const NoResultsContainer = styled.div`
     text-align: center;
 `;
 
+var topSellerClicked = false;
+
 class BookList extends Component {
     constructor(props) {
         super(props);
@@ -88,7 +90,11 @@ class BookList extends Component {
         }
         else
         {
-            this.retriveResults(nextProps.match.params.term);
+            if (!topSellerClicked)
+            {
+                this.retriveResults(nextProps.match.params.term);
+            }
+            
             return true;
         }
        
@@ -118,13 +124,12 @@ class BookList extends Component {
     
 
     retriveResults(term) {
-        console.log(this.state.order);
         ServerCall("getSearchInfo", term + ";"+ this.state.order, this.changeState);
     }
 
     topResults(term) {
-        console.log(this.state.order);
-        ServerCall("topSearchInfo", term + ";"+ this.state.order, this.changeState);
+        topSellerClicked = true;
+        ServerCall("topSearchInfo", term, this.changeState);
     }
 
     returnList() {
@@ -157,7 +162,7 @@ class BookList extends Component {
 
             <div>
                 {this.showNoResults()}
-                <button id= "searchText" onClick = {this.topResults}>TOP BOOKS</button>
+                <button id= "searchText" >TOP BOOKS</button>
                 
                 <ListContainer>
 
@@ -191,7 +196,7 @@ total = {this.state.books.length}
                     id="searchText"  
                     onChange={this.handleSearch}/>
 
-                <button id="topSearch">Top Sellers</button>
+                <button id="topSearch" onClick = {() => this.topResults(this.props.match.params.term)}>Top Sellers</button>
            
             </div>
         

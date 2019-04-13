@@ -3,11 +3,11 @@ var changeState;
 var response;
 
 const alertContents = () => {
-    console.log(httpRequest.reponseText);
+    //console.log(httpRequest.reponseText);
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
             if (httpRequest.responseText !== "0 results") {
-                console.log(httpRequest.responseText);
+                //console.log(httpRequest.responseText);
                 
                 response = JSON.parse(httpRequest.responseText);
                 changeState(response);
