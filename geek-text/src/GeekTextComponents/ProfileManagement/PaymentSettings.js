@@ -123,7 +123,8 @@ export default class PaymentSettings extends Component {
                             + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
                             + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
-                // this.getUserPaymentMethods();
+                this.getUserPaymentMethods();
+                this.handleEditClose();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -192,6 +193,7 @@ export default class PaymentSettings extends Component {
                             + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
                 this.getUserPaymentMethods();
+                this.handleEditClose();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -302,16 +304,16 @@ export default class PaymentSettings extends Component {
                     onClose={this.handleEditClose}
                     aria-labelledby="form-dialog-title"
                     >
-                    <DialogTitle id="form-dialog-title">New Payment Method</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Update Payment Method</DialogTitle>
                     <DialogContent>
                         <Cards
-                        number={number}
-                        name={name}
-                        expiry={expiry}
-                        cvc={cvc}
-                        issuer={issuer}
-                        focused={focused}
-                        callback={this.handleCallback}
+                            number={number}
+                            name={name}
+                            expiry={expiry}
+                            cvc={cvc}
+                            issuer={issuer}
+                            focused={focused}
+                            callback={this.handleCallback}
                         />
                         <DialogContentText>
                         Please enter your card information here in the fields below.
@@ -323,6 +325,7 @@ export default class PaymentSettings extends Component {
                             name="number"
                             label="Card Number"
                             fullWidth
+                            value={this.state.editNumber}
                             error={this.state.number < 16}
                             inputProps={{minLength: 16, maxLength: 22}}
                             onChange={this.handleInputChange}
@@ -330,15 +333,17 @@ export default class PaymentSettings extends Component {
                         <TextField
                             required
                             margin="dense"
-                            name="name"
+                            name="editName"
                             label="Name"
+                            value={this.state.editName}
                             fullWidth
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
                             required
                             margin="dense"
-                            name="expiry"
+                            name="editExpiry"
+                            value={this.state.editExpiry}
                             label="Valid Thru"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -346,8 +351,9 @@ export default class PaymentSettings extends Component {
                             required
                             style={{marginLeft: '5%'}}
                             margin="dense"
-                            name="cvc"
+                            name="editCvc"
                             label="CVC"
+                            value={this.state.editCvc}
                             inputProps={{minLength: 3, maxLength: 4}}
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -355,14 +361,16 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="address"
+                            name="editAddress"
+                            value={this.state.editAddress}
                             label="Billing Address"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
                             required
                             margin="dense"
-                            name="state"
+                            name="editState"
+                            value={this.state.editState}
                             label="Billing State"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -370,7 +378,8 @@ export default class PaymentSettings extends Component {
                             required
                             style={{marginLeft: '3%'}}
                             margin="dense"
-                            name="city"
+                            name="editCity"
+                            value={this.state.editCity}
                             label="Billing City"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -378,7 +387,8 @@ export default class PaymentSettings extends Component {
                             required
                             style={{marginLeft: '3%'}}
                             margin="dense"
-                            name="zip_code"
+                            name="editZip_code"
+                            value={this.state.editZip_code}
                             label="Billing Zip Code"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -386,7 +396,8 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="country"
+                            name="editCountry"
+                            value={this.state.editCountry}
                             label="Billing Country"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -394,7 +405,8 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="phoneNum"
+                            name="editPhoneNum"
+                            value={this.state.editPhoneNum}
                             label="Billing Phone Number"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}>

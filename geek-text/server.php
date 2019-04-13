@@ -968,8 +968,22 @@ return $result;
 		$country = urldecode($_POST['country']);
 		$phoneNumber = urldecode($_POST['phone_num']);
 
-		$sql = "INSERT INTO payment (USER_ID, CARD_TYPE, CARD_NAME, CARD_NUM, SECURITY_CODE, EXP_DATE, ZIP_CODE, ADDRESS, CITY, STATE, COUNTRY, PHONE) 
-				VALUES('$currentUserId', '$card_type', '$card_name', '$card_num', '$security_code', '$exp_date', '$zip_code', '$address', '$city', '$state', '$country', '$phoneNumber')";
+		$sql = "SET @CURRENT_PAYMENT = '$paymentId', @CURRENT_USER = '$currentUserId'";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE PAYMENT
+				SET PAYMENT.card_type = '$card_type', PAYMENT.card_name = '$card_name', PAYMENT.card_num = '$card_num', 
+				PAYMENT.security_code = '$security_code', PAYMENT.exp_date = '$exp_date', PAYMENT.zip_code = '$zip_code', 
+				PAYMENT.address = '$address', PAYMENT.city = '$city', PAYMENT.state = '$state', PAYMENT.country = '$country', 
+				PAYMENT.phone = '$phoneNumber'
+				WHERE PAYMENT.payment_id = @CURRENT_PAYMENT AND PAYMENT.user_id = @CURRENT_USER";
 		
 		$result = $conn->query($sql);
 
