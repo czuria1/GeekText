@@ -23,10 +23,10 @@ class App extends Component {
     constructor (props) {
         super (props);
         this.state = {
-            currentUser: 'testUser',
-            isUserLoggedIn: true,
-            userID: '1',
-            currentUserHomeAddressId: '1' 
+            currentUser: '',
+            isUserLoggedIn: false,
+            userID: '',
+            currentUserHomeAddressId: '' 
         }
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
@@ -92,7 +92,8 @@ class App extends Component {
                                                                             currentUserId={this.state.userID}/>}/>
                         <Route path="/addressSettings" render={(props) => <AddressSettings {...props} 
                                                                             currentUserId={this.state.userID}
-                                                                            setHomeAddress={this.setHomeAddress}/>}/>
+                                                                            setHomeAddress={this.setHomeAddress}
+                                                                            currentUserHomeAddressId={this.state.currentUserHomeAddressId}/>}/>
                         <Route path="/paymentSettings" render={(props) => <PaymentSettings {...props} 
                                                                             currentUserId={this.state.userID}/>}/>
                         <Route path="/bookDetails" render={(props) => <BookDetails {...props} 

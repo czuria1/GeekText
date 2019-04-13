@@ -752,7 +752,7 @@ return $result;
 		
 		if ($conn->query($sql) === TRUE) 
 		{
-
+			echo $sql;
 		} 
 		else 
 		{
