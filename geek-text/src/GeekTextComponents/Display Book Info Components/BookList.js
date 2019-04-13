@@ -122,9 +122,9 @@ class BookList extends Component {
         ServerCall("getSearchInfo", term + ";"+ this.state.order, this.changeState);
     }
 
-    topResults() {
-       // console.log(this.state.order);
-        ServerCall("topSearchInfo");
+    topResults(term) {
+        console.log(this.state.order);
+        ServerCall("topSearchInfo", term + ";"+ this.state.order, this.changeState);
     }
 
     returnList() {
@@ -157,7 +157,7 @@ class BookList extends Component {
 
             <div>
                 {this.showNoResults()}
-                <button onClick = {this.topResults}>TOP BOOKS</button>
+                <button id= "searchText" onClick = {this.topResults}>TOP BOOKS</button>
                 
                 <ListContainer>
 
@@ -174,6 +174,7 @@ linkClass= 'page-link'
 total = {this.state.books.length}
                         /> 
                     {this.returnList()}
+
                     
                 </ListContainer>
                 <p>ORDER THE BOOKS</p>
@@ -185,6 +186,12 @@ total = {this.state.books.length}
             {/* {this.topResults()} */}
             
             <div id="listContainer">
+
+            <input onFocus={this.setTextBoxListner} 
+                    id="searchText"  
+                    onChange={this.handleSearch}/>
+
+                <button id="topSearch">Top Sellers</button>
            
             </div>
         

@@ -20,6 +20,7 @@ export default class SearchArea extends Component
         this.handleSearch = this.handleSearch.bind(this);
         this.searchButtonClicked = this.searchButtonClicked.bind(this);
     }
+    
 
     setTextBoxListner()
     {
