@@ -4,6 +4,9 @@ import { Link, ListItem } from "@material-ui/core";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import {List as ListExt} from "@material-ui/core";
+import {Button} from 'react-bootstrap';
+import {addFromListToCart} from '../shoppingcartcomponents/actions/cartActions';
+import {store} from '../../index';
 
 const BookListContainer = styled.div`
     width: 100%;
@@ -59,7 +62,8 @@ const List = (book) => {
                             <ListItem>Genre: {book.bookInfo.genre}</ListItem>
                             <ListItem>Publisher: {book.bookInfo.publisher}</ListItem>
                             <ListItem>Publish Date: {book.bookInfo.pub_date}</ListItem>
-                            <ListItem>Add To Shopping Cart</ListItem>
+                            <ListItem>Price: ${book.bookInfo.price}</ListItem>
+                            <ListItem><Button variant="outline-dark" onClick={()=>{store.dispatch(addFromListToCart(book))}}>Add Item to Shopping cart</Button></ListItem>
                         </ListExt>
                     </DetailContainer>
                     <Line></Line>
@@ -76,4 +80,4 @@ function showModal(book) {
     caption.innerHTML = book.bookInfo.title;
 }
  
-export default List;
+export default List

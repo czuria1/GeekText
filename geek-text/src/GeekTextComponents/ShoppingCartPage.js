@@ -16,10 +16,6 @@ class ShoppingCartPage extends Component {
 
         this.state = {
             shoppingCartBooks: [],
-            bookTitle: "Harry Potter and the Chamber of Secrets",
-            author:"J.K. Rowling",
-            bookImage: "https://images-na.ssl-images-amazon.com/images/I/51jNORv6nQL._SX340_BO1,204,203,200_.jpg",
-            bookPrice: 5.99,
             total: 5.99,
             savings: -2.99,
             fees: 0,

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Header from './Header'
 import LoginScreen from "./ProfileManagement/LoginScreen";
 import RegistrationScreen from './ProfileManagement/RegistrationScreen';
-import ShoppingCartPage from "./ShoppingCartPage";
+import Cart from './Cart';
 import {Route, HashRouter} from "react-router-dom";
 import AuthorPage from './Display Book Info Components/AuthorPage';
 import ProfileSettings from './ProfileManagement/ProfileSettings';
@@ -13,6 +13,7 @@ import AddressSettings from './ProfileManagement/AddressSettings';
 import PaymentSettings from './ProfileManagement/PaymentSettings';
 import BookDetails from './Display Book Info Components/BookDetails';
 import Reviews from './Review';
+import HomePage from './HomePage';
 
 //import AuthorPage from './AuthorPage';
 
@@ -66,6 +67,7 @@ class App extends Component {
 
                     <div>
                       <div id="route-container">
+                        <Route path= "/homePage" component={HomePage}/>
                         <Route path="/search" component={SearchArea}/>
                         <Route path="/login" render={(props) => <LoginScreen {...props}
                                                                             username={this.state.currentUser}
@@ -74,7 +76,7 @@ class App extends Component {
                                                                             setCurrentUser={this.setCurrentUser}/>}/>
                         <Route path="/profilesettings" render={(props) => <ProfileSettings {...props}
                                                                             currentUser={this.state.currentUser}/>}/>
-                        <Route path="/shoppingCart" component={ShoppingCartPage}/>
+                        <Route path="/shoppingCart" component={Cart}/>
                         <Route path="/registration" component={RegistrationScreen}/>
                         <Route path="/authorPage/:author" component={AuthorPage}/>
                         <Route path="/bookList/:term" component={BookList}/>

@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "jyepe";
-	$dbpassword = "9373yepe";
+	$dbusername = "root";
+	$dbpassword = "1995";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -81,7 +81,7 @@ return $result;
 
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID, books.PRICE, books.QUANTITY
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
@@ -89,8 +89,8 @@ return $result;
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM";
 		
-
-					//This is for posting in ASC order and then having the function to DESC
+		/*
+		//This is for posting in ASC order and then having the function to DESC
 		$queryorder = array('ASC', 'DESC');
 		if(!in_array($_POST['queryorder'], $queryorder)){
 			
@@ -104,7 +104,7 @@ return $result;
 		$sql += "ORDER BY books ASC";
 		
 		}		
-
+		*/
 		
 		
 
@@ -127,7 +127,9 @@ return $result;
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
 					"isbn" => $row["ISBN"],
-					"id" => $row["ID"]
+					"id" => $row["ID"],
+					"price" => $row["PRICE"],
+					"quantity" => $row["QUANTITY"]
 				);
 
 				array_push($json, $bus);
