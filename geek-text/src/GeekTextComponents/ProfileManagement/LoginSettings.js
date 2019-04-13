@@ -13,13 +13,24 @@ export default class LoginSettings extends Component {
             currentUserId: props.currentUserId, 
             homeAddressId: props.homeAddress, 
             homeAddress: [], 
-            userInfo: []
+            userInfo: [],
+            username: '', 
+            fname: '',
+            lname: '',
+            nickname: '',
+            email: '',
+            password: ''
 
         }
+
+        this.updateUserInfo = this.updateUserInfo.bind(this);
     }
 
     handleInput = (e) => {
-
+        const fieldName = e.target.name;
+        const fieldValue = e.target.value;
+        
+        this.setState({[fieldName] : fieldValue});
     }
 
     componentWillMount() {
@@ -42,7 +53,11 @@ export default class LoginSettings extends Component {
                     
                 } else {
                     this.setState({
-                        userInfo: JSON.parse(XMLHttpRequest.responseText)
+                        username: JSON.parse(XMLHttpRequest.responseText)[0].username, 
+                        nickname: JSON.parse(XMLHttpRequest.responseText)[0].nickname,
+                        fname: JSON.parse(XMLHttpRequest.responseText)[0].fname,
+                        lname: JSON.parse(XMLHttpRequest.responseText)[0].lname,
+                        email: JSON.parse(XMLHttpRequest.responseText)[0].email,
                     })
                     console.log('success', JSON.parse(XMLHttpRequest.responseText));
                 }
@@ -58,6 +73,29 @@ export default class LoginSettings extends Component {
             progress: function(XMLHttpRequest) {
             }
         });
+    }
+
+    updateUserInfo() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=updateUserInfo&currentUserId=' + `${this.state.currentUserId}` + '&username=' + `${this.state.username}` + '&firstname=' + `${this.state.fname}` 
+                + '&lastname=' + `${this.state.lname}` + '&nickname=' + `${this.state.nickname}`
+                + '&email=' + `${this.state.email}` + '&password=' + `${this.state.password}`,
+            success: function (XMLHttpRequest) {
+                console.log('success', XMLHttpRequest.responseText);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+
     }
 
     getHomeAddress() {
@@ -101,48 +139,6 @@ export default class LoginSettings extends Component {
 
         var that = this;
 
-        const info = this.state.userInfo.map(function(item, index) {
-            return(
-                <div>
-                <TextField 
-                        style={{paddingBottom: '2%'}}
-                        className="textfield"
-                        name="username"
-                        id={index}
-                        value={item.username}
-                        label="Username"
-                        onChange={that.handleInput}
-                        variant="outlined"></TextField>
-                <TextField 
-                        style={{paddingBottom: '2%'}}
-                        className="textfield"
-                        name="password"
-                        label="Password"
-                        type="password"
-                        onChange={that.handleInput}
-                        variant="outlined"></TextField>
-                <TextField 
-                        style={{paddingBottom: '2%'}}
-                        className="textfield"
-                        disabled
-                        value={item.email !== 'null' ? item.email : undefined}
-                        name="email"
-                        label="Email"
-                        onChange={that.handleInput}
-                        variant="outlined"></TextField>
-                <TextField 
-                        style={{paddingBottom: '2%'}}
-                        className="textfield"
-                        nickname
-                        value={item.nickname !== 'null' ? item.nickname : undefined}
-                        name="nickname"
-                        label="Nickname"
-                        onChange={that.handleInput}
-                        variant="outlined"></TextField>
-                </div>
-            )
-        });
-
         const address = this.state.homeAddress.map(function(item, index) {
                 return (
                     <HomeAddressPanel
@@ -181,7 +177,57 @@ export default class LoginSettings extends Component {
                           direction="row"
                           justify="center"
                           alignItems="center">
-                            {info}
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    name="username"
+                                    value={this.state.username}
+                                    label="Username"
+                                    onChange={this.handleInput}
+                                    variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    nickname
+                                    value={this.state.fname}
+                                    name="fname"
+                                    label="First Name"
+                                    onChange={this.handleInput}
+                                    variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    nickname
+                                    value={this.state.lname}
+                                    name="lname"
+                                    label="Last Name"
+                                    onChange={this.handleInput}
+                                    variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    onChange={this.handleInput}
+                                    variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    value={this.state.email}
+                                    name="email"
+                                    label="Email"
+                                    onChange={this.handleInput}
+                                    variant="outlined"></TextField>
+                            <TextField 
+                                    style={{paddingBottom: '2%'}}
+                                    className="textfield"
+                                    nickname
+                                    value={this.state.nickname}
+                                    name="nickname"
+                                    label="Nickname"
+                                    onChange={this.handleInput}
+                                    variant="outlined"></TextField>
                         <Grid 
                             item xs={11}
                             direction="row"
@@ -205,7 +251,7 @@ export default class LoginSettings extends Component {
                             justify="flex-start"
                             alignItems="left">
                             <Button 
-                                onClick={this.handleClickOpen}>Save Changes</Button>
+                                onClick={this.updateUserInfo}>Save Changes</Button>
                             </Grid>
                       </Grid>
             </div>

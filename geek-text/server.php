@@ -457,7 +457,47 @@
         }
         
         $conn->close();
-    }
+	}
+	
+	function updateUserInfo() {
+		global $conn;
+        global $myObj;
+        
+		$currentUserId = urldecode($_POST['currentUserId']);
+
+		$username = urldecode($_POST['username']);
+		$firstname = urldecode($_POST['firstname']);
+		$lastname = urldecode($_POST['lastname']);
+		$nickname = urldecode($_POST['nickname']);
+		$email = urldecode($_POST['email']);
+		$password = urldecode($_POST['password']);
+
+		$password = md5($password);
+
+		$sql = "SET @CURRENT_USER = '$currentUserId'";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE USERS
+				SET USERS.username = '$username',  USERS.fname ='$firstname', USERS.lname = '$lastname', USERS.nickname = '$nickname', USERS.email = '$email',
+				USERS.password = '$password'
+				WHERE USERS.id = @CURRENT_USER";
+
+		echo $sql;
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
     
     function getAddresses() {
         global $conn;
@@ -864,6 +904,10 @@
 	else if ($method == 'getUserInfo') 
 	{
 		getUserInfo();
+	}
+	else if ($method == 'updateUserInfo') 
+	{
+		updateUserInfo();
 	}
 	
 
