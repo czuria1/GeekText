@@ -985,6 +985,8 @@ return $result;
 				PAYMENT.phone = '$phoneNumber'
 				WHERE PAYMENT.payment_id = @CURRENT_PAYMENT AND PAYMENT.user_id = @CURRENT_USER";
 		
+		echo $sql;
+
 		$result = $conn->query($sql);
 
 		echo $result;

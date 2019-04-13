@@ -188,14 +188,14 @@ export default class PaymentSettings extends Component {
     updateEditedPayment() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=addPaymentMethods&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.cardType}` + '&card_num=' + `${this.state.number}`
-                            + '&card_name=' + `${this.state.name}` + '&security_code=' + `${this.state.cvc}` + '&exp_date=' + `${this.state.expiry}`
-                            + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
-                            + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
+            data: 'method=updatePaymentMethod&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.editCardType}` + '&card_num=' + `${this.state.editNumber}`
+                            + '&card_name=' + `${this.state.editName}` + '&security_code=' + `${this.state.editCvc}` + '&exp_date=' + `${this.state.editExpiry}`
+                            + '&zip_code=' + `${this.state.editZip_code}` + '&address=' + `${this.state.editAddress}` + '&city=' + `${this.state.editCity}` 
+                            + '&state=' + `${this.state.editState}` + '&country=' + `${this.state.editCountry}` + '&phone_num=' + `${this.state.editPhoneNum}` + '&paymentId=' + `${this.state.currentEditPaymentMethod}`,
             success: function (XMLHttpRequest) {
                 this.getUserPaymentMethods();
                 this.handleEditClose();
-                console.log('success', XMLHttpRequest);
+                console.log('success', XMLHttpRequest.responseText);
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -267,7 +267,7 @@ export default class PaymentSettings extends Component {
     }
 
     handleEditClickOpen = (index) => {
-        var number = this.state.currPayMethods[index].number;
+        var number = this.state.currPayMethods[index].card_num;
         var name = this.state.currPayMethods[index].card_name;
         var card_type = this.state.currPayMethods[index].card_type;
         var exp_date = this.state.currPayMethods[index].exp_date;
