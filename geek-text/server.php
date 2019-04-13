@@ -104,6 +104,20 @@ return $result;
 		$sql . "ORDER BY books.TITLE DESC";
 		
 		}		
+		//This is for posting in ASC order and then having the function to DESC
+		// $queryorder = array('ASC', 'DESC');
+		// if(!in_array($_POST['queryorder'], $queryorder)){
+		// 	print "error 60";
+		// $_POST['queryorder'] = 'ASC';
+		// $sql . "ORDER BY books	DESC";
+		// print "error 62";
+		// }
+		// else{
+		// 	print "error 65";
+		// 	$_POST['queryorder'] = 'DESC';
+		// $sql += "ORDER BY books ASC";
+		// print "error 68";
+		// }		
 
 		
 		
@@ -228,8 +242,9 @@ return $result;
 		//Global allows variables outside the function scope to be used here
 		global $conn;
 		global $myObj;
+		global $params_arr;
 
-		$authorName = urldecode($_POST['searchParam']);
+		$authorName = $params_arr[0];
 
 		$sql = "SET @AUTHOR_NAME = '$authorName';";
 

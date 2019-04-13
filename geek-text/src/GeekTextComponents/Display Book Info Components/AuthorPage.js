@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import ajaxme from "ajaxme";
 import "./ModalImage.css"
-import SearchArea from "./SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
+import styled from "styled-components";
+import ServerCall from "../ServerCall";
+
+const ListContainer = styled.div`
+    width: 60%;
+    padding-top: 100px;
+    float: right;
+`;
 
 class AuthorPage extends Component {
 
@@ -16,30 +22,21 @@ class AuthorPage extends Component {
         //Bind the methods to the component
         this.getAllBooksFromAuthor = this.getAllBooksFromAuthor.bind(this);
         this.returnList = this.returnList.bind(this);
+        this.changeState = this.changeState.bind(this);
+    }
+
+    componentDidMount() {
         this.getAllBooksFromAuthor();
+    }
+    
+    changeState(response) {
+        this.setState({
+            books: response
+        });
     }
 
     getAllBooksFromAuthor() {
-        //Used to connect to the server
-        ajaxme.post({
-            url: 'http://localhost/server.php/post',
-            data: 'method=getAllBooksFromAuthor&searchParam=' + `${this.props.match.params.author}`,
-            success: function (XMLHttpRequest) {
-                this.setState({
-                    books: JSON.parse(XMLHttpRequest.responseText)
-                })
-            }.bind(this),
-            error: function (XMLHttpRequest) {
-                console.log('error', XMLHttpRequest);
-            },
-            abort: function (XMLHttpRequest) {
-                console.log('abort', XMLHttpRequest);
-            },
-            loadstart: function (XMLHttpRequest) {
-            },
-            progress: function (XMLHttpRequest) {
-            }
-        });
+        ServerCall("getAllBooksFromAuthor", this.props.match.params.author, this.changeState);
     }
 
     returnList() {
@@ -53,10 +50,10 @@ class AuthorPage extends Component {
     render() {
         return (
             <div >
-                <div id="list">
+                <ListContainer>
                     <ModalCover></ModalCover>
                     {this.returnList()}
-                </div>
+                </ListContainer>
             </div>
         )
     }
