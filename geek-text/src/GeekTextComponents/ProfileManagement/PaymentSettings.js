@@ -123,7 +123,7 @@ export default class PaymentSettings extends Component {
                             + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
                             + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
-                this.getUserPaymentMethods();
+                // this.getUserPaymentMethods();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
