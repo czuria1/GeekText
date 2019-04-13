@@ -3,8 +3,8 @@
 	
     //Info to connect to DB
 	$servername = "localhost";
-	$dbusername = "root";
-	$dbpassword = "password";
+	$dbusername = "jyepe";
+	$dbpassword = "9373yepe";
 	$dbname = "geektext_db";
 
 	//what method to execute
@@ -32,6 +32,17 @@
 	    die("connection failed");
 	}
 
+	/////////////////////////////////////////////////////////////////////////////
+function index(){
+	$result = $conn->paginate(10);
+return $result;
+}
+
+
+
+
+	/////////////////////////////////////
+
 	//Gets and returns the book info the user searched for
 	function getSearchInfo()
 	{
@@ -54,14 +65,45 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
+		//Paginate
+		$limit = 33;
+		$sql = "SELECT count(books.TITLE) FROM books";
+
+		if(isset($_GET{'page'})){
+			$page = $_GET{'page'} + 1;
+			$offset = $limit * $page;
+		}else{
+			$page = 0;
+			$offset = 0;
+		}
+		$count = $row[0];
+		$lefts = $count - ($page * $limit);
+
+
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
-			  		    books.DESCRIPTION, authors.BIO, books.ISBN
+			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
 				 FROM   books 
 				 JOIN   authors ON books.AUTHOR = authors.ID
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
 			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
 						books.TITLE LIKE @SEARCH_TERM OR
-			            books.GENRE LIKE @SEARCH_TERM";
+						books.GENRE LIKE @SEARCH_TERM";
+		
+
+					//This is for posting in ASC order and then having the function to DESC
+		$queryorder = array('ASC', 'DESC');
+		if(!in_array($_POST['queryorder'], $queryorder)){
+			
+		$_POST['queryorder'] = 'ASC';
+		$sql . "ORDER BY books	DESC";
+		
+		}
+		else{
+			
+			$_POST['queryorder'] = 'DESC';
+		$sql += "ORDER BY books ASC";
+		
+		}		
 
 		
 		
@@ -84,7 +126,8 @@
 					"pub_date" => $row["PUB_DATE"],
 					"description" => $row["DESCRIPTION"],
 					"bio" => $row["BIO"],
-					"isbn" => $row["ISBN"]
+					"isbn" => $row["ISBN"],
+					"id" => $row["ID"]
 				);
 
 				array_push($json, $bus);
@@ -98,6 +141,19 @@
 		{
 		    echo "0 results";
 		}
+
+		///PAGINATION previous
+		if( $page > 0 ) {
+            $last = $page - 2;
+            echo "<a href = \"$_PHP_SELF?page = $last\">Last1</a> |";
+            echo "<a href = \"$_PHP_SELF?page = $page\">Next2</a>";
+         }else if( $page == 0 ) {
+            echo "<a href = \"$_PHP_SELF?page = $page\">Next3</a>";
+         }else if( $lefts < $limit ) {
+            $last = $page - 2;
+            echo "<a href = \"$_PHP_SELF?page = $last\">Last4</a>";
+         }
+
 
 
 		$conn->close();
@@ -123,12 +179,12 @@
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		$sql = "SELECT reviews.rating, reviews.comment, users.username, TOTAL_RATINGS.total
+		$sql = "SELECT reviews.rating, reviews.comment, reviews.anon, users.nickname,  TOTAL_RATINGS.total
 				FROM   reviews
 				JOIN   books ON books.ID = reviews.book_id
 				JOIN   users ON reviews.user_id = users.id
 				JOIN   
-						(SELECT sum(rating) AS total
+						(SELECT sum(reviews.rating) AS total
 						FROM   reviews
 						JOIN   books ON books.ID = reviews.book_id
 						JOIN   users ON reviews.user_id = users.id
@@ -147,7 +203,8 @@
 				$bus = array(
 					"rating" => $row["rating"],
 					"comment" => $row["comment"],
-					"username" => $row["username"],
+					"nickname" => $row["nickname"],
+					"anon" => $row["anon"],
 					"total" => $row["total"]
 				);
 
@@ -192,9 +249,9 @@
 				WHERE  concat(AUTHORS.FIRST_NAME, ' ', AUTHORS.LAST_NAME) = @AUTHOR_NAME;";
 
 
+
 		//Executes query string
 		$result = $conn->query($sql);
-
 		if ($result->num_rows > 0) 
 		{
 			$json = array();
@@ -236,8 +293,8 @@
 		global $myObj;
 		global $params_arr;
 
-		$bookTitle = $params_arr[0];
-		$userID = $params_arr[1];
+		$bookTitle = urldecode($_POST['title']);
+		$userID = intval(urldecode($_POST['userid']));
 
 		$sql = "SET @BOOK_TITLE = '$bookTitle', @USED_ID = '$userID'";
 		
@@ -257,7 +314,16 @@
 		//Executes query string
 		$result = $conn->query($sql);
 
-		if ($result->num_rows > 0) 
+		
+		if ($result->num_rows == 1){
+			echo "true";
+		}
+		else{
+			echo "false";
+		}
+		
+		/* Julian backup
+		if ($result->num_rows == 0) 
 		{
 			$json = array();
 	    	// convert the data into json object
@@ -273,10 +339,13 @@
 			$jsonstring = json_encode($json);
 			echo $jsonstring;
 		}
+
 		else
 		{
 		    echo "0 results";
 		}
+		*/
+
 
 
 		$conn->close();
@@ -289,23 +358,29 @@
 		global $conn;
 		global $myObj;
 
-		$review =  urldecode($_POST['review']); 
+		$comment =  urldecode($_POST['comment']); 
 		$rating =  intval(urldecode($_POST['rating'])); 
+		$book_id =  intval(urldecode($_POST['book_id'])); 
+		$user_id =  intval(urldecode($_POST['user_id'])); 
+		$anon =  urldecode($_POST['anon']); 
 		
-		// Rating is -1 by default
-		//echo ("Review = " + $review + " Rating = " + $rating);
-		//if ($rating == -1) { array_push($errors, "Please select a rating"); }
-
-		if (empty($review)){
-			$sql = "INSERT INTO reviews (comment,rating)
-					VALUES 
-					(NULL,'$rating')";
+		if (empty($comment)){
+			$comment = NULL;
+		}
+		if ($anon == 'true'){
+			$anon = 1;
+		}
+		else if ($anon == 'false'){
+			$anon = 0;
 		}
 		else {
-			$sql = "INSERT INTO reviews (comment,rating)
-					VALUES 
-					('$review','$rating')";
+			echo "anon not read";
 		}
+
+		$sql = "INSERT INTO `reviews` (`comment`, `rating`, `book_id`, `user_id`,`anon`)
+					VALUES 
+					('$comment','$rating','$book_id','$user_id','$anon')";
+
 
 		//Executes query string
 		if ($conn->query($sql) === TRUE) {

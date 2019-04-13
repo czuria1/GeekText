@@ -14,6 +14,10 @@ import PaymentSettings from './ProfileManagement/PaymentSettings';
 import BookDetails from './Display Book Info Components/BookDetails';
 import Reviews from './Review';
 
+//import AuthorPage from './AuthorPage';
+
+//import ProfileSettings from './ProfileManagement/ProfileSettings';
+
 class App extends Component {
 
     constructor (props) {
@@ -58,7 +62,9 @@ class App extends Component {
 
     render() {
         return (
+
             <HashRouter>
+
                 <div>
                     <Header 
                         currentUser={this.state.currentUser}
@@ -95,10 +101,17 @@ class App extends Component {
                         <Route path="/reviews" component={Reviews}></Route>
                      </div>
                     </div>
+
                 </div>
+
             </HashRouter>
+
         );
+
     }
+
 }
+
+
 
 export default App;

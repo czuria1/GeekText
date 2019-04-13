@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import "./ModalImage.css"
-import SearchArea from "./SearchArea";
 import List from "./List";
 import ModalCover from "./ModalCover";
-import FilterSearch from "./FilterSearch";
 import ServerCall from "../ServerCall";
 import styled from "styled-components";
 
@@ -34,11 +32,6 @@ class BookList extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log("shouldComponentUpdate");
-        console.log("currProps",this.props.match.params.term);
-        console.log("nextProps", nextProps.match.params.term);
-        console.log("this.state.books.length", this.state);
-        console.log("nextState.books.length", nextState);
         if (nextProps.match.params.term === this.props.match.params.term && this.state.books.length === nextState.books.length)
         {
             return false;
@@ -85,11 +78,8 @@ class BookList extends Component {
     }
 
     render() { 
-        console.log("render");
         return ( 
             <div>
-                <SearchArea></SearchArea>
-                <FilterSearch></FilterSearch>
                 {this.showNoResults()}
                 <ListContainer>
                     <ModalCover></ModalCover>

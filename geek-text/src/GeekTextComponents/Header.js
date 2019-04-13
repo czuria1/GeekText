@@ -12,6 +12,7 @@ import Cart from 'react-icons/lib/ti/shopping-cart';
 import SearchIcon from 'react-icons/lib/fa/search';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import SearchArea from "./Display Book Info Components/SearchArea";
 import Dropdown from 'react-bootstrap/Dropdown';
 import SplitButton from 'react-bootstrap/SplitButton';
 
@@ -29,6 +30,7 @@ class Header extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
+        //console.log("Header will update", nextProps, nextState);
         if (nextProps !== this.props) {
             this.setState({
                 currentUser: nextProps.username, 
@@ -47,8 +49,9 @@ class Header extends Component {
                     <h1 align = "left">Geek Text</h1>
                     </NavLink>
                 </div>
-                <div className="search">
-                <InputGroup style={{display: 'flex', alignItems: 'center'}}>
+                <div id="search-info-container" className="search">
+                <SearchArea></SearchArea>
+                {/* <InputGroup style={{display: 'flex', alignItems: 'center'}}>
                     <FormControl
                         style={{borderRadius: '1.2rem'}}
                         placeholder="Search"
@@ -60,7 +63,7 @@ class Header extends Component {
                         <SearchIcon size={20}></SearchIcon>
                     </Button>
                     </InputGroup.Append>
-                </InputGroup>
+                </InputGroup> */}
                 </div>
                 <div className="rightIcons">
                     <div className="divider"></div>
