@@ -14,6 +14,8 @@ import ServerCall from "../ServerCall";
 import styled from "styled-components";
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Checkbox, FormControlLabel } from '@material-ui/core';
 import ajaxme from "ajaxme";
+import {store} from '../../index';
+import {addFromListToCart} from '../shoppingcartcomponents/actions/cartActions';
 
 const BookCover = styled(Image)`
     padding-left: 200px;
@@ -267,6 +269,7 @@ class BookDetails extends Component {
 
 
     render() {
+        var book = this.props.location.state.book;
         var bookInfo = this.props.location.state.book.bookInfo;
 
         return (
@@ -281,6 +284,7 @@ class BookDetails extends Component {
                     <ListItem>Date Published: {bookInfo.pub_date}</ListItem>
                     <ListItem>ISBN: {bookInfo.isbn}</ListItem>
                     <ListItem><Button onClick={this.canUserReviewBook}>Write a review</Button></ListItem>
+                    <ListItem><Button variant="outline-dark" onClick={()=>{store.dispatch(addFromListToCart(book))}}>Add Item to Shopping cart</Button></ListItem>
                 </List>
                 <BookCover src={bookInfo.cover} alt="Image not available" rounded fluid></BookCover>
                 <ExpansionPanel style={{ marginTop: '100px' }}>

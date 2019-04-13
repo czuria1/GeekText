@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { removeItem,addQuantity,subtractQuantity} from './shoppingcartcomponents/actions/cartActions'
+import { removeItem,addQuantity,subtractQuantity, addToSaveForLater, removeFromSaveForLater} from './shoppingcartcomponents/actions/cartActions'
 import CheckOutComponent from './shoppingcartcomponents/CheckOutComponent'
 import ItemDetails from './shoppingcartcomponents/ItemDetails/ItemDetails'
-import {Button, Collapse } from 'react-bootstrap';
+import {Button, Collapse} from 'react-bootstrap';
 import './ShoppingCartPage.css';
 
 class Cart extends Component{
@@ -12,7 +12,8 @@ class Cart extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            open: false
+            open: false,
+            sflOpen: false
         };
     }
 
@@ -25,24 +26,46 @@ class Cart extends Component{
     handleSubtractQuantity = (book)=>{
         this.props.subtractQuantity(book);
     }
+    handleAddToSaveForLater =(book)=>{
+        this.props.addToSaveForLater(book);
+    }
+    handleRemoveFromSaveForLater =(book)=>{
+        this.props.removeFromSaveForLater(book);
+    }
+
     render(){
+        let saved = this.props.savedForLater.length ? 
+            (
+                this.props.savedForLater.map(item=>{
+                    return(
+                        <ul key={item.bookInfo.id} list-style-type='none'>
+                                    <ItemDetails quantity={item.bookInfo.quantity} author={item.bookInfo.author} bookImage={item.bookInfo.cover} bookTitle={item.bookInfo.title} bookPrice={item.bookInfo.price} desc={item.bookInfo.description.substr(0,75) + "..."}/>
+                                    <div className="item-desc">
+                                        <Button variant="danger" onClick={()=>{this.handleRemoveFromSaveForLater(item)}}>Do not save for later</Button>
+                                    </div>
+                                </ul>
+                    )
+                })
+            ):
+             (
+                <p>You don't have any items saved for later.</p>
+             );
               
         let addedItems = this.props.items.length ?
             (  
                 this.props.items.map(item=>{
                     return(
-                       
-                        <li key={item.bookInfo.id}>
+                        <ul key={item.bookInfo.id} list-style-type= 'none'>
                                     <ItemDetails quantity={item.bookInfo.quantity} author={item.bookInfo.author} bookImage={item.bookInfo.cover} bookTitle={item.bookInfo.title} bookPrice={item.bookInfo.price} desc={item.bookInfo.description.substr(0,75) + "..."}/>
-                                    <div className="item-desc">
                                         <div className="add-remove">
-                                            <Link to="/shoppingCart"><Button variant="outline-secondary" onClick={()=>{this.handleAddQuantity(item)}}>Increase qty</Button></Link>
-                                            <Link to="/shoppingCart"><Button  variant="outline-secondary" onClick={()=>{this.handleSubtractQuantity(item)}}>Decrease qty</Button></Link>
+                                            <Link to="/shoppingCart"><Button variant="outline-secondary" onClick={()=>{this.handleAddQuantity(item)}}>+ Increase qty</Button></Link>
+                                            <Link to="/shoppingCart"><Button  variant="outline-secondary" onClick={()=>{this.handleSubtractQuantity(item)}}>- Decrease qty</Button></Link>
                                         </div>
-                                        <Button variant="outline-danger" onClick={()=>{this.handleRemove(item)}}>Remove from cart</Button>
+                                        <div class="btn-toolbar">
+                                        <Button variant="info" onClick={()=>{this.handleAddToSaveForLater(item)}}>Save For Later</Button>
+                                        <Button variant="danger" onClick={()=>{this.handleRemove(item)}}>Remove from cart</Button>
                                     </div>
-                                </li>
-                         
+                                </ul>
                     )
                 })
             ):
@@ -69,7 +92,23 @@ class Cart extends Component{
                     </ul>
                 </div> 
                 </Collapse>
-                <CheckOutComponent />          
+                <CheckOutComponent /> 
+                <br/>
+                <br/>
+                <Button className="item-savedForLater-button" variant="outline-info" onClick={() => this.setState({ sflOpen: !this.state.sflOpen})}>
+                {this.state.sflOpen === false ? `Open` : `Close` } Saved For Later
+                {this.state.sflOpen === false ? `+` : `-` }
+                </Button>
+                <br/>
+                <br/>
+                <Collapse in={this.state.sflOpen}>
+                <div className="savedForLater">
+                    <h5>Items saved for later:</h5>
+                    <ul className="collection">
+                        {saved}
+                    </ul>
+                </div> 
+                </Collapse>      
             </div>
        )
     }
@@ -78,14 +117,17 @@ class Cart extends Component{
 
 const mapStateToProps = (state)=>{
     return{
-        items: state.addedItems
+        items: state.addedItems,
+        savedForLater: state.saved
     }
 }
 const mapDispatchToProps = (dispatch)=>{
     return{
         removeItem: (book)=>{dispatch(removeItem(book))},
         addQuantity: (book)=>{dispatch(addQuantity(book))},
-        subtractQuantity: (book)=>{dispatch(subtractQuantity(book))}
+        subtractQuantity: (book)=>{dispatch(subtractQuantity(book))},
+        addToSaveForLater: (book)=>{dispatch(addToSaveForLater(book))},
+        removeFromSaveForLater: (book)=>{dispatch(removeFromSaveForLater(book))}
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Cart)

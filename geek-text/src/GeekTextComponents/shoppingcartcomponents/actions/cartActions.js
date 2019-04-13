@@ -1,12 +1,5 @@
 
-import { ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_FROM_LIST_TO_CART} from './action-types/cart-actions';
-
-export const addToCart= (id)=>{
-    return{
-        type: ADD_TO_CART,
-        id
-    }
-}
+import {REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_FROM_LIST_TO_CART, ADD_TO_SFL, REMOVE_FROM_SFL} from './action-types/cart-actions';
 
 export const addFromListToCart= (book)=>{
     return{
@@ -32,6 +25,20 @@ export const subtractQuantity=(book)=>{
 export const addQuantity=(book)=>{
     return{
         type: ADD_QUANTITY,
+        book
+    }
+}
+
+export const addToSaveForLater=(book)=>{
+    return{
+        type: ADD_TO_SFL,
+        book
+    }
+}
+
+export const removeFromSaveForLater=(book)=>{
+    return{
+        type: REMOVE_FROM_SFL,
         book
     }
 }

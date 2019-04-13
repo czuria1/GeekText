@@ -44,12 +44,8 @@ class Header extends Component {
             <HashRouter>
             <div className="topnav">
                 <div className="logo">
-                <Button variant="Light">
-                    <NavLink to="/HomePage">
-                    <h1 align = "left">Geek Text</h1></NavLink>
-                    </Button>
                 <NavLink style={{ textDecoration: 'none',  color: 'white'}} 
-                                    to="/">
+                                    to="/HomePage">
                     <h1 align = "left">Geek Text</h1>
                     </NavLink>
                 </div>
