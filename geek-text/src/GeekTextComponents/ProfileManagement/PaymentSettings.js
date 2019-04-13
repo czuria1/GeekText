@@ -224,7 +224,8 @@ export default class PaymentSettings extends Component {
     handleInputChange = ({ target }) => {
         if (target.name === 'number') {
           target.value = formatCreditCardNumber(target.value);
-          const issuer = Payment.fns.cardType(target.value);
+          var issuerLowerCase = Payment.fns.cardType(target.value);
+          const issuer = issuerLowerCase.slice(0,1).toUpperCase() + issuerLowerCase.slice(1, issuerLowerCase.length);
           this.setState({ cardType: issuer});
         } else if (target.name === 'expiry') {
           target.value = formatExpirationDate(target.value);
