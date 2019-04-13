@@ -8,7 +8,7 @@ import ajaxme from "ajaxme";
 import axios from 'axios';
 import SearchArea from "./SearchArea";
 import Pagination from "react-js-pagination";
-import 'rc-pagination/assets/index.css';
+//import 'rc-pagination/assets/index.css';
 
 const pageSize = 10;
 
