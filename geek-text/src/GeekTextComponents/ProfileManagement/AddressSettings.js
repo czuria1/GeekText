@@ -270,9 +270,9 @@ export default class AddressSettings extends Component {
                         state={item.state}
                         zip_code={item.zip_code}
                         country={item.country}
-                        phoneNum={item.phoneNum}
+                        phoneNum={item.phone}
                         isHomeAddress={!!+item.is_home_address}
-                        editAddress={that.handleEditClickOpen(index)}
+                        editAddress={that.handleEditClickOpen}
                         removeAddress={event => that.removeAddress(index)}
                         setHomeAddress={event => that.setHomeAddress(index)}
                         ></Card>

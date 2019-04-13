@@ -225,7 +225,7 @@ export default class LoginSettings extends Component {
                                     style={{paddingBottom: '2%'}}
                                     className="textfield"
                                     nickname
-                                    value={this.state.nickname}
+                                    value={this.state.nickname.match("null") ? undefined : this.state.nickname}
                                     name="nickname"
                                     label="Nickname"
                                     onChange={this.handleInput}
