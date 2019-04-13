@@ -18,6 +18,7 @@ import {
   } from './utils';
 import ajaxme from "ajaxme";
 import InputMask from 'react-input-mask';
+import Payment from 'payment';
 
 function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, state, zip_code, country, phoneNum) {
     this.cardType = cardType;
@@ -39,6 +40,7 @@ export default class PaymentSettings extends Component {
         this.state = { 
             currentUserId: props.currentUserId,
             dialogOpen: false, 
+            editDialogOpen: false,
             currPayMethods: [], 
             currentEditPaymentMethod: 0,
             number: '',
@@ -121,6 +123,7 @@ export default class PaymentSettings extends Component {
                             + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
                             + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
+                this.getUserPaymentMethods();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -164,6 +167,31 @@ export default class PaymentSettings extends Component {
             success: function (XMLHttpRequest) {
                 delete this.state.currPayMethods[index];
                 this.setState({payments: this.state.currPayMethods});
+                this.getUserPaymentMethods();
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+    }
+
+    updateEditedPayment() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=addPaymentMethods&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.cardType}` + '&card_num=' + `${this.state.number}`
+                            + '&card_name=' + `${this.state.name}` + '&security_code=' + `${this.state.cvc}` + '&exp_date=' + `${this.state.expiry}`
+                            + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
+                            + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
+            success: function (XMLHttpRequest) {
+                this.getUserPaymentMethods();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -196,6 +224,8 @@ export default class PaymentSettings extends Component {
     handleInputChange = ({ target }) => {
         if (target.name === 'number') {
           target.value = formatCreditCardNumber(target.value);
+          const issuer = Payment.fns.cardType(target.value);
+          this.setState({ cardType: issuer});
         } else if (target.name === 'expiry') {
           target.value = formatExpirationDate(target.value);
         } else if (target.name === 'cvc') {
@@ -258,6 +288,7 @@ export default class PaymentSettings extends Component {
                 zip_code={item.zip_code}
                 phone={item.phone}
                 removePayment={event => that.removePayment(index)}
+                editPayment={event => that.handleEditClickOpen(index)}
                 ></Panel>)
         });
 
@@ -265,6 +296,121 @@ export default class PaymentSettings extends Component {
 
         return (
             <div>
+                <Dialog
+                    open={this.state.editDialogOpen}
+                    onClose={this.handleEditClose}
+                    aria-labelledby="form-dialog-title"
+                    >
+                    <DialogTitle id="form-dialog-title">New Payment Method</DialogTitle>
+                    <DialogContent>
+                        <Cards
+                        number={number}
+                        name={name}
+                        expiry={expiry}
+                        cvc={cvc}
+                        issuer={issuer}
+                        focused={focused}
+                        callback={this.handleCallback}
+                        />
+                        <DialogContentText>
+                        Please enter your card information here in the fields below.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            name="number"
+                            label="Card Number"
+                            fullWidth
+                            error={this.state.number < 16}
+                            inputProps={{minLength: 16, maxLength: 22}}
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            margin="dense"
+                            name="name"
+                            label="Name"
+                            fullWidth
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            margin="dense"
+                            name="expiry"
+                            label="Valid Thru"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            style={{marginLeft: '5%'}}
+                            margin="dense"
+                            name="cvc"
+                            label="CVC"
+                            inputProps={{minLength: 3, maxLength: 4}}
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="address"
+                            label="Billing Address"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            margin="dense"
+                            name="state"
+                            label="Billing State"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            style={{marginLeft: '3%'}}
+                            margin="dense"
+                            name="city"
+                            label="Billing City"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            style={{marginLeft: '3%'}}
+                            margin="dense"
+                            name="zip_code"
+                            label="Billing Zip Code"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="country"
+                            label="Billing Country"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="phoneNum"
+                            label="Billing Phone Number"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}>
+                            <InputMask mask="(999) 999-9999" maskChar=" " />
+                            </TextField>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleEditClose} color="primary">
+                        Cancel
+                        </Button>
+                        <Button onClick={this.updateEditedPayment} color="primary">
+                        Save Changes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+
                 <Dialog
                     open={this.state.dialogOpen}
                     onClose={this.handleClose}

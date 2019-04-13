@@ -80,7 +80,7 @@ function SimpleExpansionPanel(props) {
         <Divider />
         <ExpansionPanelActions>
           <Button size="small" onClick={props.removePayment}>Delete</Button>
-          <Button size="small" >Edit</Button>
+          <Button size="small" onClick={props.editPayment}>Edit</Button>
         </ExpansionPanelActions>
       </ExpansionPanel>
     </div>

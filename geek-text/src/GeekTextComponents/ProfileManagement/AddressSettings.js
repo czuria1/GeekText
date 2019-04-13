@@ -78,14 +78,6 @@ export default class AddressSettings extends Component {
         return true;
     }
 
-    // componentWillUpdate(nextProps, nextState) {
-    //     if (nextProps !== this.props) {
-    //         this.setState({
-    //             addresses: nextState.addresses
-    //         })
-    //     }
-    // }
-
     getUserAddresses() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
@@ -136,6 +128,7 @@ export default class AddressSettings extends Component {
                                                + '&state=' + `${this.state.state}` + '&zip_code=' + `${this.state.zip_code}` + '&country=' + `${this.state.country}` 
                                                + '&phone=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
+                this.getUserAddresses();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -159,6 +152,7 @@ export default class AddressSettings extends Component {
             success: function (XMLHttpRequest) {
                 delete this.state.addresses[index];
                 this.setState({addresses: this.state.addresses});
+                this.getUserAddresses();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
