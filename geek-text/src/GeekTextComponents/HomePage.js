@@ -16,8 +16,6 @@ class Home extends Component{
                          <Card.Text>
                              <Row className="show-grid">
                                  <Col md={6}>
-                                     <strong> {`$${item.price}`}</strong>
-                                     <br/>
                                      <p>{`Description: ${item.description}`}</p>
                                  </Col>
                              </Row>
