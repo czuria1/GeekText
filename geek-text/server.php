@@ -476,6 +476,8 @@ return $result;
 
 		$sql = "INSERT INTO users (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD) 
 				VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')";
+
+		echo $sql;
 		
 		$result = $conn->query($sql);
 
