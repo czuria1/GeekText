@@ -6,8 +6,8 @@ import ServerCall from "../ServerCall";
 import styled from "styled-components";
 import ajaxme from "ajaxme";
 import SearchArea from "./SearchArea";
-// import Pagination from "react-js-pagination";
-// import 'rc-pagination/assets/index.css';`
+import Pagination from "react-js-pagination";
+import 'rc-pagination/assets/index.css';
 
 const pageSize = 10;
 
@@ -106,6 +106,11 @@ class BookList extends Component {
         ServerCall("getSearchInfo", term + ";"+ this.state.order, this.changeState);
     }
 
+    topResults() {
+       // console.log(this.state.order);
+        ServerCall("topSearchInfo");
+    }
+
     returnList() {
         if (this.state.books.length !== 0 && this.state.books !== "0 results")
         {
@@ -136,24 +141,15 @@ class BookList extends Component {
 
             <div>
                 {this.showNoResults()}
+                <button onClick = {this.topResults}>TOP BOOKS</button>
+                
                 <ListContainer>
+
                     <ModalCover></ModalCover>
-                    {this.returnList()}
-                </ListContainer>
-                <p>ORDER THE BOOKS</p>
-            <select defaultValue = {this.state.order} onChange = {this.ASC}>
-            <option value ={"ASC"} onClick = {this.ASC} >DESCENDING</option>
-            <option value ={"DESC"}onClick = {this.DESC} >ASCENDING</option>
-            </select>
-            
-            <div id="listContainer">
-           
-            </div>
-        
-            {/* <Pagination class = "d-flex justify-content-center"
+                    <Pagination class = "d-flex justify-content-center"
 activePage={this.state.activePage}
 itemsCountPerPage={10}
-totalItemsCount={450}
+totalItemsCount={33}
 pageRangeDisplayed={5}
 onChange={this.handlePageChange}
 itemClass='page-item'
@@ -170,7 +166,23 @@ linkClass= 'page-link'
                         total = {this.state.books.length}
                         
 
-                        />  */}
+                        /> 
+                    {this.returnList()}
+                    
+                </ListContainer>
+                <p>ORDER THE BOOKS</p>
+            <select defaultValue = {this.state.order} onChange = {this.ASC}>
+            <option value ={"ASC"} onClick = {this.ASC} >DESCENDING</option>
+            <option value ={"DESC"}onClick = {this.DESC} >ASCENDING</option>
+            </select>
+            
+            {/* {this.topResults()} */}
+            
+            <div id="listContainer">
+           
+            </div>
+        
+          
             </div>
          );
     }
