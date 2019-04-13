@@ -53,6 +53,7 @@ return $result;
 		
 		
 		$keyword = $params_arr[0];
+		$order = $params_arr[1];
 		
 		$sql = "SET @SEARCH_TERM = '%$keyword%';";
 		
@@ -65,20 +66,6 @@ return $result;
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 
-		//Paginate
-		// $limit = 10;
-		// $sql = "SELECT count(books.TITLE) FROM books";
-
-		// if(isset($_GET{'page'})){
-		// 	$page = $_GET{'page'} + 1;
-		// 	$offset = $limit * $page;
-		// }else{
-		// 	$page = 0;
-		// 	$offset = 0;
-		// }
-		// $count = $row[0];
-		// $lefts = $count - ($page * $limit);
-
 
 		$sql = "SELECT  books.COVER, books.TITLE, books.GENRE, books.PUBLISHER, authors.FIRST_NAME, authors.LAST_NAME, books.PUB_DATE,
 			  		    books.DESCRIPTION, authors.BIO, books.ISBN, books.ID
@@ -87,40 +74,12 @@ return $result;
 				 WHERE  authors.FIRST_NAME LIKE @SEARCH_TERM OR
 			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
 						books.TITLE LIKE @SEARCH_TERM OR
-						books.GENRE LIKE @SEARCH_TERM";
-		
-
-					//This is for posting in ASC order and then having the function to DESC
-		//$queryorder = array('ASC', 'DESC');
-		if($params_arr[1] == "ASC"){
-			
-//$_POST['queryorder'] = 'ASC';
-		$sql . "ORDER BY books.TITLE ASC";
-		
-		}
-		else{
-			
-			//$_POST['queryorder'] = 'DESC';
-		$sql . "ORDER BY books.TITLE DESC";
-		
-		}		
-		//This is for posting in ASC order and then having the function to DESC
-		// $queryorder = array('ASC', 'DESC');
-		// if(!in_array($_POST['queryorder'], $queryorder)){
-		// 	print "error 60";
-		// $_POST['queryorder'] = 'ASC';
-		// $sql . "ORDER BY books	DESC";
-		// print "error 62";
-		// }
-		// else{
-		// 	print "error 65";
-		// 	$_POST['queryorder'] = 'DESC';
-		// $sql += "ORDER BY books ASC";
-		// print "error 68";
-		// }		
-
-		
-		
+						books.GENRE LIKE @SEARCH_TERM
+				ORDER BY books.TITLE $order
+				
+				";
+				//Limit $offset; 
+				//@Julian then here I have LIMIT of per page here $offset so if 10 or 20 placed here just like ASC/DESC
 
 		//Executes query string
 		$result = $conn->query($sql);
@@ -155,18 +114,6 @@ return $result;
 		{
 		    echo "0 results";
 		}
-
-		///PAGINATION previous
-		// if( $page > 0 ) {
-        //     $last = $page - 2;
-        //     echo "<a href = \"$_PHP_SELF?page = $last\">Last1</a> |";
-        //     echo "<a href = \"$_PHP_SELF?page = $page\">Next2</a>";
-        //  }else if( $page == 0 ) {
-        //     echo "<a href = \"$_PHP_SELF?page = $page\">Next3</a>";
-        //  }else if( $lefts < $limit ) {
-        //     $last = $page - 2;
-        //     echo "<a href = \"$_PHP_SELF?page = $last\">Last4</a>";
-        //  }
 
 
 
@@ -377,7 +324,7 @@ return $result;
 		
 		$keyword = $params_arr[0];
 		
-		$sql = "SET @SEARCH_TERM = '%$top%';";
+		$sql = "SET @SEARCH_TERM = '%$keyword%';";
 		
 		if ($conn->query($sql) === TRUE) 
 		{
@@ -397,7 +344,9 @@ return $result;
 			            authors.LAST_NAME LIKE @SEARCH_TERM OR 
 						books.TITLE LIKE @SEARCH_TERM OR
 						books.GENRE LIKE @SEARCH_TERM
-				ORDER BY books.TITLE LIMIT 3";
+				ORDER BY books.TITLE 
+				LIMIT 3";
+				//Only d
 		
 
 		//Executes query string
@@ -437,6 +386,7 @@ return $result;
 
 		$conn->close();
 	}
+
 
 
 
