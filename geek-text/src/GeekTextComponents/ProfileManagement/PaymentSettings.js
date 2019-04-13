@@ -40,7 +40,7 @@ export default class PaymentSettings extends Component {
             currentUserId: props.currentUserId,
             dialogOpen: false, 
             currPayMethods: [], 
-            formErrors: {number: '', name: '', expiry: '', cvc: ''},
+            currentEditPaymentMethod: 0,
             number: '',
             name: '',
             cardType: '',
@@ -53,7 +53,19 @@ export default class PaymentSettings extends Component {
             city: '',
             zip_code: '',
             country: '',
-            phoneNum: ''
+            phoneNum: '',
+            editNumber: '',
+            editName: '',
+            editCardType: '',
+            editExpiry: '',
+            editCvc: '',
+            editIssuer: '',
+            editAddress: '', 
+            editState: '',
+            editCity: '',
+            editZip_code: '',
+            editCountry: '',
+            editPhoneNum: ''
         }
 
         this.addPayment = this.addPayment.bind(this);
@@ -202,6 +214,30 @@ export default class PaymentSettings extends Component {
     getEndingCardNum(item) {
         var endingNum = "" + item;
         return endingNum.slice(-4);
+    }
+
+    editPayment(item, index) {
+        this.setState({ currentEditPaymentMethod: index,
+            editNumber: item.card_num,
+            editName: item.card_name,
+            editCardType: item.card_type,
+            editExpiry: item.exp_date,
+            editCvc: item.security_code, 
+            editAddress: item.address, 
+            editState: item.state, 
+            editCity: item.city,
+            editZip_code: item.zip_code,
+            editCountry: item.country,
+            editPhoneNum: item.phone_num});
+        this.handleEditClickOpen();
+    }
+
+    handleEditClickOpen = () => {
+        this.setState({ editDialogOpen: true });
+    }
+    
+    handleEditClose = () => {
+        this.setState({ editDialogOpen: false });
     }
 
     render() {

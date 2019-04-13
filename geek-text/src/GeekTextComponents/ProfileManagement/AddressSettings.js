@@ -211,15 +211,10 @@ export default class AddressSettings extends Component {
         this.handleEditClickOpen();
     }
 
-    // TODO
     updateEditedAddress() {
-        // let addressesCopy = JSON.parse(JSON.stringify(this.state.addresses));
-        // addressesCopy[this.state.currentEditAddress] = newAddress;
-        // this.setState({addresses: addressesCopy});
-        var index = this.state.currentEditAddress;
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=updateAddress&address_id=' + `${this.state.addresses[index].address_id}` + '&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.editName}`
+            data: 'method=updateAddress&address_id=' + `${this.state.addresses.address_id}` + '&currentUserId=' + `${this.state.currentUserId}` + '&name=' + `${this.state.editName}`
                                                     + '&address=' + `${this.state.editAddress}` + '&address_2=' + `${this.state.editAddress_2}` + '&city=' + `${this.state.editCity}` 
                                                     + '&state=' + `${this.state.editState}` + '&zip_code=' + `${this.state.editZip_code}` + '&country=' + `${this.state.editCountry}` 
                                                     + '&phone=' + `${this.state.editPhoneNum}`,
@@ -277,8 +272,7 @@ export default class AddressSettings extends Component {
                         country={item.country}
                         phoneNum={item.phoneNum}
                         isHomeAddress={!!+item.is_home_address}
-                        editAddressDialog={that.editDialogOpen}
-                        editAddress={that.handleEditClickOpen}
+                        editAddress={that.handleEditClickOpen(index)}
                         removeAddress={event => that.removeAddress(index)}
                         setHomeAddress={event => that.setHomeAddress(index)}
                         ></Card>
@@ -287,6 +281,109 @@ export default class AddressSettings extends Component {
 
         return (
                 <div>
+
+            <Dialog
+                open={this.state.editDialogOpen}
+                onClose={this.handleClose}
+                aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Update Address</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                    Please enter your address information here in the fields below.
+                    </DialogContentText>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.state.name}
+                        name="editName"
+                        id="name"
+                        label="Full Name"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="address"
+                        value={this.address}
+                        name="editAddress"
+                        label="Address"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="address"
+                        label="Address 2"
+                        value={this.address_2}
+                        name="editAddress_2"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="city"
+                        value={this.city}
+                        name="editCity"
+                        label="City"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="state"
+                        value={this.state}
+                        name="editState"
+                        label="State"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        id="zip_code"
+                        value={this.zip_code}
+                        name="editZip_code"
+                        label="Zip Code"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.country}
+                        name="editCountry"
+                        id="country"
+                        label="Country"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}/>
+                    <TextField
+                        required
+                        margin="dense"
+                        value={this.phoneNum}
+                        name="editPhoneNum"
+                        id="phoneNum"
+                        label="Phone Number"
+                        fullWidth
+                        onChange={this.handleInput}
+                        onFocus={this.handleInput}>
+                    </TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleEditClose} color="primary">
+                    Cancel
+                    </Button>
+                    <Button 
+                    // disabled
+                    onClick={this.updateEditedAddress} color="primary">
+                    Save Changes
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
                 <Dialog
                     open={this.state.dialogOpen}
