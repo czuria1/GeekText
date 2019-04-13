@@ -72,6 +72,7 @@ export default class PaymentSettings extends Component {
 
         this.addPayment = this.addPayment.bind(this);
         this.getUserPaymentMethods = this.getUserPaymentMethods.bind(this);
+        this.updateEditedPayment = this.updateEditedPayment.bind(this);
         // this.removePayment = this.removePayment.bind(this);
     }
 
@@ -124,6 +125,7 @@ export default class PaymentSettings extends Component {
                             + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
             success: function (XMLHttpRequest) {
                 this.getUserPaymentMethods();
+                this.handleEditClose();
                 console.log('success', XMLHttpRequest);
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -186,13 +188,14 @@ export default class PaymentSettings extends Component {
     updateEditedPayment() {
         ajaxme.post({
             url: 'http://localhost/server.php/post',
-            data: 'method=addPaymentMethods&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.cardType}` + '&card_num=' + `${this.state.number}`
-                            + '&card_name=' + `${this.state.name}` + '&security_code=' + `${this.state.cvc}` + '&exp_date=' + `${this.state.expiry}`
-                            + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
-                            + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
+            data: 'method=updatePaymentMethod&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.editCardType}` + '&card_num=' + `${this.state.editNumber}`
+                            + '&card_name=' + `${this.state.editName}` + '&security_code=' + `${this.state.editCvc}` + '&exp_date=' + `${this.state.editExpiry}`
+                            + '&zip_code=' + `${this.state.editZip_code}` + '&address=' + `${this.state.editAddress}` + '&city=' + `${this.state.editCity}` 
+                            + '&state=' + `${this.state.editState}` + '&country=' + `${this.state.editCountry}` + '&phone_num=' + `${this.state.editPhoneNum}` + '&paymentId=' + `${this.state.currentEditPaymentMethod}`,
             success: function (XMLHttpRequest) {
                 this.getUserPaymentMethods();
-                console.log('success', XMLHttpRequest);
+                this.handleEditClose();
+                console.log('success', XMLHttpRequest.responseText);
             }.bind(this),
             error: function(XMLHttpRequest) {
                 console.log('error', XMLHttpRequest);
@@ -225,6 +228,7 @@ export default class PaymentSettings extends Component {
         if (target.name === 'number') {
           target.value = formatCreditCardNumber(target.value);
           const issuer = Payment.fns.cardType(target.value);
+          issuer.toUpperCase();
           this.setState({ cardType: issuer});
         } else if (target.name === 'expiry') {
           target.value = formatExpirationDate(target.value);
@@ -262,8 +266,34 @@ export default class PaymentSettings extends Component {
         this.handleEditClickOpen();
     }
 
-    handleEditClickOpen = () => {
-        this.setState({ editDialogOpen: true });
+    handleEditClickOpen = (index) => {
+        var number = this.state.currPayMethods[index].card_num;
+        var name = this.state.currPayMethods[index].card_name;
+        var card_type = this.state.currPayMethods[index].card_type;
+        var exp_date = this.state.currPayMethods[index].exp_date;
+        var security_code = this.state.currPayMethods[index].security_code;
+        var address = this.state.currPayMethods[index].address;
+        var city = this.state.currPayMethods[index].city;
+        var state = this.state.currPayMethods[index].state;
+        var zip_code = this.state.currPayMethods[index].zip_code;
+        var country = this.state.currPayMethods[index].country;
+        var phone = this.state.currPayMethods[index].phone;
+        var id = this.state.currPayMethods[index].payment_id;
+        this.setState({ 
+            editDialogOpen: true,
+            editNumber: number,
+            editName: name,
+            editCardType: card_type,
+            editExpiry: exp_date,
+            editCvc: security_code, 
+            editAddress: address, 
+            editState: state, 
+            editCity: city,
+            editZip_code: zip_code,
+            editCountry: country,
+            editPhoneNum: phone,
+            currentEditPaymentMethod: id
+        });
     }
     
     handleEditClose = () => {
@@ -301,16 +331,16 @@ export default class PaymentSettings extends Component {
                     onClose={this.handleEditClose}
                     aria-labelledby="form-dialog-title"
                     >
-                    <DialogTitle id="form-dialog-title">New Payment Method</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Update Payment Method</DialogTitle>
                     <DialogContent>
                         <Cards
-                        number={number}
-                        name={name}
-                        expiry={expiry}
-                        cvc={cvc}
-                        issuer={issuer}
-                        focused={focused}
-                        callback={this.handleCallback}
+                            number={number}
+                            name={name}
+                            expiry={expiry}
+                            cvc={cvc}
+                            issuer={issuer}
+                            focused={focused}
+                            callback={this.handleCallback}
                         />
                         <DialogContentText>
                         Please enter your card information here in the fields below.
@@ -322,6 +352,7 @@ export default class PaymentSettings extends Component {
                             name="number"
                             label="Card Number"
                             fullWidth
+                            value={this.state.editNumber}
                             error={this.state.number < 16}
                             inputProps={{minLength: 16, maxLength: 22}}
                             onChange={this.handleInputChange}
@@ -329,15 +360,17 @@ export default class PaymentSettings extends Component {
                         <TextField
                             required
                             margin="dense"
-                            name="name"
+                            name="editName"
                             label="Name"
+                            value={this.state.editName}
                             fullWidth
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
                             required
                             margin="dense"
-                            name="expiry"
+                            name="editExpiry"
+                            value={this.state.editExpiry}
                             label="Valid Thru"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -345,8 +378,9 @@ export default class PaymentSettings extends Component {
                             required
                             style={{marginLeft: '5%'}}
                             margin="dense"
-                            name="cvc"
+                            name="editCvc"
                             label="CVC"
+                            value={this.state.editCvc}
                             inputProps={{minLength: 3, maxLength: 4}}
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -354,14 +388,16 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="address"
+                            name="editAddress"
+                            value={this.state.editAddress}
                             label="Billing Address"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
                             required
                             margin="dense"
-                            name="state"
+                            name="editState"
+                            value={this.state.editState}
                             label="Billing State"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -369,7 +405,8 @@ export default class PaymentSettings extends Component {
                             required
                             style={{marginLeft: '3%'}}
                             margin="dense"
-                            name="city"
+                            name="editCity"
+                            value={this.state.editCity}
                             label="Billing City"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -377,7 +414,8 @@ export default class PaymentSettings extends Component {
                             required
                             style={{marginLeft: '3%'}}
                             margin="dense"
-                            name="zip_code"
+                            name="editZip_code"
+                            value={this.state.editZip_code}
                             label="Billing Zip Code"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -385,7 +423,8 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="country"
+                            name="editCountry"
+                            value={this.state.editCountry}
                             label="Billing Country"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
@@ -393,7 +432,8 @@ export default class PaymentSettings extends Component {
                             required
                             fullWidth
                             margin="dense"
-                            name="phoneNum"
+                            name="editPhoneNum"
+                            value={this.state.editPhoneNum}
                             label="Billing Phone Number"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}>

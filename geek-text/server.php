@@ -565,6 +565,8 @@ return $result;
 
 		$sql = "INSERT INTO users (USERNAME, FNAME, LNAME, NICKNAME, EMAIL, PASSWORD) 
 				VALUES('$username', '$firstname', '$lastname', '$nickname', '$email', '$password')";
+
+		echo $sql;
 		
 		$result = $conn->query($sql);
 
@@ -981,6 +983,51 @@ return $result;
 		$conn->close();
 	}
 
+	function updatePaymentMethod() {
+        global $conn;
+        global $myObj;
+        
+		$currentUserId = urldecode($_POST['currentUserId']);
+		$paymentId = urldecode($_POST['paymentId']);
+
+		$card_type = urldecode($_POST['card_type']);
+		$card_name = urldecode($_POST['card_name']);
+		$card_num = urldecode($_POST['card_num']);
+		$security_code = urldecode($_POST['security_code']);
+		$exp_date = urldecode($_POST['exp_date']);
+		$zip_code = urldecode($_POST['zip_code']);
+		$address = urldecode($_POST['address']);
+		$city = urldecode($_POST['city']);
+		$state = urldecode($_POST['state']);
+		$country = urldecode($_POST['country']);
+		$phoneNumber = urldecode($_POST['phone_num']);
+
+		$sql = "SET @CURRENT_PAYMENT = '$paymentId', @CURRENT_USER = '$currentUserId'";
+
+		if ($conn->query($sql) === TRUE) 
+		{
+		} 
+		else 
+		{
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
+
+		$sql = "UPDATE PAYMENT
+				SET PAYMENT.card_type = '$card_type', PAYMENT.card_name = '$card_name', PAYMENT.card_num = '$card_num', 
+				PAYMENT.security_code = '$security_code', PAYMENT.exp_date = '$exp_date', PAYMENT.zip_code = '$zip_code', 
+				PAYMENT.address = '$address', PAYMENT.city = '$city', PAYMENT.state = '$state', PAYMENT.country = '$country', 
+				PAYMENT.phone = '$phoneNumber'
+				WHERE PAYMENT.payment_id = @CURRENT_PAYMENT AND PAYMENT.user_id = @CURRENT_USER";
+		
+		echo $sql;
+
+		$result = $conn->query($sql);
+
+		echo $result;
+
+		$conn->close();
+	}
+
 	if ($method == 'getSearchInfo')
 	{
 		getSearchInfo();
@@ -1028,6 +1075,10 @@ return $result;
 	else if ($method == 'addPaymentMethods') 
 	{
 		addPaymentMethods();
+	}
+	else if ($method == 'updatePaymentMethod') 
+	{
+		updatePaymentMethod();
 	}
 	else if ($method == 'deletePaymentMethod') 
 	{
