@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import NumberFormat from 'react-number-format';
 
 const styles = theme => ({
     column: {
@@ -65,12 +66,15 @@ function SimpleExpansionPanel(props) {
         <ExpansionPanelDetails>
             <div className={classes.column}>
                 <Typography variant="subtitle1">Name on card</Typography>
-                <Typography>{props.name}</Typography>
+                <Typography>{props.nameOnCard}</Typography>
             </div>
             <div className={classes.column}>
                 <Typography variant="subtitle1">Billing Address</Typography>
                 <Typography variant="subtitle2">{props.name}</Typography>
                 <Typography variant="p">{props.address}</Typography>
+                <Typography variant="p">{props.city}, {props.state}, {props.zip_code}</Typography>
+                <Typography variant="p">{props.country}</Typography>
+                <Typography variant="p">Phone Number: <NumberFormat value={props.phone} displayType={'text'} format=" (###) ###-####"/></Typography>
             </div>
         </ExpansionPanelDetails>
         <Divider />

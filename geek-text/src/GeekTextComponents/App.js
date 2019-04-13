@@ -32,6 +32,7 @@ class App extends Component {
 
         this.setCurrentUser = this.setCurrentUser.bind(this);
         this.logoutUser = this.logoutUser.bind(this);
+        this.setHomeAddress = this.setHomeAddress.bind(this);
 
         document.title = "Geek Text Home";
     }
@@ -52,6 +53,12 @@ class App extends Component {
             isUserLoggedIn: loggedIn
         });
 
+    }
+
+    setHomeAddress(newAddressId) {
+        this.setState({
+            currentUserHomeAddressId: newAddressId
+        });
     }
 
     render() {
@@ -86,7 +93,8 @@ class App extends Component {
                                                                             homeAddress={this.state.currentUserHomeAddressId}
                                                                             currentUserId={this.state.userID}/>}/>
                         <Route path="/addressSettings" render={(props) => <AddressSettings {...props} 
-                                                                            currentUserId={this.state.userID}/>}/>
+                                                                            currentUserId={this.state.userID}
+                                                                            setHomeAddress={this.setHomeAddress}/>}/>
                         <Route path="/paymentSettings" render={(props) => <PaymentSettings {...props} 
                                                                             currentUserId={this.state.userID}/>}/>
                         <Route path="/bookDetails" render={(props) => <BookDetails {...props} 

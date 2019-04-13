@@ -16,15 +16,18 @@ import {
     formatExpirationDate,
     formatFormData,
   } from './utils';
-  import ajaxme from "ajaxme";
+import ajaxme from "ajaxme";
+import InputMask from 'react-input-mask';
 
-function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, country, phoneNum) {
+function PaymentMethod(cardType, endingNum, expDate, nameOnCard, address, city, state, zip_code, country, phoneNum) {
     this.cardType = cardType;
     this.endingNum = endingNum;
-    this.expDate = expDate;
-    this.nameOnCard = nameOnCard;
+    this.expiry = expDate;
+    this.name = nameOnCard;
     this.address = address;
     this.city = city;
+    this.state = state;
+    this.zip_code = zip_code;
     this.country = country;
     this.phoneNum = phoneNum;
 }
@@ -37,15 +40,36 @@ export default class PaymentSettings extends Component {
             currentUserId: props.currentUserId,
             dialogOpen: false, 
             currPayMethods: [], 
+            currentEditPaymentMethod: 0,
             number: '',
             name: '',
+            cardType: '',
             expiry: '',
             cvc: '',
             issuer: '',
-            focused: ''
+            focused: '', 
+            address: '', 
+            state: '',
+            city: '',
+            zip_code: '',
+            country: '',
+            phoneNum: '',
+            editNumber: '',
+            editName: '',
+            editCardType: '',
+            editExpiry: '',
+            editCvc: '',
+            editIssuer: '',
+            editAddress: '', 
+            editState: '',
+            editCity: '',
+            editZip_code: '',
+            editCountry: '',
+            editPhoneNum: ''
         }
 
         this.addPayment = this.addPayment.bind(this);
+        this.getUserPaymentMethods = this.getUserPaymentMethods.bind(this);
         // this.removePayment = this.removePayment.bind(this);
     }
 
@@ -73,7 +97,7 @@ export default class PaymentSettings extends Component {
                     this.setState({
                         currPayMethods: JSON.parse(XMLHttpRequest.responseText)
                     })
-                    console.log('success', JSON.parse(XMLHttpRequest.responseText));
+                    console.log('success', XMLHttpRequest);
                 }
             }.bind(this),
             error: function(XMLHttpRequest) {
@@ -89,17 +113,70 @@ export default class PaymentSettings extends Component {
         });
     }
 
+    addPaymentButtonClicked() {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=addPaymentMethods&currentUserId=' + `${this.state.currentUserId}` + '&card_type=' + `${this.state.cardType}` + '&card_num=' + `${this.state.number}`
+                            + '&card_name=' + `${this.state.name}` + '&security_code=' + `${this.state.cvc}` + '&exp_date=' + `${this.state.expiry}`
+                            + '&zip_code=' + `${this.state.zip_code}` + '&address=' + `${this.state.address}` + '&city=' + `${this.state.city}` 
+                            + '&state=' + `${this.state.state}` + '&country=' + `${this.state.country}` + '&phone_num=' + `${this.state.phoneNum}`,
+            success: function (XMLHttpRequest) {
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
+
+    }
+
     addPayment() {
-        // this.state.currPayMethods.push({cardType: 'Visa', endingNum: '1234', expDate: '06/2303', nameOnCard: 'Maxwell Doe', 
-        // address: '34242jh', city: 'Miami, FL', country: 'United States', phoneNum: '342-432-4324'});
-        this.state.currPayMethods.push(new PaymentMethod(this.state.issuer, this.state.number, this.state.expiry, this.state.name, 'test', 'test', 'test', 'test'));
+        this.state.currPayMethods.push(new PaymentMethod(this.state.issuer, this.state.number, this.state.expiry, this.state.name, this.state.address, 
+            this.state.city, this.state.state, this.state.zip_code, this.state.country, this.state.phoneNum));
         this.setState({payments: this.state.currPayMethods, dialogOpen: false});
-        this.setState({number: '',
-                        name: '',
-                        expiry: '',
-                        cvc: '',
-                        issuer: '',
-                        focused: ''});
+        this.addPaymentButtonClicked();
+        this.setState({
+            number: '',
+            name: '',
+            expiry: '',
+            cvc: '',
+            issuer: '',
+            focused: '', 
+            address: '', 
+            state: '',
+            city: '',
+            zip_code: '',
+            country: '',
+            phoneNum: ''});
+    }
+
+    removePayment(index) {
+        ajaxme.post({
+            url: 'http://localhost/server.php/post',
+            data: 'method=deletePaymentMethod&paymentId=' + `${this.state.currPayMethods[index].payment_id}` + '&currentUserId=' + `${this.state.currentUserId}`,
+            success: function (XMLHttpRequest) {
+                delete this.state.currPayMethods[index];
+                this.setState({payments: this.state.currPayMethods});
+                console.log('success', XMLHttpRequest);
+            }.bind(this),
+            error: function(XMLHttpRequest) {
+                console.log('error', XMLHttpRequest);
+            },
+            abort: function(XMLHttpRequest) {
+                console.log('abort', XMLHttpRequest);
+            },
+            loadstart: function(XMLHttpRequest) {
+            },
+            progress: function(XMLHttpRequest) {
+            }
+        });
     }
 
     handleCallback = ({ issuer }, isValid) => {
@@ -134,14 +211,33 @@ export default class PaymentSettings extends Component {
         });
       };
 
-    removePayment(index) {
-        delete this.state.currPayMethods[index];
-        this.setState({payments: this.state.currPayMethods});
-    }
-
     getEndingCardNum(item) {
         var endingNum = "" + item;
         return endingNum.slice(-4);
+    }
+
+    editPayment(item, index) {
+        this.setState({ currentEditPaymentMethod: index,
+            editNumber: item.card_num,
+            editName: item.card_name,
+            editCardType: item.card_type,
+            editExpiry: item.exp_date,
+            editCvc: item.security_code, 
+            editAddress: item.address, 
+            editState: item.state, 
+            editCity: item.city,
+            editZip_code: item.zip_code,
+            editCountry: item.country,
+            editPhoneNum: item.phone_num});
+        this.handleEditClickOpen();
+    }
+
+    handleEditClickOpen = () => {
+        this.setState({ editDialogOpen: true });
+    }
+    
+    handleEditClose = () => {
+        this.setState({ editDialogOpen: false });
     }
 
     render() {
@@ -151,14 +247,16 @@ export default class PaymentSettings extends Component {
         const panels = this.state.currPayMethods.map(function (item, index) {
            return (
            <Panel
-                cardType={item.cardType}
-                endingNum={that.getEndingCardNum(item.endingNum)}
-                expDate={item.expDate}
-                nameOnCard={item.nameOnCard}
+                cardType={item.card_type}
+                endingNum={that.getEndingCardNum(item.card_num)}
+                expDate={item.exp_date}
+                nameOnCard={item.card_name}
                 address={item.address}
                 city={item.city}
                 country={item.country}
-                phoneNum={item.phoneNum}
+                state={item.state}
+                zip_code={item.zip_code}
+                phone={item.phone}
                 removePayment={event => that.removePayment(index)}
                 ></Panel>)
         });
@@ -193,10 +291,12 @@ export default class PaymentSettings extends Component {
                             name="number"
                             label="Card Number"
                             fullWidth
+                            error={this.state.number < 16}
                             inputProps={{minLength: 16, maxLength: 22}}
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
+                            required
                             margin="dense"
                             name="name"
                             label="Name"
@@ -204,18 +304,70 @@ export default class PaymentSettings extends Component {
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
+                            required
                             margin="dense"
                             name="expiry"
                             label="Valid Thru"
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
                         <TextField
+                            required
+                            style={{marginLeft: '5%'}}
                             margin="dense"
                             name="cvc"
                             label="CVC"
                             inputProps={{minLength: 3, maxLength: 4}}
                             onChange={this.handleInputChange}
                             onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="address"
+                            label="Billing Address"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            margin="dense"
+                            name="state"
+                            label="Billing State"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            style={{marginLeft: '3%'}}
+                            margin="dense"
+                            name="city"
+                            label="Billing City"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            style={{marginLeft: '3%'}}
+                            margin="dense"
+                            name="zip_code"
+                            label="Billing Zip Code"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="country"
+                            label="Billing Country"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}/>
+                        <TextField
+                            required
+                            fullWidth
+                            margin="dense"
+                            name="phoneNum"
+                            label="Billing Phone Number"
+                            onChange={this.handleInputChange}
+                            onFocus={this.handleInputFocus}>
+                            <InputMask mask="(999) 999-9999" maskChar=" " />
+                            </TextField>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
