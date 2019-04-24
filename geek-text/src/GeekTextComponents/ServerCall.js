@@ -7,7 +7,7 @@ const alertContents = () => {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
             if (httpRequest.responseText !== "0 results") {
-                //console.log(httpRequest.responseText);
+                console.log(httpRequest.responseText);
                 
                 response = JSON.parse(httpRequest.responseText);
                 changeState(response);
@@ -32,7 +32,7 @@ const ServerCall = (method, params, changeStateFunctionCall) => {
         return false;
     }
     httpRequest.onreadystatechange = alertContents;
-    httpRequest.open('POST', 'http://localhost:82/server.php/');
+    httpRequest.open('POST', 'http://localhost/server.php/');
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send('method=' + encodeURIComponent(method) + '&params=' + encodeURIComponent(params));
 
